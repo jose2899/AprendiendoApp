@@ -1,0 +1,95 @@
+{% extends 'layout.html' %}
+{% load static %}
+{% block content %}
+<section class="section">
+    <div class="section-body">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Administradores Registrados <i class="fas fa-user"></i></h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-striped" id="sortable-table">
+                                <thead>
+                                    <tr>
+                                        <th>Nombre</th>
+                                        <th>Foto</th>
+                                        <th>Celular</th>
+                                        <th>Correo Electrónico</th>
+                                        <th>Usuario</th>
+                                        <th>Acción</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for user in objects %}
+                                    <tr>
+                                        <td>{{ user.nombre }}</td>
+                                            {% if user.foto %}
+                                            <td>
+                                                <img alt="image" src="{{ user.foto.url }}" class="rounded-circle" width="35" data-toggle="tooltip" title="{{ user.nombre }}">
+                                            </td>
+                                            {% else %}
+                                            <td><div class="badge badge-danger">No foto</div></td>
+                                            {% endif %}
+                                        <td>{{ user.celular }}</td>
+                                        <td>{{ user.email }}</td>
+                                        <td>{{ user.user.username }}</td>
+                                        <td>
+                                            <a href="#" class="btn btn-primary"><i class="fa fa-eye"></i></a>
+                                            <a href="#" class="btn btn-warning"><i class="fas fa-edit"></i></a>
+                                            <a href="#" class="btn btn-danger"><i class="fas fa-trash"></i></a>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="pagination">
+                        <div class="card-footer text-right">
+                            <nav class="d-inline-block">
+                                <ul class="pagination mb-0">
+                                    {% if is_paginated %}
+                                        {% if page_obj.has_previous %}
+                                            <li class="page-item">
+                                                <a class="page-link" href="?page=1"><i class="fas fa-chevron-left"></i></a>
+                                            </li>
+                                            {% comment %} <li class="page-item">
+                                                <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Anterior</a>
+                                            </li> {% endcomment %}
+                                        {% endif %}
+                                
+                                        {% for num in page_obj.paginator.page_range %}
+                                            {% if page_obj.number == num %}
+                                            <li class="page-item active">
+                                                <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                                            </li>
+                                            {% else %}
+                                            <li class="page-item">
+                                                <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                                            </li>
+                                            {% endif %}
+                                        {% endfor %}
+                                    
+                                        {% if page_obj.has_next %}
+                                            {% comment %} <li class="page-item">
+                                                <a class="page-link" href="?page={{ page_obj.next_page_number }}">Siguiente</a>
+                                            </li> {% endcomment %}
+                                            <li class="page-item">
+                                                <a class="page-link" href="?page={{ paginator.num_pages }}"><i class="fas fa-chevron-right"></i></a>
+                                            </li>
+                                        {% endif %}
+                                    {% endif %}
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock content %}

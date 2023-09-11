@@ -1,0 +1,118 @@
+{% extends 'layout.html' %}
+{% load static %}
+{% block content %}
+<section class="section">
+    <div class="section-body">
+      <div class="row">
+        <div class="col-12">
+          <div class="card">
+            <div class="card-header">
+              <h2 class="textos-aliados">Servicios Grupales - Talleres</h2>
+            </div>
+            <div class="card-body">
+              <div class="row">
+                <div class="col-12 col-sm-12 col-md-4 items-aliados">
+                  <ul class="nav nav-pills flex-column" id="myTab" role="tablist1">
+                    {% for servi in servicios %}
+                      {% if forloop.counter >= 9 and forloop.counter <= 11 %}
+                        {% if forloop.counter == 9 %}
+                          <li class="nav-item">
+                            <a class="nav-link active" id="{{servi.nombre}}-tab4" data-toggle="tab" href="#{{servi.nombre}}" role="tab" aria-controls="home" aria-selected="true">{{ servi.nombre }}</a>
+                          </li>
+                        {% else %}
+                          <li class="nav-item">
+                            <a class="nav-link" id="{{servi.nombre}}-tab4" data-toggle="tab" href="#{{servi.nombre}}" role="tab" aria-controls="home" aria-selected="true">{{ servi.nombre }}</a>
+                          </li>
+                        {% endif %}
+                      {% endif %}
+                    {% endfor %}
+                  </ul>
+                </div>
+                <div class="col-12 col-sm-12 col-md-8">
+                  <div class="tab-content no-padding contenido-aliados" id="myTab2C">
+                    {% for servi_desc in servicios %}
+                      {% if forloop.counter >= 9 and forloop.counter <= 11 %}
+                        {% if forloop.counter == 9 %}
+                          <div class="tab-pane fade show active" id="{{servi_desc.nombre}}" role="tabpanel" aria-labelledby="{{servi_desc.nombre}}-tab4">
+                            <div class="card mb-3">                              
+                                <div class="card-body">
+                                  <h5 class="card-title">{{ servi_desc.nombre }}</h5>
+                                  <p class="card-text">{{ servi_desc.descripcion }}</p>
+                                </div>
+                            </div>
+                          </div>
+                        {% else %}
+                          <div class="tab-pane fade" id="{{servi_desc.nombre}}" role="tabpanel" aria-labelledby="{{servi_desc.nombre}}-tab4">
+                            <div class="card mb-3">
+                                <div class="card-body">
+                                  <h5 class="card-title">{{ servi_desc.nombre }}</h5>
+                                  <p class="card-text">{{ servi_desc.descripcion }}</p>
+                                </div>
+                            </div>
+                          </div>                     
+                        {% endif %}
+                      {% endif %}
+                    {% endfor %}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</section>
+<section class="section">
+    <div class="section-body">
+      <div class="row">
+        <div class="col-12">
+          <div class="card card-noticias">
+            <div class="card-header">
+              <h4>Valor agregado <i class="fas fa-newspaper"></i></h4>
+            </div>
+            <div class="card-body">
+              <div class="row">
+                <div class="card mb-3">                              
+                  <div class="card-body">
+                    <p class="card-text">
+                        Grupos pequeños, profesionales capacitados, cronograma de trabajo según las necesidades, acceso a las salas
+                        diseñadas para la estimulación sensorial, información a los padres de los avances de los niños mediante
+                        fotos a grupos de WhatsApp para cada servicio.
+                    </p>
+                  </div>
+              </div>
+              
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+{% endblock %}
+
+{% block plugins_js %} 
+<script>
+  const sr = ScrollReveal({
+      origin: 'top',
+      distance: '60px',
+      duration: 2500,
+      delay:400,
+      reset:true,
+  })
+  
+sr.reveal('.textos-aliados',{delay:300});
+  sr.reveal('.items-aliados', {delay:500});
+  sr.reveal('.contenido-aliados',{delay:700, origin:'left'});
+  sr.reveal('.card-noticias', {delay:800, origin:'top'});
+  sr.reveal('.article-post', {delay:850, origin:'top'})
+{% comment %}     sr.reveal('.home__description, .footer__description', {delay:500});
+  sr.reveal('.home__search', {delay:600});
+  sr.reveal('.home__value', {delay:700});
+  sr.reveal('.home__images', {delay:800, origin: 'bottom'});
+  sr.reveal('.logos__img', {interval:100});
+  sr.reveal('.value__images, .contact__content', {origin:'left'});
+  sr.reveal('.value__content .contact__images', {origin:'right'}); {% endcomment %}
+
+</script>
+{% endblock %}

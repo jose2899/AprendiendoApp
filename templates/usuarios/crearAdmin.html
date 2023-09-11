@@ -1,0 +1,67 @@
+{% extends 'layout.html' %}
+{% load static %}
+{% block content %}
+<section class="section">
+  <div class="container mt-5">
+    <div class="row">
+      <div class="col-12 col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-8 offset-lg-2 col-xl-8 offset-xl-2">
+        <div class="card card-primary">
+          <div class="card-header"><h4>Registar nuevo Administrador</h4></div>
+          <div class="card-body">
+            <form method="POST" enctype="multipart/form-data" autocomplete='off'>
+              {% csrf_token %}
+              <div class="row">
+                <div class="form-group col-6">
+                  {{ usuario_forms.nombre.label }}
+                  {{ usuario_forms.nombre }}
+                </div>
+                <div class="form-group col-6">
+                  {{ usuario_forms.apellido.label }}
+                  {{ usuario_forms.apellido }}
+                </div>
+                <div class="form-group col-6">
+                  {{ usuario_forms.celular.label }}
+                  {{ usuario_forms.celular }}
+                </div>
+                <div class="form-group col-6">
+                  {{ usuario_forms.direccion.label }}
+                  {{ usuario_forms.direccion }}
+                </div>
+              </div>
+
+              <div class="form-group">
+                {{ usuario_forms.email.label }}
+                {{ usuario_forms.email }}
+              </div>
+
+              <div class="row">
+                <div class="form-group col-6">
+                  {{ usuario_forms.username.label }}
+                  {{ usuario_forms.username }}
+                </div>
+                <div class="form-group col-6">
+                  {{ usuario_forms.password.label }}
+                  {{ usuario_forms.password }}
+                </div>
+              </div>
+              <div class="form-group">
+                {{ usuario_forms.foto.label }}
+                {{ usuario_forms.foto }}
+              </div>
+              <div class="form-group">
+                <div class="text-center mt-4 mb-3">
+                  <button type="submit" class="btn btn-primary btn-lg btn-block">
+                    Registrar Administrador
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock content %}
+
+
