@@ -44,16 +44,16 @@
       <li class="dropdown">
         <a href="#" class="nav-link has-dropdown"><i class="fas fa-plug"></i> <span>Representates</span></a>
         <ul class="dropdown-menu">
-          <li><a class="nav-link" href="http://127.0.0.1:8000/crearRepresentante/">Crear Representante</a></li>
-          <li><a class="nav-link" href="http://127.0.0.1:8000/listarRepresentantes/">Ver Representante</a></li>
+          <li><a class="nav-link" href="{% url 'crear_representante' %}">Crear Representante</a></li>
+          <li><a class="nav-link" href="{% url 'listar_representantes' %}">Ver Representante</a></li>
         </ul>
       </li>
       <li class="dropdown">
         <a href="#" class="nav-link has-dropdown"><i class="far fa-file-alt"></i> <span>Estudiantes</span></a>
         <ul class="dropdown-menu">
           
-          <li><a class="nav-link" href="http://127.0.0.1:8000/crearEstudiante/">Crear Estudiante</a></li>
-          <li><a class="nav-link" href="http://127.0.0.1:8000/listarEstudiantes/">Ver Estudiantes</a></li>
+          <li><a class="nav-link" href="{% url 'crear_estudiante' %}">Crear Estudiante</a></li>
+          <li><a class="nav-link" href="{% url 'listar_estudiantes' %}">Ver Estudiantes</a></li>
 
         </ul>
       </li>

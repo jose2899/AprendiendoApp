@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 
 #vistas
-from django.views.generic import CreateView, ListView, DetailView
+from django.views.generic import CreateView, ListView, DetailView, UpdateView, DeleteView
 #imports Django
 from django.urls import reverse_lazy
 #models
@@ -23,7 +23,12 @@ class ListarRepresentanteView(ListView):
     template_name = 'usuarios/listarUsuarios.html' 
     paginate_by = 10
     context_object_name = 'objects'  # Nombre de la variable en la plantilla que contiene la lista de Representantes
-
+    
+    def get_queryset(self):
+        # Obtén la lista de representantes que deseas mostrar
+        # Puedes filtrarlos de acuerdo a tus necesidades aquí
+        return Representante.objects.all()
+    
 class CrearEstudianteView(CreateView):
     model = Estudiante
     form_class = EstudianteForm
@@ -54,3 +59,15 @@ class VerRepresentanteView(DetailView):
     model = Representante
     template_name = 'usuarios/verRepresentante.html'  # Reemplaza 'usuarios/detalle_representante.html' con la ruta correcta a tu plantilla
     context_object_name = 'representante'  # Esto define el nombre de la variable en la plantilla
+
+
+class EditarRepresentanteView(UpdateView):
+    model = Representante
+    form_class = RepresentanteForm
+    template_name = 'usuarios/editarRepresentante.html'
+    success_url = reverse_lazy('listar_representantes')
+
+class EliminarRepresentanteView(DeleteView):
+    model = Representante
+    template_name = 'usuarios/eliminarRepresentante.html' 
+    success_url = reverse_lazy('listar_representantes')

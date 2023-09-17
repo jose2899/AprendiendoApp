@@ -65,6 +65,10 @@ class EstudianteForm(forms.ModelForm):
             'representante':forms.Select(attrs={'class': 'form-control'}),
         }
 
+        input_formats = {
+            'fecha': ['%Y-%m-%d'],  # Año-Mes-Día
+        }
+
     def __init__(self, *args, **kwargs):
         super(EstudianteForm, self).__init__(*args, **kwargs)
         # Agregar un campo de selección para el representante
