@@ -71,3 +71,4 @@ class EliminarRepresentanteView(DeleteView):
     model = Representante
     template_name = 'usuarios/eliminarRepresentante.html' 
     success_url = reverse_lazy('listar_representantes')
+

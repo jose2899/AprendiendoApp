@@ -1,0 +1,78 @@
+{% extends 'layout.html' %}
+{% load static %}
+{% block content %}
+<section class="section">
+    <div class="section-body">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Detalles de la planificacion semanal<i class="fas fa-user"></i></h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-striped" >
+                                <tr>
+                                    <th>Planificacion:</th>
+                                    <td>{{ semana.planificacion }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Numero de semana:</th>
+                                    <td>{{ semana.numero_semana }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Tiempo previsto:</th>
+                                    <td>{{ semana.tiempo_previsto }}</td>
+                                </tr>
+                                <tr>
+                                    <th>objetivo:</th>
+                                    <td>{{ semana.objetivo }}</td>
+                                </tr>
+                            </table>
+                            <table class="table table-striped" id="sortable-table">
+                                <thead>
+                                    <tr>
+                                        <th>actividad de lenguaje</th>
+                                        <th>actividad Cognitiva</th>
+                                        <th>actividad sensorial</th>
+                                        
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    <tr>
+                                        <td>{{ semana.actividad_lenguaje }}</td>
+                                        <td>{{ semana.actividad_cognitiva }}</td>
+                                        <td>{{ semana.actividad_sensorial }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            <table class="table table-striped" id="sortable-table">
+
+                                <tr>
+                                    <th>Actividades internalizadas:</th>
+                                    <td>{{ semana.actividades_internalizadas }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Actividades que requieren continuar reforzando:</th>
+                                    <td>{{ semana.actividades_reforzar }}</td>
+                                </tr>
+
+                            </table>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <a href="{% url 'listar_p_semana' pk=semana.pk %}" class="btn btn-primary"><i class="fas fa-arrow-left"></i> Volver</a>
+                    </div>
+                    <a href="#" class="btn btn-secondary mt-3">Ver Semanas</a>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+{% endblock content %}

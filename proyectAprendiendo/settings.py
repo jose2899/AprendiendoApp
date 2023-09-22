@@ -44,7 +44,8 @@ INSTALLED_APPS = [
     'app.servicios',
     'app.usuarios.adminis',
     'app.usuarios.usuario',
-    'app.calendario'
+    'app.calendario',
+    'app.planificaciones',
 ]
 
 MIDDLEWARE = [

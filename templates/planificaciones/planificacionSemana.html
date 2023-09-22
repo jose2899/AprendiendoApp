@@ -1,0 +1,70 @@
+{% extends 'layout.html' %}
+{% load static %}
+{% block content %}
+<section class="section">
+  <div class="container mt-5">
+    <div class="row">
+      <div class="col-12 col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-8 offset-lg-2 col-xl-8 offset-xl-2">
+        <div class="card card-primary">
+          <div class="card-header"><h4>Crear Nueva Planificacion Semanal</h4></div>
+          <div class="card-body">
+            <form method="POST" enctype="multipart/form-data" autocomplete='off'>
+              {% csrf_token %}
+              <div class="form-group">
+                {{ form.planificacion.label }}
+                {{ form.planificacion }}
+              </div>
+              
+              <div class="row">
+                <div class="form-group col-6">
+                  {{ form.numero_semana.label }}
+                  {{ form.numero_semana}}
+                </div>
+                <div class="form-group col-6">
+                  {{ form.tiempo_previsto.label }}
+                  {{ form.tiempo_previsto }}
+                </div>
+                <div class="form-group col-6">
+                  {{ form.objetivo.label }}
+                  {{ form.objetivo }}
+                </div>
+                <div class="form-group col-6">
+                  {{ form.actividad_lenguaje.label }}
+                  {{ form.actividad_lenguaje }}
+                </div>
+                <div class="form-group col-6">
+                    {{ form.actividad_cognitiva.label }}
+                    {{ form.actividad_cognitiva }}
+                </div>
+                <div class="form-group col-6">
+                    {{ form.actividad_sensorial.label }}
+                    {{ form.actividad_sensorial }}
+                </div>
+                <div class="form-group col-6">
+                    {{ form.actividades_internalizadas.label }}
+                    {{ form.actividades_internalizadas }}
+                </div>
+                <div class="form-group col-6">
+                    {{ form.actividades_reforzar.label }}
+                    {{ form.actividades_reforzar }}
+                </div>
+              </div>
+            
+              <div class="form-group">
+                <div class="text-center mt-4 mb-3">
+                  <button type="submit" class="btn btn-primary btn-lg btn-block">
+                    Registrar Planificacion Semanal
+                  </button>
+
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock content %}
+
+

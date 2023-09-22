@@ -69,9 +69,10 @@
       <li class="dropdown">
         <a href="#" class="nav-link has-dropdown"><i class="far fa-user"></i><span>Gestión</span></a>
         <ul class="dropdown-menu">
-          <li><a href="auth-forgot-password.html">Administrar terapias</a></li> 
-          <li><a href="auth-login.html">Gestionar terapias</a></li> 
-          <li><a href="auth-register.html">Administrar plan de estudios</a></li> 
+          <li><a href="{% url 'crear_planificacion' %}">Crear planificacion</a></li> 
+          <li><a href="{% url 'listar_planificacion' %}">Ver Planificacion</a></li> 
+          <li><a href="auth-register.html">Crear bitacora</a></li> 
+          <li><a href="auth-register.html">Ver bitacora</a></li> 
         </ul>
       </li>
       <li class="dropdown">
