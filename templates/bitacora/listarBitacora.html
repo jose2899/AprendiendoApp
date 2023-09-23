@@ -7,41 +7,50 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h4>Listado de Planificaciones Semanales de {{ estudiante }} <i class="fas fa-user"></i></h4>
-                        <a href="{% url 'crear_p_semana' %}" class="btn btn-success float-right">Crear Planificación Semanal</a>
+                        <h4>Bitacoras Registradas <i class="fas fa-user"></i></h4>
                     </div>
                     <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-striped" id="sortable-table">
-                                
-                                <thead>
+                        {% for user in objects %}
+                            <div class="table-responsive">
+                                <h5>Bitácora de {{ user.estudiante }}</h5>
+                                <table class="table table-striped" id="sortable-table">
                                     <tr>
-                                        <th>Numero semana</th>
-                                        <th>Tiempo previsto</th>
-                                        <th>Objetivo</th>
-                                        <th>Accion</th>
+                                        <th>Planificacion:</th>                             
+                                        <td>{{ user.planificacion}}</td>
                                     </tr>
-                                </thead>
-                                
-                                <tbody>
-                                    {% for user in semana %}
                                     <tr>
-                                        <td>{{ user.numero_semana }}</td>
-                                        <td>{{ user.tiempo_previsto }}</td>
-                                        <td>{{ user.objetivo }}</td>
-                                        <td>
-                                            <a href="{% url 'ver_p_semana' pk=planificacion_id pk1=user.numero_semana %}" class="btn btn-primary"><i class="fa fa-eye"></i></a>
-                                            <a href="{% url 'editar_p_semana' pk=planificacion_id pk1=user.numero_semana %}" class="btn btn-warning"><i class="fas fa-edit"></i></a>
-                                            <a href="{% url 'eliminar_p_semana' pk=planificacion_id pk1=user.numero_semana %}" class="btn btn-danger"><i class="fas fa-trash"></i></a>
-                                        </td>
+                                        <th>Diagnostico:</th>
+                                        <td>{{ user.diagnostico}}</td>                        
                                     </tr>
-
-                                    {% endfor %}
-                                </tbody>
-                                
-                            </table>
-                        </div>
-                        
+                                </table>
+                                <table class="table table-striped" id="sortable-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Fecha</th>
+                                            <th>Temas Trabajados</th>
+                                            <th>Avance</th>
+                                            <th>Firma Terapeuta</th>
+                                            <th>Revisado Por</th>
+                                            <th>Acción</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>{{ user.fecha }}</td>
+                                            <td>{{ user.temas_trabajados }}</td>
+                                            <td>{{ user.avance }}</td>
+                                            <td>{{ user.firma_terapeuta }}</td>
+                                            <td>{{ user.revisado_por }}</td>
+                                            <td>
+                                                <a href="{% url 'ver_bitacora' pk=user.pk %}" class="btn btn-primary"><i class="fa fa-eye"></i></a>
+                                                <a href="{% url 'editar_bitacora' pk=user.pk %}" class="btn btn-warning"><i class="fas fa-edit"></i></a>
+                                                <a href="{% url 'eliminar_bitacora' pk=user.pk %}" class="btn btn-danger"><i class="fas fa-trash"></i></a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        {% endfor %}
                     </div>
                     <div class="pagination">
                         <div class="card-footer text-right">
@@ -80,6 +89,7 @@
                                     {% endif %}
                                 </ul>
                             </nav>
+                            
                         </div>
                     </div>
                 </div>
@@ -87,5 +97,4 @@
         </div>
     </div>
 </section>
-
 {% endblock content %}

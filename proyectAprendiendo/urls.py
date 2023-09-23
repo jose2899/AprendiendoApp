@@ -27,6 +27,7 @@ urlpatterns = [
     path('', include('app.usuarios.usuario.urls')),
     path('', include('app.calendario.urls')),
     path('', include('app.planificaciones.urls')),
+    path('', include('app.bitacora.urls')),
 
 ]
 

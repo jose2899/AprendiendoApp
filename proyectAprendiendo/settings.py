@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'app.usuarios.usuario',
     'app.calendario',
     'app.planificaciones',
+    'app.bitacora',
 ]
 
 MIDDLEWARE = [

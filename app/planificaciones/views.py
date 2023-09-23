@@ -136,8 +136,19 @@ class PlanificacionSemanaListView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['planificacion_id'] = self.kwargs['pk']  # Pasamos el ID de la planificación
-        return context
+        
+        planificacion = get_object_or_404(Planificacion, pk=self.kwargs['pk'])
 
+        estudiante = planificacion.estudiante if planificacion.estudiante else "Planificación"
+
+        # Agrega el nombre al contexto
+        context['estudiante'] = estudiante
+
+        
+        return context
+    
+    
+    
 
 class PlanificacionSemanaDeleteView(DeleteView):
     model = PlanificacionSemana

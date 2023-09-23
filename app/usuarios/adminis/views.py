@@ -1,5 +1,5 @@
 #vistas
-from django.views.generic import CreateView, ListView
+from django.views.generic import CreateView, ListView, UpdateView, DeleteView, DetailView
 
 #imports Django
 from django.contrib.auth.models import User
@@ -38,3 +38,19 @@ class ListarAdminisView(ListView):
     template_name = 'usuarios/listarAdmin.html'
     paginate_by = 10
     context_object_name = 'objects'
+
+class VerAdminisView(DetailView):
+    model = Adminis
+    template_name = 'usuarios/verAdmin.html'  # Reemplaza 'usuarios/detalle_representante.html' con la ruta correcta a tu plantilla
+    context_object_name = 'objects'  # Esto define el nombre de la variable en la plantilla
+
+class EditarAdminisView(UpdateView):
+    model = Adminis
+    form_class = AdminisForm
+    template_name = 'usuarios/editarAdmin.html'
+    success_url = reverse_lazy('listar_admin')
+
+class EliminarAdminisView(DeleteView):
+    model = Adminis
+    template_name = 'usuarios/eliminarAdmin.html' 
+    success_url = reverse_lazy('listar_admin')
