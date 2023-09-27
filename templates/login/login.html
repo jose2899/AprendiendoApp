@@ -1,0 +1,59 @@
+{% extends 'login/base_login.html' %}
+{% load widget_tweaks %}
+{% load static %}
+{% block content %}
+<section class="section">
+    <div class="container mt-5">
+      <div class="row">
+        <div class="col-12 col-sm-8 offset-sm-2 col-md-6 offset-md-3 col-lg-6 offset-lg-3 col-xl-4 offset-xl-4">
+          <div class="login-brand">
+            <img src="{% static 'img/inicio/logo-fundacion.png' %}" alt="logo" width="100%" class="shadow-light">
+          </div>
+
+          <div class="card card-primary">
+            <div class="card-header"><h4>Login</h4></div>
+
+            <div class="card-body">
+              <form method="POST" action="#" class="needs-validation" novalidate="">
+                {% csrf_token %}
+                <div class="form-group">
+                  <label for="email">Usuario</label>
+                  {{ form.username | add_class:'form-control' | attr:'placeholder:Ingrese su nombre de usuario' | attr:'required autofocus'}}
+                  <div class="invalid-feedback">
+                    Por favor complete su nombre de usuario
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <div class="d-block">
+                    <label for="password" class="control-label">Contraseña</label>
+                    <div class="float-right">
+                      <a href="" class="text-small">
+                        A olvidado su Contraseña?
+                      </a>
+                    </div>
+                  </div>
+                  {{ form.password | add_class:'form-control' | attr:'type:password' | attr:'required'  | attr:'placeholder:Ingrese su contraseña'}}
+                  <div class="invalid-feedback">
+                    please fill in your password
+                  </div>
+                </div>
+
+
+                <div class="form-group">
+                  <button type="submit" class="btn btn-primary btn-lg btn-block" tabindex="4">
+                    Login
+                  </button>
+                </div>
+              </form>
+              <div class="text-center mt-4 mb-3">
+                <div class="text-job text-muted">Ingresar al Sistema</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+{% endblock content %}
+

@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'app.servicios',
     'app.usuarios.adminis',
     'app.usuarios.usuario',
+    'app.usuarios.psicologo',
     'app.calendario',
     'app.planificaciones',
     'app.bitacora',

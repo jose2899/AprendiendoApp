@@ -72,3 +72,22 @@ class EliminarRepresentanteView(DeleteView):
     template_name = 'usuarios/eliminarRepresentante.html' 
     success_url = reverse_lazy('listar_representantes')
 
+
+class VerEstudianteView(DetailView):
+    model = Estudiante
+    template_name = 'usuarios/verEstudiante.html'  # Reemplaza 'usuarios/detalle_representante.html' con la ruta correcta a tu plantilla
+    context_object_name = 'objects'  # Esto define el nombre de la variable en la plantilla
+
+
+class EditarEstudianteView(UpdateView):
+    model = Estudiante
+    form_class = EstudianteForm
+    template_name = 'usuarios/editarEstudiante.html'
+    success_url = reverse_lazy('listar_estudiantes')
+
+class EliminarEstudianteView(DeleteView):
+    model = Estudiante
+    template_name = 'usuarios/eliminarEstudiante.html' 
+    success_url = reverse_lazy('listar_estudiantes')
+
+    

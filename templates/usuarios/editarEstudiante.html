@@ -1,0 +1,26 @@
+{% extends 'layout.html' %}
+{% load static %}
+{% block content %}
+  <div class="container">
+    <div class="row justify-content-center mt-4">
+      <div class="col-md-8">
+        <div class="card">
+          <div class="card-header">
+            <h4>Editar Estudiante<i class="fas fa-user"></i></h4>
+          </div>
+          <div class="card-body">
+            <form method="post">
+              {% csrf_token %}
+              {{ form.as_p }}
+              <div class="text-center mt-3">
+                <button type="submit" class="btn btn-primary">Guardar</button>
+                <a href="{% url 'listar_estudiantes' %}" class="btn btn-secondary ml-2">Volver a la lista de Administrador</a>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+{% endblock content %}
