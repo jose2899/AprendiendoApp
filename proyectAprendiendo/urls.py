@@ -29,5 +29,7 @@ urlpatterns = [
     path('', include('app.calendario.urls')),
     path('', include('app.planificaciones.urls')),
     path('', include('app.bitacora.urls')),
+    path('', include('app.horario.urls')),
+    path('login/', include('app.autenticacion.login.urls'))
 ]
 
