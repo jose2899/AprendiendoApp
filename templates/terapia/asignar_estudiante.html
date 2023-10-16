@@ -1,0 +1,15 @@
+{% extends 'layout.html' %}
+{% load static %}
+{% block content %}
+<h2>Asignar Estudiante a Terapia</h2>
+  <p>Psicólogo: {{ terapia.psicologo.nombre }}</p>
+  <p>Paquete: {{ terapia.paquete }}</p>
+  <p>Día de la semana: {{ terapia.dia_semana }}</p>
+  <p>Fecha de inicio: {{ terapia.fecha_inicio }}</p>
+
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Asignar Estudiante</button>
+  </form>
+{% endblock %}

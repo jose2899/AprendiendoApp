@@ -1,0 +1,26 @@
+{% extends 'layout.html' %}
+{% load static %}
+{% block content %}
+<section class="section">
+    <div class="section-body">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="textos-aliados">Listar Paquetes para {{ servicio.nombre }}</h2>
+                    </div>
+                    <div class="card-body">
+                        <ul>
+                            {% for paquete in paquetes %}
+                                <li>{{ paquete.horas }} horas - {{ paquete.servicios }} - {{ paquete.representante }}</li>
+                                <a href="{% url 'crear_terapia'%}" class="btn btn-primary">Crear Terapia</a>
+
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

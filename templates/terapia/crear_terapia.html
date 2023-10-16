@@ -1,0 +1,24 @@
+{% extends 'layout.html' %}
+{% load static %}
+
+{% block content %}
+  <h2>Crear Terapia</h2>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Crear Terapia</button>
+  </form>
+
+{% if form.errors %}
+    <div class="alert alert-danger mt-3" role="alert">
+      <strong>Error:</strong> Por favor, corrige los errores a continuación.
+      <ul>
+        {% for field_errors in form.errors.values %}
+          {% for error in field_errors %}
+            <li>{{ error }}</li>
+          {% endfor %}
+        {% endfor %}
+      </ul>
+    </div>
+  {% endif %}
+{% endblock %}
