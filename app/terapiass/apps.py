@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class TerapiasConfig(AppConfig):
+class TerapiassConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'app.terapias'
+    name = 'app.terapiass'

@@ -50,7 +50,7 @@ INSTALLED_APPS = [
     'app.bitacora',
     'widget_tweaks',
     'app.horario',
-    'app.terapias',
+    'app.terapiass',
 ]
 
 MIDDLEWARE = [

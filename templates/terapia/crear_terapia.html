@@ -1,24 +1,49 @@
-{% extends 'layout.html' %}
-{% load static %}
+<form method="post" action="{% url 'crear_terapia' %}">
+  {% csrf_token %}
+  {{ terapia_form.as_p }}
 
-{% block content %}
-  <h2>Crear Terapia</h2>
-  <form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Crear Terapia</button>
-  </form>
+  <!-- Aquí se agregarán los formularios de asignación de psicólogos -->
+  <div id="psicologos-container">
+  </div>
 
-{% if form.errors %}
-    <div class="alert alert-danger mt-3" role="alert">
-      <strong>Error:</strong> Por favor, corrige los errores a continuación.
-      <ul>
-        {% for field_errors in form.errors.values %}
-          {% for error in field_errors %}
-            <li>{{ error }}</li>
-          {% endfor %}
+  <button type="button" id="add-psicologo-button">Asignar otro Psicólogo</button>
+  <button type="submit">Crear Terapia</button>
+</form>
+
+{% if terapia_form.errors %}
+  <div class="alert alert-danger mt-3" role="alert">
+    <strong>Error:</strong> Por favor, corrige los errores a continuación.
+    <ul>
+      {% for field_errors in terapia_form.errors.values %}
+        {% for error in field_errors %}
+          <li>{{ error }}</li>
         {% endfor %}
-      </ul>
-    </div>
-  {% endif %}
-{% endblock %}
+      {% endfor %}
+    </ul>
+  </div>
+{% endif %}
+
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    let psicologosContainer = document.querySelector('#psicologos-container');
+    let addPsicologoButton = document.querySelector('#add-psicologo-button');
+
+    let psicologoCount = 0;  // Contador de psicólogos
+
+    addPsicologoButton.addEventListener('click', function() {
+      psicologoCount++;
+      let newPsicologoForm = document.createElement('div');
+      newPsicologoForm.classList.add('psicologo-form');
+
+      newPsicologoForm.innerHTML = `
+        <h2>Asignar Psicólogo ${psicologoCount}</h2>
+
+
+        {{ asignacion_form.as_p }}
+      `;
+
+      psicologosContainer.appendChild(newPsicologoForm);
+    });
+  });
+</script>

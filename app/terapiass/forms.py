@@ -1,0 +1,46 @@
+# terapias/forms.py
+from django import forms
+from app.terapiass.models import Terapia, AsignacionEstudiante, AsignacionPsicologo
+from app.terapiass.models import DiaSemana
+from app.terapiass.utils import calculate_start_date
+from datetime import datetime, timedelta
+from app.usuarios.usuario.models import Estudiante
+from app.usuarios.psicologo.models import Psicologo
+from django.forms.widgets import CheckboxSelectMultiple
+from app.servicios.models import Paquete
+from django.forms import formset_factory
+
+
+class TerapiaForm(forms.ModelForm):
+    class Meta:
+        model = Terapia
+        fields = ['paquete', 'fecha_inicio']
+        widgets = {
+            'fecha_inicio': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+        }
+
+class AsignacionPsicologoForm(forms.ModelForm):
+    
+    dia_semana = forms.ModelMultipleChoiceField(
+        queryset=DiaSemana.objects.all(),
+        widget=forms.CheckboxSelectMultiple,
+    )
+
+    class Meta:
+        model = AsignacionPsicologo
+        fields = ['psicologo', 'dia_semana']
+
+    def __init__(self, *args, **kwargs):
+        super(AsignacionPsicologoForm, self).__init__(*args, **kwargs)
+        self.fields['dia_semana'].widget.attrs.update({'class': 'selectpicker'})
+
+
+AsignacionPsicologoFormSet = formset_factory(AsignacionPsicologoForm, extra=1)
+
+class AsignacionEstudianteForm(forms.ModelForm):
+    class Meta:
+        model = AsignacionEstudiante
+        fields = ['estudiante']
+
+
+

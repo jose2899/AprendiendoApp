@@ -30,7 +30,7 @@ urlpatterns = [
     path('', include('app.planificaciones.urls')),
     path('', include('app.bitacora.urls')),
     path('', include('app.horario.urls')),
-    path('', include('app.terapias.urls')),
+    path('', include('app.terapiass.urls')),
 
     path('login/', include('app.autenticacion.login.urls'))
 ]

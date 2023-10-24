@@ -1,0 +1,12 @@
+<!-- app/terapias/templates/asignar_dias.html -->
+{% extends 'layout.html' %}
+{% load static %}
+
+{% block content %}
+  <h2>Asigna los Días de la Semana</h2>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Siguiente</button>
+  </form>
+{% endblock %}

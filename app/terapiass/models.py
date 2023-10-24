@@ -2,36 +2,34 @@ from django.db import models
 
 # Create your models here.
 # terapias/models.py
-from django.db import models
+
 from app.usuarios.psicologo.models import Psicologo
 from app.servicios.models import Paquete
+from django.utils import timezone
 from app.usuarios.usuario.models import Estudiante
-DIAS_SEMANA_CHOICES = [
-        ('Lunes', 'Lunes'),
-        ('Martes', 'Martes'),
-        ('Miércoles', 'Miércoles'),
-        ('Jueves', 'Jueves'),
-        ('Viernes', 'Viernes'),
-        ('Sábado', 'Sábado'),
-        ('Domingo', 'Domingo'),
-    ]
+
 class Terapia(models.Model):
-   
-    psicologo = models.ForeignKey(Psicologo, on_delete=models.CASCADE)
     paquete = models.ForeignKey(Paquete, on_delete=models.CASCADE)
-    dia_semana = models.CharField(max_length=50)
     fecha_inicio = models.DateField()
-
+    
     def __str__(self):
-        return f'Terapia con {self.psicologo.nombre} para el paquete {self.paquete} los {self.dia_semana}'
+        return f'Terapia para el paquete {self.paquete}'
 
+
+class DiaSemana(models.Model):
+    nombre = models.CharField(max_length=20, unique=True)
+    def __str__(self):
+        return self.nombre
+    
 class AsignacionPsicologo(models.Model):
     terapia = models.ForeignKey(Terapia, on_delete=models.CASCADE)
     psicologo = models.ForeignKey(Psicologo, on_delete=models.CASCADE)
-    dia_semana = models.CharField(max_length=20, choices=DIAS_SEMANA_CHOICES)
+    dia_semana = models.ManyToManyField(DiaSemana)
 
     def __str__(self):
-        return f'Asignación de {self.psicologo.nombre} para la terapia {self.terapia} los {self.dia_semana}'
+        # Obtiene los nombres completos de los días de la semana seleccionados
+        dias_semana = ', '.join(self.dia_semana.values_list('nombre', flat=True))
+        return f'Asignación de {self.psicologo.nombre} para la terapia {self.terapia} los {dias_semana}'
 
 class AsignacionEstudiante(models.Model):
     terapia = models.ForeignKey(Terapia, on_delete=models.CASCADE)

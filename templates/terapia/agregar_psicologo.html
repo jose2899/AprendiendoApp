@@ -1,0 +1,13 @@
+{% extends 'layout.html' %}
+{% load static %}
+
+{% block content %}
+  <h2>Agregar Psicologo</h2>
+  <form method="post">
+    {% csrf_token %}
+    {{ asignacion_form.as_p }}
+    <button type="submit">Agregar Psicologo</button>
+  </form>
+
+  <a href="{% url 'agregar_psicologo'%}">Agregar otro psicologo</a>
+{% endblock %}
