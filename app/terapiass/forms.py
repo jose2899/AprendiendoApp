@@ -33,6 +33,9 @@ class AsignacionPsicologoForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(AsignacionPsicologoForm, self).__init__(*args, **kwargs)
         self.fields['dia_semana'].widget.attrs.update({'class': 'selectpicker'})
+    
+    def set_dia_semana_choices(self):
+        self.fields['dia_semana'].choices = [(dia.nombre, dia.nombre) for dia in DiaSemana.objects.all()]
 
 
 AsignacionPsicologoFormSet = formset_factory(AsignacionPsicologoForm, extra=1)

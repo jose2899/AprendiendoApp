@@ -37,3 +37,10 @@ class AsignacionEstudiante(models.Model):
 
     def __str__(self):
         return f'Asignación de {self.estudiante.nombre} a {self.terapia}'
+    
+class HorarioPsicologo(models.Model):
+    asignacion_psicologo = models.ForeignKey(AsignacionPsicologo, on_delete=models.CASCADE)
+    dia_semana = models.ForeignKey(DiaSemana, on_delete=models.CASCADE)
+    hora_inicio = models.TimeField()
+    hora_fin = models.TimeField()
+    

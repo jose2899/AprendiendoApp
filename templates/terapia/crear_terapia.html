@@ -23,6 +23,12 @@
   </div>
 {% endif %}
 
+{% for message in messages %}
+  <div class="alert alert-danger mt-3" role="alert">
+    {{ message }}
+  </div>
+{% endfor %}
+
 
 <script>
   document.addEventListener('DOMContentLoaded', function() {
