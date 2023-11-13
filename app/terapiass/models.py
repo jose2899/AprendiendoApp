@@ -30,6 +30,7 @@ class AsignacionPsicologo(models.Model):
         # Obtiene los nombres completos de los días de la semana seleccionados
         dias_semana = ', '.join(self.dia_semana.values_list('nombre', flat=True))
         return f'Asignación de {self.psicologo.nombre} para la terapia {self.terapia} los {dias_semana}'
+    
 
 class AsignacionEstudiante(models.Model):
     terapia = models.ForeignKey(Terapia, on_delete=models.CASCADE)
@@ -38,9 +39,11 @@ class AsignacionEstudiante(models.Model):
     def __str__(self):
         return f'Asignación de {self.estudiante.nombre} a {self.terapia}'
     
-class HorarioPsicologo(models.Model):
+class HorarioTerapia(models.Model):
     asignacion_psicologo = models.ForeignKey(AsignacionPsicologo, on_delete=models.CASCADE)
-    dia_semana = models.ForeignKey(DiaSemana, on_delete=models.CASCADE)
     hora_inicio = models.TimeField()
     hora_fin = models.TimeField()
-    
+
+    def __str__(self):
+        return f'{self.asignacion_psicologo.psicologo.nombre} - {self.hora_inicio} - {self.hora_fin}'
+

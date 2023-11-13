@@ -4,10 +4,20 @@
 
   <!-- Aquí se agregarán los formularios de asignación de psicólogos -->
   <div id="psicologos-container">
+    <h2>Asignar Psicólogo</h2>
+    {{ asignacion_form.as_p }}
   </div>
 
-  <button type="button" id="add-psicologo-button">Asignar otro Psicólogo</button>
-  <button type="submit">Crear Terapia</button>
+  <!-- Agrega un campo de selección para "Día de la semana" -->
+  {{ horario_form.dia_semana }}
+
+  <!-- Campo de "Hora de inicio" oculto por defecto -->
+  <div id="hora-inicio" style="display: none;">
+    {{ horario_form.hora_inicio }}
+  </div>
+
+  <button type="submit" name="action" value="guardar">Guardar Formulario</button>
+  <button type="submit" name="action" value="crear">Crear Terapia</button>
 </form>
 
 {% if terapia_form.errors %}
@@ -30,6 +40,7 @@
 {% endfor %}
 
 
+
 <script>
   document.addEventListener('DOMContentLoaded', function() {
     let psicologosContainer = document.querySelector('#psicologos-container');
@@ -44,12 +55,24 @@
 
       newPsicologoForm.innerHTML = `
         <h2>Asignar Psicólogo ${psicologoCount}</h2>
-
-
         {{ asignacion_form.as_p }}
       `;
 
       psicologosContainer.appendChild(newPsicologoForm);
     });
   });
+</script>
+
+<script>
+  // Función para mostrar/ocultar el campo "Hora de inicio" según la selección del "Día de la semana"
+  function showHideHoraInicio() {
+    var diaSemana = document.querySelector('#id_dia_semana').value;
+    var horaInicio = document.querySelector('#hora-inicio');
+    
+    if (diaSemana) {
+      horaInicio.style.display = 'block';
+    } else {
+      horaInicio.style.display = 'none';
+    }
+  }
 </script>
