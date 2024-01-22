@@ -74,8 +74,6 @@ class CrearTerapiaView(View):
              # Obtén los psicólogos seleccionados en el formulario de asignación
 
 
-       
-
 class AsignarEstudianteView(View):
     def get(self, request, terapia_id):
         terapia = Terapia.objects.get(pk=terapia_id)

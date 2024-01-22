@@ -14,7 +14,7 @@
                             <table class="table table-striped">
                                 <tr>
                                     <th>Estudiante:</th>
-                                    <td>{{ objects.estudiante }}</td>
+                                    <td>{{ object.estudiante }}</td>
                                 </tr>
                                 <tr>
                                     <th>Planificacion:</th>
@@ -24,59 +24,38 @@
                                     <th>Diagnostico:</th>
                                     <td>{{ object.diagnostico }}</td>
                                 </tr>
-                                <tr>
-                                    <th>Fecha:</th>
-                                    <td>{{ object.fecha }}</td>
-                                </tr>
-                                <tr>
-                                    <th>Observacion de la conducta:</th>
-                                    <td>{{ object.observacion_conducta }}</td>
-                                </tr>
-                                <tr>
-                                    <th>Temas trabajados:</th>
-                                    <td>{{ object.temas_trabajados }}</td>
-                                </tr>
-                                <tr>
-                                    <th>Avance:</th>
-                                    <td>{{ object.avance }}</td>
-                                </tr>
-                                <tr>
-                                    <th>Firma Terapeuta:</th>
-                                    <td>{{ object.firma_terapeuta }}</td>
-                                </tr>
-                                <tr>
-                                    <th>Revisado por :</th>
-                                    <td>{{ object.revisado_por }}</td>
-                                </tr>
+                            </table>
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Fecha</th>
+                                        <th>Temas Trabajados</th>
+                                        <th>Avance</th>
+                                        <th>Firma Terapeuta</th>
+                                        <th>Revisado Por</th>
+                                        <th>Acción</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>{{ object.fecha }}</td>
+                                        <td>{{ object.temas_trabajados }}</td>
+                                        <td>{{ object.avance }}</td>
+                                        <td>{{ object.firma_terapeuta }}</td>
+                                        <td>{{ object.revisado_por }}</td>
+                                        <td>
+                                            <a href="{% url 'ver_bitacora' pk=object.pk %}" class="btn btn-primary"><i class="fa fa-eye"></i></a>
+                                            <a href="{% url 'editar_bitacora' pk=object.pk %}" class="btn btn-warning"><i class="fas fa-edit"></i></a>
+                                            <a href="{% url 'eliminar_bitacora' pk=object.pk %}" class="btn btn-danger"><i class="fas fa-trash"></i></a>
+                                        </td>
+                                    </tr>
+                                </tbody>
                             </table>
                         </div>
-                    </div>
-                    <div class="card-footer">
-                        <a href="{% url 'listar_bitacora' %}" class="btn btn-primary"><i class="fas fa-arrow-left"></i> Volver</a>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </section>
-
-<style>
-    /* Agrega estilos personalizados aquí */
-    .card {
-        margin-top: 20px;
-    }
-    table {
-        width: 100%;
-    }
-    th {
-        width: 50%;
-        text-align: right;
-        vertical-align: top;
-    }
-    td {
-        width: 70%;
-        padding-left: 10px;
-    }
-</style>
-
 {% endblock content %}

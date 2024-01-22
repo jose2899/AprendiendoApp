@@ -1,20 +1,20 @@
 from django import forms
 from app.planificaciones.models import Planificacion, PlanificacionSemana
 from app.usuarios.usuario.models import Estudiante
+from app.terapiass.models import Diagnostico
 
 class PlanificacionForm(forms.ModelForm):
     class Meta:
         model = Planificacion
         fields = ['estudiante', 'diagnostico', 'edad_biologica', 'edad_cognitiva_lenguaje_verbal', 'edad_cognitiva_lenguaje_comprensivo']
         labels = {
-            'diagnostico': 'Diagnostico',
             'edad_biologica': 'Edad Biológica',
             'edad_cognitiva_lenguaje_verbal': 'Edad Cognitiva - Lenguaje Verbal',
             'edad_cognitiva_lenguaje_comprensivo': 'Edad Cognitiva - Lenguaje Comprensivo',
         }
         widgets = {
             'estudiante':forms.Select(attrs={'class': 'form-control'}),
-            'diagnostico': forms.TextInput(attrs={'class': 'form-control'}),
+            'diagnostico':forms.Select(attrs={'class': 'form-control'}),
             'edad_biologica': forms.NumberInput(attrs={'class': 'form-control'}),
             'edad_cognitiva_lenguaje_verbal': forms.NumberInput(attrs={'class': 'form-control'}),
             'edad_cognitiva_lenguaje_comprensivo': forms.NumberInput(attrs={'class': 'form-control'}),
@@ -25,6 +25,12 @@ class PlanificacionForm(forms.ModelForm):
         super(PlanificacionForm, self).__init__(*args, **kwargs)
         # Agregar un campo de selección para el estudiante
         self.fields['estudiante'].queryset = Estudiante.objects.all()
+    
+    def __init__(self, *args, **kwargs):
+        super(PlanificacionForm, self).__init__(*args, **kwargs)
+        # Agregar un campo de selección para la planificacion
+        self.fields['diagnostico'].queryset = Diagnostico.objects.all()
+    
 
 class PlanificacionSemanaForm(forms.ModelForm):
     class Meta:

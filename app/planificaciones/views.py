@@ -5,6 +5,7 @@ from django.urls import reverse_lazy
 #models
 from app.planificaciones.models import Planificacion, PlanificacionSemana
 from app.usuarios.usuario.models import Estudiante
+from app.terapiass.models import Diagnostico
 
 #forms
 from app.planificaciones.forms import PlanificacionForm, PlanificacionSemanaForm
@@ -21,10 +22,15 @@ class PlanificacionCreateView(CreateView):
         # Obtén el representante seleccionado del formulario
         estudiante_id = self.request.POST.get('estudiante')
         estudiante = Estudiante.objects.get(pk=estudiante_id)
+
+        # Obtén el diagnostico seleccionado del formulario
+        diagnostico_id = self.request.POST.get('diagnostico')
+        diagnostico = Diagnostico.objects.get(pk=diagnostico_id)
         
-        # Crea una instancia de Estudiante y asigna el representante seleccionado
+        # Crea una instancia de Planificacion y asigna el estudiante y el diagnóstico seleccionados
         planificacion = form.save(commit=False)
         planificacion.estudiante = estudiante
+        planificacion.diagnostico = diagnostico
         planificacion.save()
 
         return redirect('index')  # Redirige a donde desees después de crear al estudiante

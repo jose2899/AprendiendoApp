@@ -7,25 +7,17 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h4>Bitacoras Registradas <i class="fas fa-user"></i></h4>
+                        <h4>Bitácoras Registradas <i class="fas fa-user"></i></h4>
                     </div>
                     <div class="card-body">
-                        {% for user in objects %}
+                        {% if bitacoras %}
                             <div class="table-responsive">
-                                <h5>Bitácora de {{ user.estudiante }}</h5>
-                                <table class="table table-striped" id="sortable-table">
-                                    <tr>
-                                        <th>Planificacion:</th>                             
-                                        <td>{{ user.planificacion}}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Diagnostico:</th>
-                                        <td>{{ user.diagnostico}}</td>                        
-                                    </tr>
-                                </table>
                                 <table class="table table-striped" id="sortable-table">
                                     <thead>
                                         <tr>
+                                            <th>Estudiante</th>
+                                            <th>Planificacion</th>
+                                            <th>Diagnostico</th>
                                             <th>Fecha</th>
                                             <th>Temas Trabajados</th>
                                             <th>Avance</th>
@@ -35,62 +27,36 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td>{{ user.fecha }}</td>
-                                            <td>{{ user.temas_trabajados }}</td>
-                                            <td>{{ user.avance }}</td>
-                                            <td>{{ user.firma_terapeuta }}</td>
-                                            <td>{{ user.revisado_por }}</td>
-                                            <td>
-                                                <a href="{% url 'ver_bitacora' pk=user.pk %}" class="btn btn-primary"><i class="fa fa-eye"></i></a>
-                                                <a href="{% url 'editar_bitacora' pk=user.pk %}" class="btn btn-warning"><i class="fas fa-edit"></i></a>
-                                                <a href="{% url 'eliminar_bitacora' pk=user.pk %}" class="btn btn-danger"><i class="fas fa-trash"></i></a>
-                                            </td>
-                                        </tr>
+                                        {% for bitacora in bitacoras %}
+                                            <tr>
+                                                <td>{{ bitacora.estudiante.nombre }}</td>
+                                                <td>{{ bitacora.planificacion }}</td>
+                                                <td>{{ bitacora.diagnostico }}</td>
+                                                <td>{{ bitacora.fecha }}</td>
+                                                <td>{{ bitacora.temas_trabajados }}</td>
+                                                <td>{{ bitacora.avance }}</td>
+                                                <td>{{ bitacora.firma_terapeuta }}</td>
+                                                <td>{{ bitacora.revisado_por }}</td>
+                                                <td>
+                                                    <div class="btn-group" role="group">
+                                                        <a href="{% url 'ver_bitacora' pk=bitacora.pk %}" class="btn btn-primary"><i class="fa fa-eye"></i></a>
+                                                        <a href="{% url 'editar_bitacora' pk=bitacora.pk %}" class="btn btn-warning"><i class="fas fa-edit"></i></a>
+                                                        <a href="{% url 'eliminar_bitacora' pk=bitacora.pk %}" class="btn btn-danger"><i class="fas fa-trash"></i></a>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
                                     </tbody>
                                 </table>
                             </div>
-                        {% endfor %}
+                        {% else %}
+                            <p>No hay bitácoras registradas.</p>
+                        {% endif %}
                     </div>
-                    <div class="pagination">
-                        <div class="card-footer text-right">
-                            <nav class="d-inline-block">
-                                <ul class="pagination mb-0">
-                                    {% if is_paginated %}
-                                        {% if page_obj.has_previous %}
-                                            <li class="page-item">
-                                                <a class="page-link" href="?page=1"><i class="fas fa-chevron-left"></i></a>
-                                            </li>
-                                            {% comment %} <li class="page-item">
-                                                <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Anterior</a>
-                                            </li> {% endcomment %}
-                                        {% endif %}
-                                
-                                        {% for num in page_obj.paginator.page_range %}
-                                            {% if page_obj.number == num %}
-                                            <li class="page-item active">
-                                                <a class="page-link" href="?page={{ num }}">{{ num }}</a>
-                                            </li>
-                                            {% else %}
-                                            <li class="page-item">
-                                                <a class="page-link" href="?page={{ num }}">{{ num }}</a>
-                                            </li>
-                                            {% endif %}
-                                        {% endfor %}
-                                    
-                                        {% if page_obj.has_next %}
-                                            {% comment %} <li class="page-item">
-                                                <a class="page-link" href="?page={{ page_obj.next_page_number }}">Siguiente</a>
-                                            </li> {% endcomment %}
-                                            <li class="page-item">
-                                                <a class="page-link" href="?page={{ paginator.num_pages }}"><i class="fas fa-chevron-right"></i></a>
-                                            </li>
-                                        {% endif %}
-                                    {% endif %}
-                                </ul>
-                            </nav>
-                            
-                        </div>
+                </div>
+                <div class="pagination">
+                    <div class="card-footer text-right">
+                        <!-- Código de paginación aquí -->
                     </div>
                 </div>
             </div>

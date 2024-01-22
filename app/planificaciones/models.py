@@ -1,10 +1,11 @@
 from django.db import models
 from app.usuarios.usuario.models import Estudiante
+from app.terapiass.models import Diagnostico
 
 # Create your models here.
 class Planificacion(models.Model):
     estudiante = models.ForeignKey(Estudiante, on_delete=models.CASCADE)
-    diagnostico = models.TextField()
+    diagnostico = models.ForeignKey(Diagnostico, on_delete=models.CASCADE)
     edad_biologica = models.IntegerField()
     edad_cognitiva_lenguaje_verbal = models.IntegerField()
     edad_cognitiva_lenguaje_comprensivo = models.IntegerField()

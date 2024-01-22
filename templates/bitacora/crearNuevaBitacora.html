@@ -1,0 +1,62 @@
+{% extends 'layout.html' %}
+{% load static %}
+{% block content %}
+<section class="section">
+  <div class="container mt-5">
+    <div class="row">
+      <div class="col-12 col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-8 offset-lg-2 col-xl-8 offset-xl-2">
+        <div class="card card-primary">
+          <div class="card-header"><h4>Registar Bitacora</h4></div>
+          <div class="card-body">
+            <form method="POST" enctype="multipart/form-data" autocomplete='off'>
+              {% csrf_token %}
+              <div class="row">
+                
+                <div class="form-group col-6">
+                  {{ form.fecha.label }}
+                  {{ form.fecha}}
+                </div>
+
+                <div class="form-group col-6">
+                  {{ form.observacion_conducta.label }}
+                  {{ form.observacion_conducta }}
+                </div>
+
+                <div class="form-group col-6">
+                  {{ form.temas_trabajados.label }}
+                  {{ form.temas_trabajados }}
+                </div>
+
+                <div class="form-group col-6">
+                  {{ form.avance.label }}
+                  {{ form.avance }}
+                </div>
+
+                <div class="form-group col-6">
+                  {{ form.firma_terapeuta.label }}
+                  {{ form.firma_terapeuta }}
+                </div>
+
+                <div class="form-group col-6">
+                    {{ form.revisado_por.label }}
+                    {{ form.revisado_por }}
+                </div>
+              </div>
+              
+              <div class="form-group">
+                <div class="text-center mt-4 mb-3">
+                  <button type="submit" class="btn btn-primary btn-lg btn-block">
+                    Registrar Bitacora
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock content %}
+
+

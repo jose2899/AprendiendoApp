@@ -47,3 +47,7 @@ class HorarioTerapia(models.Model):
     def __str__(self):
         return f'{self.asignacion_psicologo.psicologo.nombre} - {self.hora_inicio} - {self.hora_fin}'
 
+class Diagnostico(models.Model):
+    nombre_diagnostico = models.CharField(max_length=100, unique=True)
+    def __str__(self):
+        return self.nombre_diagnostico
