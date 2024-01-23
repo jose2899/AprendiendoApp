@@ -37,8 +37,16 @@ class ListarBitacoraView(ListView):
     
 class VerBitacoraView(DetailView):
     model = Bitacora
-    template_name = 'bitacora/verBitacora.html'  # Reemplaza 'usuarios/detalle_representante.html' con la ruta correcta a tu plantilla
-    context_object_name = 'objects'  # Esto define el nombre de la variable en la plantilla
+    template_name = 'bitacora/verBitacora.html'
+    context_object_name = 'bitacora'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        bitacora_id = self.kwargs.get('pk')
+        bitacora = get_object_or_404(Bitacora, pk=bitacora_id)
+        nuevas_bitacoras = NuevaBitacora.objects.filter(bitacora=bitacora)
+        context['nuevas_bitacoras'] = nuevas_bitacoras
+        return context
 
 
 class EditarBitacoraView(UpdateView):
@@ -56,20 +64,15 @@ class CrearNuevaBitacoraView(CreateView):
     template_name = 'bitacora/crear_nueva_bitacora.html'
     form_class = NuevaBitacoraForm
 
-    def get(self, request, *args, **kwargs):
+    def form_valid(self, form):
         bitacora_id = self.kwargs.get('bitacora_id')
         bitacora = get_object_or_404(Bitacora, pk=bitacora_id)
-        form = NuevaBitacoraForm(initial={'bitacora': bitacora})
-        return render(request, self.template_name, {'form': form, 'bitacora': bitacora})
+        form.instance.bitacora = bitacora
+        return super().form_valid(form)
 
-    def post(self, request, *args, **kwargs):
-        bitacora_id = self.kwargs.get('bitacora_id')
-        bitacora = get_object_or_404(Bitacora, pk=bitacora_id)
-        form = NuevaBitacoraForm(request.POST, initial={'bitacora': bitacora})
-        if form.is_valid():
-            form.save()
-            return redirect('ver_bitacora', pk=bitacora.id)
-        return render(request, self.template_name, {'form': form, 'bitacora': bitacora})
+    def get_success_url(self):
+        return reverse('ver_bitacora', kwargs={'pk': self.object.bitacora.id})
+
 
     
 class DetalleBitacoraView(DetailView):

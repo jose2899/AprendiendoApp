@@ -38,18 +38,20 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    {% for nueva_bitacora in nuevas_bitacoras %}
                                     <tr>
-                                        <td>{{ object.fecha }}</td>
-                                        <td>{{ object.temas_trabajados }}</td>
-                                        <td>{{ object.avance }}</td>
-                                        <td>{{ object.firma_terapeuta }}</td>
-                                        <td>{{ object.revisado_por }}</td>
+                                        <td>{{ nueva_bitacora.fecha }}</td>
+                                        <td>{{ nueva_bitacora.temas_trabajados }}</td>
+                                        <td>{{ nueva_bitacora.avance }}</td>
+                                        <td>{{ nueva_bitacora.firma_terapeuta }}</td>
+                                        <td>{{ nueva_bitacora.revisado_por }}</td>
                                         <td>
                                             <a href="{% url 'ver_bitacora' pk=object.pk %}" class="btn btn-primary"><i class="fa fa-eye"></i></a>
                                             <a href="{% url 'editar_bitacora' pk=object.pk %}" class="btn btn-warning"><i class="fas fa-edit"></i></a>
                                             <a href="{% url 'eliminar_bitacora' pk=object.pk %}" class="btn btn-danger"><i class="fas fa-trash"></i></a>
                                         </td>
                                     </tr>
+                                    {% endfor %}
                                 </tbody>
                             </table>
                         </div>
