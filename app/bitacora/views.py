@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 #vistas
 from django.views.generic import CreateView, ListView, DetailView, UpdateView, DeleteView
@@ -6,8 +6,9 @@ from django.views.generic import CreateView, ListView, DetailView, UpdateView, D
 #models
 from app.usuarios.usuario.models import Estudiante
 from app.planificaciones.models import Planificacion
-from app.bitacora.models import Bitacora
+from app.bitacora.models import Bitacora, NuevaBitacora
 from app.terapiass.models import Diagnostico
+from django.urls import reverse
 
 #forms
 from app.bitacora.forms import BitacoraForm, NuevaBitacoraForm
@@ -52,19 +53,24 @@ class EliminarBitacoraView(DeleteView):
     success_url = reverse_lazy('listar_bitacora')
 
 class CrearNuevaBitacoraView(CreateView):
-    model = Bitacora
+    template_name = 'bitacora/crear_nueva_bitacora.html'
     form_class = NuevaBitacoraForm
-    template_name = 'bitacora/crearNuevaBitacora.html'
-    success_url = reverse_lazy('index')
 
-    def form_valid(self, form):
-        # Asigna el estudiante actual antes de guardar la nueva bitácora
-        estudiante_id = self.kwargs['estudiante_id']
-        estudiante = Estudiante.objects.get(id=estudiante_id)
-        form.instance.estudiante = estudiante
-        form.instance.planificacion = estudiante.bitacora.planificacion  # Ajusta según tus necesidades
-        form.instance.diagnostico = estudiante.bitacora.diagnostico  # Ajusta según tus necesidades
-        return super().form_valid(form)
+    def get(self, request, *args, **kwargs):
+        bitacora_id = self.kwargs.get('bitacora_id')
+        bitacora = get_object_or_404(Bitacora, pk=bitacora_id)
+        form = NuevaBitacoraForm(initial={'bitacora': bitacora})
+        return render(request, self.template_name, {'form': form, 'bitacora': bitacora})
+
+    def post(self, request, *args, **kwargs):
+        bitacora_id = self.kwargs.get('bitacora_id')
+        bitacora = get_object_or_404(Bitacora, pk=bitacora_id)
+        form = NuevaBitacoraForm(request.POST, initial={'bitacora': bitacora})
+        if form.is_valid():
+            form.save()
+            return redirect('ver_bitacora', pk=bitacora.id)
+        return render(request, self.template_name, {'form': form, 'bitacora': bitacora})
+
     
 class DetalleBitacoraView(DetailView):
     model = Bitacora

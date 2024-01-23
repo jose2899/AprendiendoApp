@@ -1,5 +1,5 @@
 from django import forms
-from app.bitacora.models import Bitacora
+from app.bitacora.models import Bitacora, NuevaBitacora
 from app.usuarios.usuario.models import Estudiante
 from app.planificaciones.models import Planificacion
 from app.terapiass.models import Diagnostico
@@ -32,8 +32,8 @@ class BitacoraForm(forms.ModelForm):
 
 class NuevaBitacoraForm(forms.ModelForm):
     class Meta:
-        model = Bitacora
-        exclude = ['estudiante', 'planificacion', 'diagnostico']
+        model = NuevaBitacora
+        exclude = ['bitacora']
         fields = ['fecha', 'observacion_conducta', 'temas_trabajados', 'avance',
                   'firma_terapeuta', 'revisado_por']
         labels = {
