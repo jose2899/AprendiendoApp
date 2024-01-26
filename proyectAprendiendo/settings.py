@@ -45,12 +45,12 @@ INSTALLED_APPS = [
     'app.usuarios.adminis.apps.AdminisConfig',
     'app.usuarios.usuario',
     'app.usuarios.psicologo',
-    'app.calendario',
     'app.planificaciones',
     'app.bitacora',
     'widget_tweaks',
     'app.horario',
     'app.terapiass',
+    'app.modulo'
 ]
 
 MIDDLEWARE = [

@@ -26,11 +26,13 @@ urlpatterns = [
     path('', include('app.usuarios.adminis.urls')),
     path('', include('app.usuarios.usuario.urls')),
     path('', include('app.usuarios.psicologo.urls')),
-    path('', include('app.calendario.urls')),
     path('', include('app.planificaciones.urls')),
     path('', include('app.bitacora.urls')),
     path('', include('app.horario.urls')),
     path('', include('app.terapiass.urls')),
+    path('', include('app.modulo.urls')),
+
+    
 
     path('login/', include('app.autenticacion.login.urls'))
 ]

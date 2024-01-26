@@ -35,20 +35,22 @@ class NuevaBitacoraForm(forms.ModelForm):
         model = NuevaBitacora
         exclude = ['bitacora']
         fields = ['fecha', 'observacion_conducta', 'temas_trabajados', 'avance',
-                  'firma_terapeuta', 'revisado_por']
+                  'firma_terapeuta', 'revisado_por', 'asistencias']
         labels = {
             'fecha': 'Fecha',
             'observacion_conducta': 'Observación de Conducta',
             'temas_trabajados': 'Temas Trabajados',
             'avance': 'Avance',
             'firma_terapeuta': 'Firma Terapeuta',
-            'revisado_por': 'Revisado Por'
+            'revisado_por': 'Revisado Por',
+            'asistencias': 'asistencias'
         }
         widgets = {
             'fecha': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
-            'observacion_conducta': forms.TextInput(attrs={'class': 'form-control'}),
+            'observacion_conducta': forms.Select(attrs={'class': 'form-control'}),
             'temas_trabajados': forms.TextInput(attrs={'class': 'form-control'}),
-            'avance': forms.TextInput(attrs={'class': 'form-control'}),
+            'avance': forms.Select(attrs={'class': 'form-control'}),
             'firma_terapeuta': forms.TextInput(attrs={'class': 'form-control'}),
             'revisado_por': forms.TextInput(attrs={'class': 'form-control'}),
+            'asistencias': forms.Select(attrs={'class': 'form-control'}),
         }

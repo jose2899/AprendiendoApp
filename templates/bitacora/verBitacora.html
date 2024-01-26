@@ -30,10 +30,12 @@
                                 <thead>
                                     <tr>
                                         <th>Fecha</th>
+                                        <th>Observacion Conducta</th>
                                         <th>Temas Trabajados</th>
                                         <th>Avance</th>
                                         <th>Firma Terapeuta</th>
                                         <th>Revisado Por</th>
+                                        <th>Asistencias</th>
                                         <th>Acción</th>
                                     </tr>
                                 </thead>
@@ -41,10 +43,12 @@
                                     {% for nueva_bitacora in nuevas_bitacoras %}
                                     <tr>
                                         <td>{{ nueva_bitacora.fecha }}</td>
+                                        <td>{{ nueva_bitacora.observacion_conducta }}</td>
                                         <td>{{ nueva_bitacora.temas_trabajados }}</td>
                                         <td>{{ nueva_bitacora.avance }}</td>
                                         <td>{{ nueva_bitacora.firma_terapeuta }}</td>
                                         <td>{{ nueva_bitacora.revisado_por }}</td>
+                                        <td>{{ nueva_bitacora.asistencias }}</td>
                                         <td>
                                             <a href="{% url 'ver_bitacora' pk=object.pk %}" class="btn btn-primary"><i class="fa fa-eye"></i></a>
                                             <a href="{% url 'editar_bitacora' pk=object.pk %}" class="btn btn-warning"><i class="fas fa-edit"></i></a>

@@ -1,0 +1,29 @@
+<!-- modulo/listar_estudiantes_tdah.html -->
+{% extends 'layout.html' %}
+{% block content %}
+  <section class="section">
+    <div class="section-body">
+      <div class="row">
+        <div class="col-12">
+          <div class="card">
+            <div class="card-header">
+              <h4>Lista de Estudiantes con TDAH (Edad entre 7 y 8 años)</h4>
+            </div>
+            <div class="card-body">
+              <div class="list-group">
+                {% for planificacion in estudiantes_tdah %}
+                  <a href="{% url 'app.modulo:detalle_estudiante_tdah' estudiante_id=planificacion.estudiante.pk %}" class="list-group-item list-group-item-action">
+                    <div class="d-flex justify-content-between align-items-center">
+                      <span>{{ planificacion.estudiante.nombre_completo }}</span>
+                      <span class="badge badge-primary badge-pill">Detalles</span>
+                    </div>
+                  </a>
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+{% endblock %}

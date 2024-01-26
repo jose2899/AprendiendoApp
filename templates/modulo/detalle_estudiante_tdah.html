@@ -1,0 +1,49 @@
+<!-- Detalles del Estudiante en una sola Tabla -->
+{% extends 'layout.html' %}
+{% load static %}
+
+{% block content %}
+  <section class="section">
+    <div class="section-body">
+      <div class="row">
+        <div class="col-12">
+          <div class="card">
+            <div class="card-header">
+              <h4>Detalles del Estudiante <i class="fas fa-user"></i></h4>
+            </div>
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table table-bordered">
+                  <thead>
+                    <tr>
+                      <th class="text-center">Sexo</th>
+                      <th class="text-center">Edad</th>
+                      <th class="text-center">Observación de Conducta</th>
+                      <th class="text-center">Temas Trabajados</th>
+                      <th class="text-center">Avance</th>
+                      <th class="text-center">Asistencias</th>
+                      <!-- Agrega otros campos según sea necesario -->
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for bitacora in bitacoras %}
+                      <tr>
+                        <td class="text-center">{{ estudiante.genero }}</td>
+                        <td class="text-center">{{ estudiante.edad }}</td>
+                        <td class="text-center">{{ bitacora.observacion_conducta }}</td>
+                        <td class="text-center">{{ bitacora.temas_trabajados }}</td>
+                        <td class="text-center">{{ bitacora.avance }}</td>
+                        <td class="text-center">{{ bitacora.asistencias }}</td>
+                        <!-- Agrega otros campos según sea necesario -->
+                      </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+{% endblock %}

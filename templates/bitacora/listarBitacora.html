@@ -18,11 +18,6 @@
                                             <th>Estudiante</th>
                                             <th>Planificacion</th>
                                             <th>Diagnostico</th>
-                                            <th>Fecha</th>
-                                            <th>Temas Trabajados</th>
-                                            <th>Avance</th>
-                                            <th>Firma Terapeuta</th>
-                                            <th>Revisado Por</th>
                                             <th>Acción</th>
                                         </tr>
                                     </thead>
@@ -32,11 +27,6 @@
                                                 <td>{{ bitacora.estudiante.nombre }}</td>
                                                 <td>{{ bitacora.planificacion }}</td>
                                                 <td>{{ bitacora.diagnostico }}</td>
-                                                <td>{{ bitacora.fecha }}</td>
-                                                <td>{{ bitacora.temas_trabajados }}</td>
-                                                <td>{{ bitacora.avance }}</td>
-                                                <td>{{ bitacora.firma_terapeuta }}</td>
-                                                <td>{{ bitacora.revisado_por }}</td>
                                                 <td>
                                                     <div class="btn-group" role="group">
                                                         <a href="{% url 'ver_bitacora' pk=bitacora.pk %}" class="btn btn-primary"><i class="fa fa-eye"></i></a>
