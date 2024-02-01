@@ -12,7 +12,7 @@
             <div class="card-body">
               <div class="list-group">
                 {% for planificacion in estudiantes_tdah %}
-                  <a href="{% url 'app.modulo:detalle_estudiante_tdah' estudiante_id=planificacion.estudiante.pk %}" class="list-group-item list-group-item-action">
+                  <a href="{% url 'detalle_estudiante_tdah' estudiante_id=planificacion.estudiante.pk %}" class="list-group-item list-group-item-action">
                     <div class="d-flex justify-content-between align-items-center">
                       <span>{{ planificacion.estudiante.nombre_completo }}</span>
                       <span class="badge badge-primary badge-pill">Detalles</span>

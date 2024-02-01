@@ -39,6 +39,14 @@
                     {% endfor %}
                   </tbody>
                 </table>
+                 <!-- Agrega un formulario para la predicción -->
+                  <form id="formularioPrediccion" method="post" action="{% url 'predecir_avance' estudiante_id=estudiante.id %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="edad" value="{{ estudiante.edad }}">
+                    
+                    <!-- Agrega más campos ocultos según sea necesario -->
+                    <button type="submit">Predecir Avance</button>
+                  </form>
               </div>
             </div>
           </div>
