@@ -13,6 +13,12 @@
             <div class="card-body">
               <p>La predicción es: {{ prediccion }}</p>
               <!-- Puedes agregar más detalles o personalizaciones según tus necesidades -->
+              <p>Temas Recomendados basados en importancia:</p>
+              <ul>
+                {% for tema in temas_relevantes %}
+                  <li>{{ tema }}</li>
+                {% endfor %}
+              </ul>
             </div>
           </div>
         </div>

@@ -13,6 +13,7 @@ def listar_estudiantes_tdah(request):
     return render(request, 'modulo/listar_estudiantes_tdah.html', {'estudiantes_tdah': estudiantes_tdah})
 
 
+modelo_optimizado = joblib.load('C:/Users/ANDRES RIOS/tesisModelo/modelo_optimizado_rf.pkl')
 
 def detalle_estudiante_tdah(request, estudiante_id):
     estudiante = get_object_or_404(Estudiante, pk=estudiante_id)
@@ -25,14 +26,6 @@ def detalle_estudiante_tdah(request, estudiante_id):
         'bitacoras': bitacoras,
     }
 
-    return render(request, 'modulo/detalle_estudiante_tdah.html', context)
-
-modelo_optimizado = joblib.load('C:/Users/ANDRES RIOS/tesisModelo/modelo_optimizado_rf.pkl')
-
-def predecir_avance_lectoescritura(request, estudiante_id):
-    # Obtener el objeto Estudiante
-    estudiante = get_object_or_404(Estudiante, pk=estudiante_id)
-
     if request.method == 'POST':
         # Extraer datos del formulario
         bitacoras = NuevaBitacora.objects.filter(bitacora__estudiante=estudiante)
@@ -43,10 +36,20 @@ def predecir_avance_lectoescritura(request, estudiante_id):
         # Realizar la predicción con el modelo
         prediccion = modelo_optimizado.predict(pd.DataFrame([datos_transformados]))[0]
 
-        # Devolver la predicción como una respuesta JSON
-        return render(request, 'modulo/resultado_prediccion.html', {'prediccion': prediccion, 'estudiante': estudiante})
+        # Obtengo la importancia de las características (temas) del modelo
+        importancias_temas = modelo_optimizado.feature_importances_
+        temas = ['m', 'vocales', 'fonemas', 'fonologia', 'escritura', 'p', 'lectura', 'dictado', 's', 'l', 'n', 'd', 'b', 't', 'g']
+        temas_importancia = dict(zip(temas, importancias_temas))
+        temas_ordenados = sorted(temas_importancia.keys(), key=lambda x: temas_importancia[x], reverse=True)
+        N_temas_importantes = 5
+        temas_relevantes = temas_ordenados[:N_temas_importantes]
 
-    # Si la solicitud no es POST, simplemente renderizar la página
-    bitacoras = NuevaBitacora.objects.filter(bitacora__estudiante=estudiante)
-    return render(request, 'modulo/detalle_estudiante_tdah.html', {'estudiante': estudiante, 'bitacoras': bitacoras})
+        print("Importancia de las características (temas):")
+        for tema in temas_relevantes:
+            importancia = temas_importancia[tema]
+            print(f"{tema}: {importancia}")
 
+        # Agregar la información de la predicción al contexto
+        context.update({'prediccion': prediccion, 'temas_relevantes': temas_relevantes})
+
+    return render(request, 'modulo/detalle_estudiante_tdah.html', context)

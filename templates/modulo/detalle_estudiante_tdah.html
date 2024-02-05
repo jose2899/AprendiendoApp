@@ -40,14 +40,46 @@
                   </tbody>
                 </table>
                  <!-- Agrega un formulario para la predicción -->
-                  <form id="formularioPrediccion" method="post" action="{% url 'predecir_avance' estudiante_id=estudiante.id %}">
+                  <form method="post" action="{% url 'detalle_estudiante_tdah' estudiante.id %}">
                     {% csrf_token %}
-                    <input type="hidden" name="edad" value="{{ estudiante.edad }}">
-                    
-                    <!-- Agrega más campos ocultos según sea necesario -->
-                    <button type="submit">Predecir Avance</button>
+                    <button type="submit" class="btn btn-primary">Predecir Avance</button>
                   </form>
               </div>
+              {% if prediccion is not None %}
+                <div class="mt-4">
+                  <h4 class="mb-3 text-center">Resultado de la Predicción</h4>
+                  <p class="h2 text-primary text-center">¡Análisis Completado!</p>
+                  <p class="lead mt-3 text-center">Según el modelo, el niño tiene un <span class="text-danger">{{ prediccion }}</span> avance.</p>
+                  <p class="mb-1 text-center">Recomendamos enfocarse en los siguientes temas:</p>
+              
+                  <div class="card">
+                    <div class="card-body">
+                      <div class="row">
+                        {% for tema in temas_relevantes %}
+                          {% comment %} Asignar un rango de importancia (1 a 5) {% endcomment %}
+                          {% with forloop.counter as rango %}
+                            <div class="col-md-4 mb-3">
+                              <div class="card {% if rango == 1 %}bg-danger{% elif rango == 2 %}bg-danger{% elif rango == 3 %}bg-warning{% elif rango == 4 %}bg-warning{% else %}bg-success{% endif %} text-white">
+                                <div class="card-body text-center">
+                                  <p class="h4">{{ tema }}</p>
+                                  <p class="h5">Importancia: {{ rango }}</p>
+                                </div>
+                              </div>
+                            </div>
+                          {% endwith %}
+                        {% endfor %}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              {% endif %}
+            
+            
+
+            
+            
+
+            
             </div>
           </div>
         </div>
