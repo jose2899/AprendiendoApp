@@ -1,0 +1,220 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<section class="section">
+  <div class="section-body">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header">
+            <h4>Modulo Predictivo</h4>
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-3">
+                <ul id="fases"> <!-- Alineación a la izquierda -->
+                  <li id="fase1" class="fase btn btn-primary btn-lg completo" onclick="mostrarDetalles('fase1')">Fase 1: Selección</li>
+                  <li id="fase2" class="fase btn btn-primary btn-lg" onclick="mostrarDetalles('fase2')" disabled>Fase 2: Transformación</li>
+                  <li id="fase3" class="fase btn btn-primary btn-lg" onclick="mostrarDetalles('fase3')" disabled>Fase 3: Carga</li>
+                  <li id="fase4" class="fase btn btn-primary btn-lg" onclick="mostrarDetalles('fase4')" disabled>Fase 4: Predicción</li>
+                </ul>
+              </div>
+              <div class="col-md-9">
+                <div class="card">
+                  <div class="card-header">
+                    {% if estudiante %}
+                      <h4>Detalles del Estudiante</h4>
+                    {% else %}
+                      <h4>Detalles de la Fase 1</h4>
+                    {% endif %}
+                  </div>
+                  <div class="card-body">
+                    <div class="card-body">
+                      <p class="card-text">Estudiante: {{ estudiante.nombre }} {{ estudiante.apellido }}</p>
+                      <p class="card-text">Edad: {{ estudiante.edad }}</p>
+                    </div>
+                    {% if estudiante %}
+                      <button class="btn btn-info" onclick="toggleDetallesEstudiante()">Detalles</button>
+                      <button class="btn btn-primary" onclick="transformarDatos()">Transformar Datos</button>
+                      <button id="btnSiguienteFase2" class="btn btn-success" onclick="avanzarFase(2)" disabled>Siguiente Fase</button>
+                      <!-- Detalles del estudiante (fase 2) -->
+                      <div id="detalles_estudiante" style="display: none;">
+                        <h5></h5>
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center">Sexo</th>
+                                        <th class="text-center">Edad</th>
+                                        <th class="text-center">Observación de Conducta</th>
+                                        <th class="text-center">Temas Trabajados</th>
+                                        <th class="text-center">Avance</th>
+                                        <th class="text-center">Asistencias</th>
+                                        <!-- Agrega otros campos según sea necesario -->
+                                    </tr>
+                                </thead>
+                                <tbody id="detalles_estudiante_body">
+                                  {% for bitacora in bitacoras %}
+                                    <tr>
+                                        <td class="text-center">{{ estudiante.genero }}</td>
+                                        <td class="text-center">{{ estudiante.edad }}</td>
+                                        <td class="text-center">{{ bitacora.observacion_conducta }}</td>
+                                        <td class="text-center">{{ bitacora.temas_trabajados }}</td>
+                                        <td class="text-center">{{ bitacora.avance }}</td>
+                                        <td class="text-center">{{ bitacora.asistencias }}</td>
+                                        <!-- Aquí debes acceder a los otros campos del estudiante según sea necesario -->
+                                    </tr>
+                                  {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        <button class="btn btn-danger" id="btnOcultarDetallesEstudiante" style="display: none;" onclick="toggleDetallesEstudiante()">Ocultar</button>
+                      </div>
+                      <!-- Botón de siguiente fase -->
+                      
+                    {% else %}
+                      <!-- Detalles de la fase 1 -->
+                      <h5>Selección de estudiante a predecir</h5>
+                      <p>Aquí puedes seleccionar un estudiante de la lista.</p>
+                      <div class="list-group" id="lista_estudiantes">
+                        {% for planificacion in estudiantes_tdah %}
+                          <a href="#" class="list-group-item list-group-item-action" onclick="seleccionarEstudiante('{{ planificacion.estudiante.pk }}')"> <!-- Corregido aquí -->
+                            {{ planificacion.estudiante.nombre_completo }}
+                          </a>
+                        {% endfor %}
+                      </div>
+                      <button id="btnSiguienteFase1" class="btn btn-success" onclick="avanzarFase(1)" disabled data-id-estudiante="">Siguiente Fase</button>
+                    {% endif %}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .fase {
+    display: block;
+    width: auto; /* Ancho automático */
+    margin-bottom: 10px;
+    text-align: left; /* Alineación a la izquierda */
+  }
+
+  .completo {
+    background-color: #f1c40f; /* Amarillo */
+  }
+
+  .card-body div {
+    margin-bottom: 20px;
+  }
+
+  .list-group-item {
+    cursor: pointer;
+  }
+
+  .list-group-item:hover {
+    background-color: #f4f4f4; /* Color de fondo al pasar el cursor */
+  }
+
+  .list-group-item.seleccionado {
+    background-color: #3498db; /* Color de fondo del elemento seleccionado */
+    color: #fff; /* Color del texto del elemento seleccionado */
+  }
+  
+</style>
+
+
+<script>
+  // Función para manejar la selección de un estudiante
+  function seleccionarEstudiante(estudianteId) {
+     // Agregar clase 'seleccionado' al estudiante seleccionado
+    var listaEstudiantes = document.getElementById('lista_estudiantes').children;
+    for (var i = 0; i < listaEstudiantes.length; i++) {
+        listaEstudiantes[i].classList.remove('seleccionado');
+    }
+    event.target.classList.add('seleccionado');
+
+    // Establecer el estudiante seleccionado en el botón de siguiente fase correspondiente
+    var btnSiguienteFase = document.getElementById('btnSiguienteFase1');
+    btnSiguienteFase.dataset.idEstudiante = estudianteId; // Corregido aquí
+    btnSiguienteFase.disabled = false;
+  }
+
+  // Simulación de completar una fase (cambia el color a amarillo)
+  function completarFase(numFase) {
+    var fase = document.getElementById('fase' + numFase);
+    fase.classList.add('completo');
+
+    // Habilitar botón de siguiente fase correspondiente
+    var btnSiguienteFase = document.getElementById('btnSiguienteFase' + numFase);
+    btnSiguienteFase.disabled = false;
+  }
+
+  // Función para mostrar los detalles de una fase
+  function mostrarDetalles(idFase) {
+    // Ocultar todos los detalles
+    document.getElementById('detalles_fase1').style.display = 'none';
+    document.getElementById('detalles_fase2').style.display = 'none';
+    document.getElementById('detalles_fase3').style.display = 'none';
+    document.getElementById('detalles_fase4').style.display = 'none';
+
+    // Mostrar los detalles de la fase correspondiente
+    document.getElementById('detalles_' + idFase).style.display = 'block';
+
+    // Mostrar u ocultar botones según la fase
+    if (idFase === 'fase2') {
+      document.getElementById('btnDetallesEstudiante').style.display = 'inline-block';
+      document.getElementById('btnSiguienteFase2').style.display = 'inline-block';
+    } else {
+      document.getElementById('btnDetallesEstudiante').style.display = 'none';
+      document.getElementById('btnSiguienteFase2').style.display = 'none';
+    }
+  }
+
+  // Función para avanzar a la siguiente fase si la actual está completada
+  function avanzarFase(numFase) {
+    var btnSiguienteFase = document.getElementById('btnSiguienteFase' + numFase);
+    var idEstudiante = btnSiguienteFase.dataset.idEstudiante;
+
+    if (idEstudiante) {
+        // Guardar el estado actual de la fase en el almacenamiento local
+        localStorage.setItem('faseActual', numFase);
+
+        var url = '{% url 'detalle_estudiante_tdah' estudiante_id=0 %}'.replace('0', idEstudiante);
+        window.location.href = url;
+    } else {
+        alert('Por favor selecciona un estudiante antes de avanzar.');
+    }
+  }
+
+  // Función para mostrar u ocultar los detalles del estudiante
+  function toggleDetallesEstudiante() {
+    var detallesEstudiante = document.getElementById('detalles_estudiante');
+    var btnOcultar = document.getElementById('btnOcultarDetallesEstudiante');
+
+    if (detallesEstudiante.style.display === 'none') {
+      detallesEstudiante.style.display = 'block';
+      btnOcultar.style.display = 'inline-block';
+    } else {
+      detallesEstudiante.style.display = 'none';
+      btnOcultar.style.display = 'none';
+    }
+  }
+
+  // Ejemplo de uso
+  // completarFase(1); // Simula completar la fase 1
+  // Función para mostrar los detalles de la fase guardada en el almacenamiento local al cargar la página
+  window.onload = function() {
+    var faseGuardada = localStorage.getItem('faseActual');
+    
+    if (faseGuardada) {
+        mostrarDetalles('fase' + faseGuardada);
+    }
+  }
+  
+</script>
+{% endblock %}

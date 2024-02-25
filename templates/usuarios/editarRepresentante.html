@@ -1,27 +1,129 @@
 {% extends 'layout.html' %}
 {% load static %}
 {% block content %}
-  <div class="container">
-    <div class="row justify-content-center mt-4">
-      <div class="col-md-8">
-        <div class="card">
-          <div class="card-header">
-            <h4>Editar Representante<i class="fas fa-user"></i></h4>
-
-          </div>
-          <div class="card-body">
-            <form method="post">
-              {% csrf_token %}
-              {{ form.as_p }}
-              <div class="text-center mt-3">
-                <button type="submit" class="btn btn-primary">Guardar</button>
-                <a href="{% url 'listar_representantes' %}" class="btn btn-secondary ml-2">Volver a la lista de representantes</a>
-              </div>
-            </form>
-          </div>
+<section class="section">
+    <div class="section-body">
+        <div class="row justify-content-center">
+            <div class="col-lg-8"> <!-- Reduje el tamaño de la columna para hacer los campos más compactos -->
+                <div class="card shadow">
+                    <div class="card-header bg-fdb515 text-white">
+                        <h4 class="text-white">Editar Representante <i class="fas fa-user"></i></h4>
+                    </div>
+                    <div class="card-body">
+                        <form method="post">
+                            {% csrf_token %}
+                            <div class="row">
+                                <div class="col-md-6 mb-2">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <label class="card-text text-md-right">Nombre:</label>
+                                            {{ form.nombre }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-2">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <label class="card-text text-md-right">Apellido:</label>
+                                            {{ form.apellido }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-2">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <label class="card-text text-md-right">Teléfono:</label>
+                                            {{ form.telefono }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-2">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <label class="card-text text-md-right">Celular:</label>
+                                            {{ form.celular }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-2">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <label class="card-text text-md-right">Email:</label>
+                                            {{ form.email }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-2">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <label class="card-text text-md-right">Cédula:</label>
+                                            {{ form.cedula }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-2">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <label class="card-text text-md-right">Servicios:</label>
+                                            {{ form.servicios }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-2">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <label class="card-text text-md-right"> Otra terapia:</label>
+                                            {{ form.otra_terapia }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-2">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <label class="card-text text-md-right"> ¿Como conocio la institucion?:</label>
+                                            {{ form.conocido }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-2">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <label class="card-text text-md-right"> Observacion:</label>
+                                            {{ form.observacion }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="text-center mt-4">
+                                <button type="submit" class="btn btn-primary btn-lg">Guardar</button>
+                                <a href="{% url 'listar_representantes' %}" class="btn btn-secondary btn-lg ml-3">Volver a la lista de representantes</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
+</section>
+<style>
+    /* Agrega estilos personalizados aquí */
+    .card {
+        margin-top: 20px;
+        border-radius: 10px;
+        box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+    }
+    .bg-fdb515 {
+        background-color: #FDB515 !important; /* Agrega !important para asegurar que el color se aplique */
+    }
+    th {
+        width: 40%;
+        text-align: right;
+        vertical-align: top;
+        background-color: #f2f2f2;
+    }
+    td {
+        padding-left: 10px;
+    }
+</style>
 
 {% endblock content %}

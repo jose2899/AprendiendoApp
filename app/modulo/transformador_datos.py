@@ -1,11 +1,15 @@
+
 import numpy as np
 import pandas as pd
 
-# Cargar datos iniciales de conductas_dataset (puedes modificar estos valores)
-conductas_dataset = [66, 11, 63, 68, 96, 12, 26, 13, 58, 26, 11, 13, 18, 22, 74, 27, 33, 34, 108, 19, 10, 13, 53, 21, 33, 11, 12.5, 18.5, 31, 32.5, 24, 62.5, 23.5, 122, 22.5, 10, 84, 75.5, 9, 49, 9, 5, 6]
-avances_dataset = [97, 16.5, 89.5, 95, 139.5, 18, 36.5, 19, 77, 37.5, 16, 19, 27, 33, 92, 36, 45.5, 50.5, 154, 27.5, 15, 19.5, 79.5, 31, 47, 15.5, 17.5, 22.5, 44.5, 44, 34, 87.5, 23.5, 180.5, 25.5, 14.5, 89.5, 94, 13.5, 73, 13, 6.5, 6]
+# Cargar datos iniciales de conductas_dataset
+conductas_dataset = [66, 11, 63, 68, 96, 12, 26, 13, 58, 26, 11, 13, 18, 22, 74, 27, 33, 34, 108, 19, 10,
+                      13, 53, 21, 33, 11, 12.5, 18.5, 31, 32.5, 24, 62.5, 23.5, 122]
+avances_dataset = [97, 16.5, 89.5, 95, 139.5, 18, 36.5, 19, 77, 37.5, 16, 19, 27, 33, 92, 36, 45.5, 50.5, 
+                   154, 27.5, 15, 19.5, 79.5, 31, 47, 15.5, 17.5, 22.5, 44.5, 44, 34, 87.5, 23.5, 180.5]
 def transformar_datos(estudiante, bitacoras):
-    global conducta_dataset, avance_dataset  # Indicar que se utilizarán las variables globales dentro de la función
+    global conducta_dataset, avance_dataset  # Indicar que se utilizarán las variables globales dentro de 
+    #la función
 
     # Transformar el sexo
     sexo = 1 if estudiante.genero.upper() == 'M' else 0
@@ -30,7 +34,8 @@ def transformar_datos(estudiante, bitacoras):
     conducta_ponderada = (total_excelente * 1.5) + (total_buena * 1) + (total_regular * 0.5)
     
     # Calcular los temas trabajados
-    temas = ['m', 'vocales', 'fonemas', 'fonologia', 'escritura', 'p', 'lectura', 'dictado', 's', 'l', 'n', 'd', 'b', 't', 'g']
+    temas = ['m', 'vocales', 'fonemas', 'fonologia', 'escritura', 'p', 'lectura', 'dictado', 's', 'l', 'n', 
+             'd', 'b', 't', 'g']
     temas_trabajados = {tema: 0 for tema in temas}
     
     # Iterar sobre cada bitácora en el conjunto
@@ -66,7 +71,8 @@ def transformar_datos(estudiante, bitacoras):
     q1 = df['Total'].quantile(0.25)
     q2 = df['Total'].median()
     q3 = df['Total'].quantile(0.75)
-    conducta_total = pd.cut(df['Total'], bins=[float('-inf'), q1, q2, float('inf')], labels=['Bajo', 'Medio', 'Alto']).values[-1]
+    conducta_total = pd.cut(df['Total'], bins=[float('-inf'), q1, q2, float('inf')], labels=['Bajo', 'Medio', 
+                                                                                             'Alto']).values[-1]
 
 
     # Clasificar en categorías según cuartiles para avance
@@ -74,7 +80,8 @@ def transformar_datos(estudiante, bitacoras):
     q1_avance = df_avance['Total'].quantile(0.25)
     q2_avance = df_avance['Total'].median()
     q3_avance = df_avance['Total'].quantile(0.75)
-    avance_total = pd.cut(df_avance['Total'], bins=[float('-inf'), q1_avance, q2_avance, float('inf')],labels=['Bajo', 'Medio', 'Alto']).values[-1]
+    avance_total = pd.cut(df_avance['Total'], bins=[float('-inf'), q1_avance, q2_avance, float('inf')],
+                          labels=['Bajo', 'Medio', 'Alto']).values[-1]
 
 
     # Mapear las categorías a valores numéricos para avance
@@ -98,4 +105,4 @@ def transformar_datos(estudiante, bitacoras):
 
     return datos_transformados
 
-# Resto del código del programa...
+

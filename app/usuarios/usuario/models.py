@@ -7,7 +7,7 @@ SERVICIOS_CHOICES = (
     ('Terapia Neuropedagógica', 'Terapia Neuropedagógica'),
     ('Nivelación', 'Nivelacion'),
     ('Taller de estimulación temprana', 'Taller de estimulación temprana'),
-    ('Estimulación temprana', 'Taller de estimulación temprana'),
+    ('Estimulación temprana', 'Estimulación temprana'),
     ('Talleres', 'Talleres'),
     ('Estimulacion cognitiva', 'Estimulacion cognitiva'),
     ('Estimulacion de lenguaje', 'Estimulacion de lenguaje'),
