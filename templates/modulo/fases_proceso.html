@@ -29,14 +29,21 @@
                     {% endif %}
                   </div>
                   <div class="card-body">
-                    <div class="card-body">
-                      <p class="card-text">Estudiante: {{ estudiante.nombre }} {{ estudiante.apellido }}</p>
-                      <p class="card-text">Edad: {{ estudiante.edad }}</p>
-                    </div>
                     {% if estudiante %}
-                      <button class="btn btn-info" onclick="toggleDetallesEstudiante()">Detalles</button>
-                      <button class="btn btn-primary" onclick="transformarDatos()">Transformar Datos</button>
-                      <button id="btnSiguienteFase2" class="btn btn-success" onclick="avanzarFase(2)" disabled>Siguiente Fase</button>
+                      <div class="card-body">
+                        <p class="card-text">Estudiante: {{ estudiante.nombre }} {{ estudiante.apellido }}</p>
+                        <p class="card-text">Edad: {{ estudiante.edad }}</p>
+                      </div>
+                      <div class="mb-3 d-flex flex-row">
+                        <button class="btn btn-info mr-2" onclick="toggleDetallesEstudiante()">Detalles</button>
+                        <form id="transformarForm" method="post" action="{% url 'detalle_estudiante_tdah' estudiante.id %}">
+                          {% csrf_token %}
+                          <input type="hidden" name="estudiante_id" value="{{ estudiante.id }}">
+                          <button class="btn btn-primary mr-2" type="button" onclick="transformarDatos()">Transformar Datos</button>
+                        </form>
+                        <button id="btnSiguienteFase2" class="btn btn-success" onclick="avanzarFase(2)" disabled data-id-estudiante="">Siguiente Fase</button>
+                      </div>
+                      
                       <!-- Detalles del estudiante (fase 2) -->
                       <div id="detalles_estudiante" style="display: none;">
                         <h5></h5>
@@ -87,13 +94,43 @@
                     {% endif %}
                   </div>
                 </div>
+                <!-- Agregado un botón de siguiente fase para la fase 3 -->
+                <button id="btnSiguienteFase3" class="btn btn-success" onclick="avanzarFase(3)" style="display: none;" >Siguiente Fase 3</button>
+                <div id="detalles_fase3" style="display: none;">
+                    <h5>Detalles de la Fase 3</h5>
+                    <!-- Agrega aquí los detalles de la fase 3 -->
+                </div>
               </div>
             </div>
+          </div>
+          <div id="mensajeTransformacion" class="fixed-bottom text-center" style="display: none; width: 100%;">
+            <div id="mensajeContenido" class="alert alert-success" role="alert" style="font-size: smaller; max-width: 200px; display: inline-block;">Transformación exitosa</div>
           </div>
         </div>
       </div>
     </div>
+
+    {% if transformacion_exitosa %}
+    <script>
+      var mensajeTransformacion = document.getElementById('mensajeTransformacion');
+      var mensajeContenido = document.getElementById('mensajeContenido');
+      mensajeContenido.innerText = "La transformación se realizó correctamente.";
+      mensajeTransformacion.style.display = 'block';
+
+      setTimeout(function() {
+        mensajeTransformacion.style.display = 'none';
+      }, 5000); // Ocultar el mensaje después de 5 segundos
+      // Habilitar el botón de siguiente fase solo si la transformación fue exitosa
+      var btnSiguienteFase = document.getElementById('btnSiguienteFase2');
+      btnSiguienteFase.disabled = false;
+
+      // Cambiar color de la fase 2
+      var fase2 = document.getElementById('fase2');
+      fase2.classList.add('completo');
+    </script>
+    {% endif %}
   </div>
+  
 </section>
 
 <style>
@@ -124,9 +161,17 @@
     background-color: #3498db; /* Color de fondo del elemento seleccionado */
     color: #fff; /* Color del texto del elemento seleccionado */
   }
-  
+
+  #mensajeTransformacion {
+    position: fixed;
+    bottom: 140px;
+    left: 90%; /* Centra inicialmente el mensaje */
+    transform: translateX(-50%);
+    
+  }
 </style>
 
+  
 
 <script>
   // Función para manejar la selección de un estudiante
@@ -173,22 +218,31 @@
       document.getElementById('btnDetallesEstudiante').style.display = 'none';
       document.getElementById('btnSiguienteFase2').style.display = 'none';
     }
+
+    if (idFase === 'fase3') {
+        document.getElementById('btnDetallesEstudiante').style.display = 'inline-block';
+        document.getElementById('btnSiguienteFase3').style.display = 'inline-block';
+    } else {
+        document.getElementById('btnDetallesEstudiante').style.display = 'none';
+        document.getElementById('btnSiguienteFase3').style.display = 'none';
+    }
   }
 
   // Función para avanzar a la siguiente fase si la actual está completada
   function avanzarFase(numFase) {
     var btnSiguienteFase = document.getElementById('btnSiguienteFase' + numFase);
     var idEstudiante = btnSiguienteFase.dataset.idEstudiante;
-
-    if (idEstudiante) {
-        // Guardar el estado actual de la fase en el almacenamiento local
-        localStorage.setItem('faseActual', numFase);
-
+    // Guardar el estado actual de la fase en el almacenamiento local
+    localStorage.setItem('faseActual', numFase);
+    // Redirigir a la página correspondiente a la fase actual
+    if (numFase === 1) {
+        // Para la fase 1, usar el ID del estudiante
         var url = '{% url 'detalle_estudiante_tdah' estudiante_id=0 %}'.replace('0', idEstudiante);
-        window.location.href = url;
     } else {
-        alert('Por favor selecciona un estudiante antes de avanzar.');
+        // Para otras fases, simplemente ir a la vista de progreso de fases
+        var url = '{% url 'listar_estudiantes_tdah' %}';
     }
+    window.location.href = url;  
   }
 
   // Función para mostrar u ocultar los detalles del estudiante
@@ -208,13 +262,42 @@
   // Ejemplo de uso
   // completarFase(1); // Simula completar la fase 1
   // Función para mostrar los detalles de la fase guardada en el almacenamiento local al cargar la página
+  
+  function transformarDatos() {
+    console.log("Se hizo clic en el botón Transformar Datos.");
+    var idEstudiante = document.querySelector('input[name="estudiante_id"]').value;
+    console.log("ID del estudiante:", idEstudiante);
+    
+    // Realizar otras operaciones necesarias
+    
+    // Envío del formulario
+    var transformarForm = document.getElementById('transformarForm');
+    transformarForm.submit();
+
+    // Mostrar mensaje en HTML
+    var mensajeTransformacion = document.getElementById('mensajeTransformacion');
+    var mensajeContenido = document.getElementById('mensajeContenido');
+    mensajeContenido.innerText = "{% if transformacion_exitosa %}La transformación se realizó correctamente.{% else %}La transformación no se realizó correctamente.{% endif %}";
+    
+    // Habilitar el botón de siguiente fase solo si la transformación fue exitosa
+    var btnSiguienteFase = document.getElementById('btnSiguienteFase2');
+    btnSiguienteFase.disabled = false;
+    
+    // Ocultar el mensaje después de 5 segundos
+    setTimeout(function() {
+      mensajeTransformacion.style.display = 'none';
+    }, 5000); // 5000 milisegundos = 5 segundos
+    
+  }
+
   window.onload = function() {
     var faseGuardada = localStorage.getItem('faseActual');
+    var transformacionExitosa = localStorage.getItem('transformacion_exitosa');
     
     if (faseGuardada) {
         mostrarDetalles('fase' + faseGuardada);
     }
   }
-  
+
 </script>
 {% endblock %}
