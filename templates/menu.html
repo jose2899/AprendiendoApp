@@ -1,7 +1,7 @@
 <div class="main-sidebar sidebar-style-2">
   <aside id="sidebar-wrapper">
     <div class="sidebar-brand">
-      <a href="home.html">Aprendiendo Juntos</a>
+      <a href="{% url 'index' %}">Aprendiendo Juntos</a>
     </div>
     <div class="sidebar-brand sidebar-brand-sm">
       <a href="home.html">AJ</a>
@@ -11,34 +11,34 @@
       <li class="dropdown active">
         <a href="#" class="nav-link has-dropdown"><i class="fas fa-fire"></i><span>Dashboard</span></a>
         <ul class="dropdown-menu">
-          <li class=active><a class="nav-link" href="home.html">Home</a></li>
+          <li class=active><a class="nav-link" href="{% url 'index' %}">Inicio</a></li>
         </ul>
       </li>
       <li class="menu-header">Servicios</li>
       <li class="dropdown">
         <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-columns"></i> <span>Servicios individualizados</span></a>
         <ul class="dropdown-menu">
-          <li><a class="nav-link" href="http://127.0.0.1:8000/servicios/">Detalles</a></li>
+          <li><a class="nav-link" href="{% url 'servicios' %}">Detalles</a></li>
         </ul>
       </li>
       <li class="dropdown">
         <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-columns"></i> <span>Servicios de rehabilitación</span></a>
         <ul class="dropdown-menu">
-          <li><a class="nav-link" href="http://127.0.0.1:8000/serviciosR/">Detalles</a></li>
+          <li><a class="nav-link" href="{% url 'serviciosR' %}">Detalles</a></li>
         </ul>
       </li>
       <li class="dropdown">
         <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-columns"></i> <span>Servicios grupales - Talleres</span></a>
         <ul class="dropdown-menu">
-          <li><a class="nav-link" href="http://127.0.0.1:8000/serviciosG/">Detalles</a></li>
+          <li><a class="nav-link" href="{% url 'serviciosG' %}">Detalles</a></li>
         </ul>
       </li>
       <li class="menu-header">Usuarios</li>
       <li class="dropdown">
         <a href="#" class="nav-link has-dropdown"><i class="fas fa-th-large"></i> <span>Admin</span></a>
         <ul class="dropdown-menu">
-          <li><a class="nav-link" href="http://127.0.0.1:8000/crearAdmin/">Crear Admin</a></li>
-          <li><a class="nav-link" href="http://127.0.0.1:8000/listarAdmin/">Ver Admin</a></li> 
+          <li><a class="nav-link" href="{% url 'crear_admin' %}">Crear Admin</a></li>
+          <li><a class="nav-link" href="{% url 'listar_admin' %}">Ver Admin</a></li> 
         </ul>
       </li>
       <li class="dropdown">
@@ -95,12 +95,11 @@
           <li><a class="nav-link" href="utilities-invoice.html">Ver información</a></li>
         </ul>
       </li>            
-      <li><a class="nav-link" href="credits.html"><i class="fas fa-pencil-ruler"></i> <span>Credits</span></a></li>
     </ul>
 
     <div class="mt-4 mb-4 p-3 hide-sidebar-mini">
-      <a href="https://getstisla.com/docs" class="btn btn-primary btn-lg btn-block btn-icon-split">
-        <i class="fas fa-rocket"></i> Documentation
+      <a href="https://aprendiendojuntos.ec/" class="btn btn-primary btn-lg btn-block btn-icon-split">
+        <i class="fas fa-rocket"></i> Sitio Aprendiendo Juntos
       </a>
     </div>        </aside>
 </div>

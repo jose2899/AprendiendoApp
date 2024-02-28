@@ -41,4 +41,5 @@ class AdminisForm(forms.ModelForm):
             'apellido':forms.TextInput(attrs={'class':'form-control','placeholder':'Ingrese sus Apellidos'}),
             'email':forms.EmailInput(attrs={'class':'form-control','placeholder':'Ingrese su Email'}),
             'celular':forms.TextInput(attrs={'class':'form-control','placeholder':'Ingrese su celular'}),
+            'direccion':forms.TextInput(attrs={'class':'form-control','placeholder':'Ingrese su direccion'}),
         }

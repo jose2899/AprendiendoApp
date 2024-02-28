@@ -32,93 +32,52 @@
             <li><a href="#" data-toggle="sidebar" class="nav-link nav-link-lg"><i class="fas fa-bars"></i></a></li>
             <li><a href="#" data-toggle="search" class="nav-link nav-link-lg d-sm-none"><i class="fas fa-search"></i></a></li>
           </ul>
+
           <div class="search-element">
-            <input class="form-control" type="search" placeholder="Buscar" aria-label="Search" data-width="250">
-            <button class="btn" type="submit"><i class="fas fa-search"></i></button>
+            <form method="GET" action="{% url 'index' %}" class="form-inline">
+                <input class="form-control" type="search" name="q" placeholder="Buscar" aria-label="Search" data-width="250">
+                <button class="btn" type="submit"><i class="fas fa-search"></i></button>
+            </form>
             <div class="search-backdrop"></div>
             <div class="search-result">
-              <div class="search-header">
-                Histories
-              </div>
-              <div class="search-item">
-                <a href="#">Docente</a>
-                <a href="#" class="search-close"><i class="fas fa-times"></i></a>
-              </div>
-
-              <div class="search-header">
-                Resultados
-              </div>
-              <div class="search-item">
-                <a href="#">
-                  <img class="mr-3 rounded" width="30" src="../assets/img/products/product-1-50.png" alt="product">
-                  Alumno
-                </a>
-              </div>
-              <div class="search-header">
-                Projects
-              </div>
-              <div class="search-item">
-                <a href="#">
-                  <div class="search-icon bg-danger text-white mr-3">
-                    <i class="fas fa-code"></i>
-                  </div>
-                  Psicologo
-                </a>
-              </div>
+                {% if query %}
+                    <div class="search-header">
+                        Resultados
+                    </div>
+                    <!-- Resultados de estudiantes -->
+                    {% if resultados_estudiantes %}
+                        <div class="search-item">
+                            <a href="#">
+                                <img class="mr-3 rounded" width="30" src="../assets/img/products/product-1-50.png" alt="product">
+                                Estudiantes
+                            </a>
+                        </div>
+                    {% endif %}
+                    <!-- Resultados de administradores -->
+                    {% if resultados_admins %}
+                        <div class="search-item">
+                            <a href="#">
+                                <img class="mr-3 rounded" width="30" src="../assets/img/products/product-1-50.png" alt="product">
+                                Administradores
+                            </a>
+                        </div>
+                    {% endif %}
+                    <!-- Resultados de psicólogos -->
+                    {% if resultados_psicologos %}
+                        <div class="search-item">
+                            <a href="#">
+                                <img class="mr-3 rounded" width="30" src="../assets/img/products/product-1-50.png" alt="product">
+                                Psicólogos
+                            </a>
+                        </div>
+                    {% endif %}
+                {% endif %}
             </div>
           </div>
+      
         </form>
+        
         <ul class="navbar-nav navbar-right">
-          <li class="dropdown dropdown-list-toggle"><a href="#" data-toggle="dropdown" class="nav-link nav-link-lg message-toggle beep"><i class="far fa-envelope"></i></a>
-            <div class="dropdown-menu dropdown-list dropdown-menu-right">
-              <div class="dropdown-header">Mesajes
-                <div class="float-right">
-                  <a href="#">Marcar como todo leido</a>
-                </div>
-              </div>
-              <div class="dropdown-list-content dropdown-list-message">
-                <a href="#" class="dropdown-item dropdown-item-unread">
-                  <div class="dropdown-item-avatar">
-                    <img alt="image" src="../assets/img/avatar/avatar-1.png" class="rounded-circle">
-                    <div class="is-online"></div>
-                  </div>
-                  <div class="dropdown-item-desc">
-                    <b>Jose</b>
-                    <p>El estudiante no llego a terapia</p>
-                    <div class="time">10 Horas Atras</div>
-                  </div>
-                </a>
-
-              </div>
-              <div class="dropdown-footer text-center">
-                <a href="#">Ver todos <i class="fas fa-chevron-right"></i></a>
-              </div>
-            </div>
-          </li>
-          <li class="dropdown dropdown-list-toggle"><a href="#" data-toggle="dropdown" class="nav-link notification-toggle nav-link-lg beep"><i class="far fa-bell"></i></a>
-            <div class="dropdown-menu dropdown-list dropdown-menu-right">
-              <div class="dropdown-header">Notificaciones
-                <div class="float-right">
-                  <a href="#">Marcar todos como leidos</a>
-                </div>
-              </div>
-              <div class="dropdown-list-content dropdown-list-icons">
-                <a href="#" class="dropdown-item dropdown-item-unread">
-                  <div class="dropdown-item-icon bg-primary text-white">
-                    <i class="fas fa-code"></i>
-                  </div>
-                  <div class="dropdown-item-desc">
-                    Psicologo 1 termino terapia!
-                    <div class="time text-primary">2 Min Ago</div>
-                  </div>
-                </a>
-
-              </div>
-              <div class="dropdown-footer text-center">
-                <a href="#">Ver todos <i class="fas fa-chevron-right"></i></a>
-              </div>
-            </div>
-          </li>
           <li class="dropdown"><a href="#" data-toggle="dropdown" class="nav-link dropdown-toggle nav-link-lg nav-link-user">
             <img alt="image" src="../assets/img/avatar/avatar-1.png" class="rounded-circle mr-1">
             <div class="d-sm-none d-lg-inline-block">{{ request.user.email }}</div></a>
@@ -172,6 +131,7 @@
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.nicescroll/3.7.6/jquery.nicescroll.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+  
   <!--Calendario-->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.9.0/main.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
