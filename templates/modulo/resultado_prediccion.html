@@ -1,28 +1,29 @@
-<!-- resultado_prediccion.html -->
-{% extends 'layout.html' %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalles de Predicción</title>
+</head>
+<body>
+    <h1>Detalles de Predicción</h1>
+    <h2>Predicción:</h2>
+    <p>La predicción es: {{ prediccion }}</p>
 
-{% block content %}
-  <section class="section">
-    <div class="section-body">
-      <div class="row">
-        <div class="col-12">
-          <div class="card">
-            <div class="card-header">
-              <h4>Resultado de la Predicción</h4>
-            </div>
-            <div class="card-body">
-              <p>La predicción es: {{ prediccion }}</p>
-              <!-- Puedes agregar más detalles o personalizaciones según tus necesidades -->
-              <p>Temas Recomendados basados en importancia:</p>
-              <ul>
-                {% for tema in temas_relevantes %}
-                  <li>{{ tema }}</li>
-                {% endfor %}
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-{% endblock %}
+    <h2>Temas Relevantes:</h2>
+    <ul>
+        {% for tema in temas_relevantes %}
+            <li>{{ tema }}</li>
+        {% endfor %}
+    </ul>
+
+    <h2>Precisión de Prueba:</h2>
+    <p>La precisión de prueba es: {{ precision_prueba }}</p>
+
+    <h2>Reporte de Clasificación:</h2>
+    <pre>{{ reporte_clasificacion }}</pre>
+
+    <h2>Matriz de Confusión:</h2>
+    <pre>{{ matriz_confusion }}</pre>
+</body>
+</html>

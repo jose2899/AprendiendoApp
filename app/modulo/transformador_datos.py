@@ -7,6 +7,9 @@ conductas_dataset = [66, 11, 63, 68, 96, 12, 26, 13, 58, 26, 11, 13, 18, 22, 74,
                       13, 53, 21, 33, 11, 12.5, 18.5, 31, 32.5, 24, 62.5, 23.5, 122]
 avances_dataset = [97, 16.5, 89.5, 95, 139.5, 18, 36.5, 19, 77, 37.5, 16, 19, 27, 33, 92, 36, 45.5, 50.5, 
                    154, 27.5, 15, 19.5, 79.5, 31, 47, 15.5, 17.5, 22.5, 44.5, 44, 34, 87.5, 23.5, 180.5]
+
+lecto_dataset = [416, 50.5, 405.5, 352, 528.5, 55, 115.5, 88, 291, 156.5, 90, 101, 98, 166, 347, 114, 138.5,
+                  248.5, 572, 74.5, 103, 120.5, 245.5, 82, 161, 47.5, 70, 115, 169.5, 158.5, 171, 302, 109, 743.5]
 def transformar_datos(estudiante, bitacoras):
     global conducta_dataset, avance_dataset  # Indicar que se utilizarán las variables globales dentro de 
     #la función
@@ -39,6 +42,7 @@ def transformar_datos(estudiante, bitacoras):
     temas_trabajados = {tema: 0 for tema in temas}
     
     # Iterar sobre cada bitácora en el conjunto
+    numero_temas = 0
     for bitacora in bitacoras:
         # Separar los temas trabajados en una lista de letras
         temas_formulario = bitacora.temas_trabajados.replace(' ', '').lower().split(',')
@@ -48,10 +52,14 @@ def transformar_datos(estudiante, bitacoras):
             tema = tema.strip()
             if tema in temas:
                 temas_trabajados[tema] += 1
+                numero_temas +=1
 
    # Imprimir resultados
     for tema, recuento in temas_trabajados.items():
         print(f'{tema}: {recuento}')
+    
+   
+
     # Calcular el avance
     avance_mejorando = sum([bitacora.avance.count('mejorando') for bitacora in bitacoras])
     avance_regular = sum([bitacora.avance.count('regular') for bitacora in bitacoras])
@@ -59,13 +67,17 @@ def transformar_datos(estudiante, bitacoras):
 
     avance_ponderado = (avance_mejorando * 1.5) + (avance_regular * 1) + (avance_retroceso * 0.5)
 
+     # calcular avance lecto
+    num_avance_lecto = 0
+    num_avance_lecto = (conducta_ponderada + avance_ponderado + numero_temas + totalTerapias) - inasistencias
+    
+    lecto_dataset.append(num_avance_lecto)
     avances_dataset.append(avance_ponderado)
     # Calcular la conducta total del niño actual
 
     # Agregar la conducta del niño actual a la lista de conductas del dataset
     conductas_dataset.append(conducta_ponderada)
     
-
     # Clasificar en categorías según cuartiles
     df = pd.DataFrame(conductas_dataset, columns=['Total'])
     q1 = df['Total'].quantile(0.25)
@@ -73,6 +85,7 @@ def transformar_datos(estudiante, bitacoras):
     q3 = df['Total'].quantile(0.75)
     conducta_total = pd.cut(df['Total'], bins=[float('-inf'), q1, q2, float('inf')], labels=['Bajo', 'Medio', 
                                                                                              'Alto']).values[-1]
+    print("la condicta es", conducta_total)
 
 
     # Clasificar en categorías según cuartiles para avance
@@ -84,9 +97,21 @@ def transformar_datos(estudiante, bitacoras):
                           labels=['Bajo', 'Medio', 'Alto']).values[-1]
 
 
+    # Clasificar en categorías según cuartiles para avanceLecto
+    df_avance_lecto = pd.DataFrame(lecto_dataset, columns=['Total'])
+    q1_avance_lecto = df_avance_lecto['Total'].quantile(0.25)
+    q2_avance_lecto = df_avance_lecto['Total'].median()
+    q3_avance_lecto = df_avance_lecto['Total'].quantile(0.75)
+    avance_total_lecto = pd.cut(df_avance_lecto['Total'], bins=[float('-inf'), q1_avance_lecto, q2_avance_lecto, float('inf')],
+                          labels=['Bajo', 'Medio', 'Alto']).values[-1]
+    
+    print("el avance essss:", avance_total_lecto)
+
     # Mapear las categorías a valores numéricos para avance
     mapeo_categorias_avance = {'Bajo': 1, 'Medio': 2, 'Alto': 3}
+
     avance = mapeo_categorias_avance[avance_total]
+
 
     # Mapear las categorías a valores numéricos
     mapeo_categorias = {'Bajo': 1, 'Medio': 2, 'Alto': 3}
@@ -100,6 +125,7 @@ def transformar_datos(estudiante, bitacoras):
         'totalTerapias': totalTerapias,
         'conducta': conducta,
         'avance': avance,
+        'avanceLectoescritura':avance_total_lecto,
         **temas_trabajados
     }
 

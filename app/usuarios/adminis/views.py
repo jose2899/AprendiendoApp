@@ -41,8 +41,8 @@ class ListarAdminisView(ListView):
 
 class VerAdminisView(DetailView):
     model = Adminis
-    template_name = 'usuarios/verAdmin.html'  # Reemplaza 'usuarios/detalle_representante.html' con la ruta correcta a tu plantilla
-    context_object_name = 'objects'  # Esto define el nombre de la variable en la plantilla
+    template_name = 'usuarios/verAdmin.html'  
+    context_object_name = 'objects'  
 
 class EditarAdminisView(UpdateView):
     model = Adminis

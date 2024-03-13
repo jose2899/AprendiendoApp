@@ -7,7 +7,7 @@
       <div class="col-md-12">
         <div class="card">
           <div class="card-header">
-            <h4>Modulo Predictivo</h4>
+            <h4>Módulo Predictivo</h4>
           </div>
           <div class="card-body">
             <div class="row">
@@ -28,7 +28,7 @@
                       <div class="card-body" id="detalles_fase1">
                         <!-- Detalles de la fase 1 -->
                         <h5>Selección de estudiante a predecir</h5>
-                        <p>Aquí puedes seleccionar un estudiante de la lista.</p>
+                        <p>Seleccionar un estudiante de la lista.</p>
                         <div class="list-group" id="lista_estudiantes">
                           {% for planificacion in estudiantes_tdah %}
                             <a href="#" class="list-group-item list-group-item-action" onclick="seleccionarEstudiante('{{ planificacion.estudiante.pk }}')"> <!-- Corregido aquí -->
@@ -52,7 +52,7 @@
                                 <input type="hidden" name="estudiante_id" value="{{ estudiante.id }}">
                                 <button class="btn btn-primary mr-2" type="button" onclick="transformarDatos();">Transformar Datos</button>
                               </form>
-                              <button id="btnSiguienteFase2" class="btn btn-success" onclick="avanzarFase(2); actualizarEstadoBoton();" data-id-estudiante="{{ estudiante.id }}">Siguiente Fase</button>
+                              <button id="btnSiguienteFase2" class="btn btn-success" onclick="avanzarFase(2)" disabled data-id-estudiante="{{ estudiante.id }}">Siguiente Fase</button>
                             </div>
                             
                             <!-- Detalles del estudiante (fase 2) -->
@@ -115,17 +115,37 @@
                         <h5>Fase 4: Realizar Predicción</h5>
                         <p>Detalles de la predicción.</p>
                         <button class="btn btn-primary" onclick="realizarPrediccion()" >Realizar Predicción</button>
-                        <button class="btn btn-info" onclick="abrirReporte()">Reporte</button>
+                        <button class="btn btn-info" onclick="redirigirDetallePrediccion()">Detalle de Predicción</button>
                         <!-- Sección para mostrar el resultado de la predicción -->
                         <div id="resultado_prediccion" style="display: none;">
-                          <h4>Resultado de la Predicción</h4>
-                          <p>La predicción es: <span id="resultado">{{ prediccion }}</span></p>
-                          <p>Temas Recomendados basados en importancia:</p>
+                          <h4 class="mb-3 text-center">Resultado de la Predicción</h4>
+                          <p class="h2 text-primary text-center">¡Análisis Completado!</p>
+                          <p class="lead mt-3 text-center">Según el modelo, el niño tiene un <span id="resultado" style="color: red; font-size: 20px;">{{ prediccion }}</span> avance en la lectoescritura</p>
+                          <p class="lead mt-3 text-center">Recomendamos fortalezer en los siguientes temas:</p>
                           <ul id="temas_relevantes">
-                              {% for tema in temas_relevantes %}
-                                  <li>{{ tema }}</li>
-                              {% endfor %}
+                            <div class="card">
+                              <div class="card-body">
+                                  <div class="row">
+                                    {% for tema in temas_relevantes %}
+                                      {% comment %} Asignar un rango de importancia (1 a 5) {% endcomment %}
+                                      {% with forloop.counter as rango %}
+                                      <div class="col-md-4 mb-3">
+                                        <div class="card {% if rango == 1 %}bg-danger{% elif rango == 2 %}bg-danger{% elif rango == 3 %}bg-warning{% elif rango == 4 %}bg-warning{% else %}bg-success{% endif %} text-white">
+                                            <div class="card-body text-center">
+                                                <p class="lead mt-3 h4">{{ tema }}</p>
+                                                <p class="lead mt-3 h5">Importancia: {{ rango }}</p>
+                                            </div>
+                                        </div>
+                                      </div>
+                                      {% endwith %}
+                                    {% endfor %}
+                                  </div>
+                                </div>
+                              </div>
                           </ul>
+                        </div>
+                        <div id="mensaje_error" style="display: none;">
+                          {{ mensaje_error }}
                         </div>
                         <!-- Agrega los campos y botones necesarios para la fase 4 -->
                         <a id="btnSiguienteFase4" class="btn btn-success" href="/progreso_fases/" data-id-estudiante="{{ estudiante.id }}">Finalizar</a>
@@ -138,7 +158,10 @@
           </div>
         </div>
       </div>
+        
     </div>
+
+   
 
     {% if transformacion_exitosa %}
     <script>
@@ -152,16 +175,17 @@
       }, 5000); // Ocultar el mensaje después de 5 segundos
       // Habilitar el botón de siguiente fase solo si la transformación fue exitosa
 
-      // Cambiar color de la fase 2
-      var fase2 = document.getElementById('fase2');
-      fase2.classList.add('completo');
-
     </script>
     {% endif %}
 
     {% if mensaje_confirmacion %}
     <div class="alert alert-success" role="alert">
       {{ mensaje_confirmacion }}
+    </div>
+    {% endif %}
+    {% if mensaje_error %}
+    <div class="alert alert-success" role="alert" id="mensaje_error">
+      {{ mensaje_error }}
     </div>
     {% endif %}
 
@@ -177,7 +201,7 @@
   }
 
   .completo {
-    background-color: #f1c40f; /* Amarillo */
+    background-color: #1cb424; /* Amarillo */
   }
 
   .card-body div {
@@ -217,20 +241,18 @@
     event.target.classList.add('seleccionado');
 
     // Establecer el estudiante seleccionado en el botón de siguiente fase correspondiente
-    var btnSiguienteFase = document.getElementById('btnSiguienteFase1');
-    btnSiguienteFase.dataset.idEstudiante = estudianteId; // Corregido aquí
-    btnSiguienteFase.disabled = false;
+    var btnSiguienteFase1 = document.getElementById('btnSiguienteFase1');
+    btnSiguienteFase1.dataset.idEstudiante = estudianteId; // Corregido aquí
+    btnSiguienteFase1.disabled = false;
   }
 
-    // Simulación de completar una fase (cambia el color a amarillo)
+    // Simulación de completar una fase (cambia el color)
   function completarFase(numFase) {
     var fase = document.getElementById('fase' + numFase);
     fase.classList.add('completo');
-
-    // Habilitar botón de siguiente fase correspondiente
-    var btnSiguienteFase = document.getElementById('btnSiguienteFase' + numFase);
-    btnSiguienteFase.disabled = false;
   }
+
+ 
 
   // Función para mostrar los detalles de una fase
   function mostrarDetalles(idFase) {
@@ -242,6 +264,12 @@
 
     // Mostrar los detalles de la fase correspondiente
     document.getElementById('detalles_' + idFase).style.display = 'block';
+
+    // Completar la fase solo si no está completada
+    var faseCompleta = localStorage.getItem('fase' + idFase + '_completa');
+    if (faseCompleta === 'true') {
+        completarFase(idFase);
+    }
 
     // Mostrar u ocultar botones según la fase
     if (idFase === 'fase2') {
@@ -264,20 +292,24 @@
     
     // Guardar el estado actual de la fase en el almacenamiento local
     localStorage.setItem('faseActual', numFase);
-    
+    // Cambiar el color de la fase actual
+    // Actualizar el estado de completitud de la fase actual en el almacenamiento local
+    localStorage.setItem('fase' + numFase + '_completa', 'true');
+    // Verificar si todas las fases anteriores están completadas
+
+
     var url = '';
-    switch (numFase) {
-      case 1:
+    switch (numFase+1) {
+      case 2:
           url = '{% url 'transformar_datosF' estudiante_id=0 %}'.replace('0', idEstudiante);
           break;
-      case 2:
+      case 3:
           url = '{% url 'cargar_modelo' estudiante_id=0 %}'.replace('0', idEstudiante);
           break;
-      case 3:
+      case 4:
           url = '{% url 'realizar_prediccion' estudiante_id=0 %}'.replace('0', idEstudiante);
           break;
       default:
-          url = '{% url 'transformar_datosF' estudiante_id=0 %}'.replace('0', idEstudiante);
           break;
       }
 
@@ -288,9 +320,7 @@
     document.getElementById('detalles_fase' + siguienteNumFase).style.display = 'block';
 
     // Cambiar el título de la fase
-    document.getElementById('faseTitulo').innerHTML = "<h4>Detalles de la Fase " + (numFase + 1) + "</h4>";
     window.location.href = url;
-    
   }
 
   // Función para mostrar u ocultar los detalles del estudiante
@@ -307,11 +337,8 @@
     }
   }
   
-  function transformarDatos() {
-    console.log("Se hizo clic en el botón Transformar Datos.");
+  function transformarDatos(event) {
     var idEstudiante = document.querySelector('input[name="estudiante_id"]').value;
-    console.log("ID del estudiante:", idEstudiante);
-    
     // Realizar otras operaciones necesarias
     
     // Envío del formulario
@@ -321,52 +348,30 @@
     // Mostrar mensaje en HTML
     var mensajeTransformacion = document.getElementById('mensajeTransformacion');
     var mensajeContenido = document.getElementById('mensajeContenido');
-    mensajeContenido.innerText = "{% if transformacion_exitosa %}La transformación se realizó correctamente.{% else %}La transformación no se realizó correctamente.{% endif %}";
+    mensajeContenido.innerText = "La transformación se realizó correctamente.";
+    mensajeTransformacion.style.display = 'block';
     
     // Almacenar el estado de la transformación en el almacenamiento local
     localStorage.setItem('transformacion_exitosa', 'true');
     
     // Habilitar el botón de siguiente fase solo si la transformación fue exitosa
-    document.getElementById('btnSiguienteFase2').removeAttribute('disabled');
+    var btnSiguienteFase2 = document.getElementById('btnSiguienteFase2');
+    btnSiguienteFase2.disabled = false;
+    
+    // Almacenar el estado del botón en el almacenamiento local antes de que la página se recargue
+    window.onbeforeunload = function() {
+        localStorage.setItem('btnSiguienteFase2_estado', btnSiguienteFase2.disabled ? 'disabled' : 'enabled');
+    };
     
     // Ocultar el mensaje después de 5 segundos
     setTimeout(function() {
       mensajeTransformacion.style.display = 'none';
     }, 5000); // 5000 milisegundos = 5 segundos
-  
-  } 
-  
-  
-
-  window.onload = function() {
-    
-    var faseGuardada = localStorage.getItem('faseActual');
-    //if (faseGuardada) {
-     //   mostrarDetalles('fase' + faseGuardada);
-    //}
-
-    var transformacion_exitosa = "{{ transformacion_exitosa }}"; // Obtener el valor de transformacion_exitosa desde el contexto de la plantilla
-
-    if (window.location.href.includes("/transformar_datos/")) {
-        faseGuardada = 2;
-    } else if (window.location.href.includes("/cargar_modelo/")) {
-        faseGuardada = 3;
-    } else if (window.location.href.includes("/realizar_prediccion/")) {
-        faseGuardada = 4;
-    } else {
-      mostrarDetalles('fase1');
-    }
-
-    if (faseGuardada) {
-        mostrarDetalles('fase' + faseGuardada);
-    }
-
-    if (transformacion_exitosa === "True") {
-      // Si la transformación fue exitosa, habilitar el botón de siguiente fase
-      document.getElementById("btnSiguienteFase2").removeAttribute("disabled");
-    }
-    
   }
+
+
+
+
   function actualizarEstadoBoton() {
     var btnSiguienteFase2 = document.getElementById('btnSiguienteFase2');
     var transformacion_exitosa = "{{ transformacion_exitosa }}";
@@ -385,6 +390,10 @@
     // Mostrar un mensaje de confirmación cuando se haya cargado el modelo
     mensajeCargaModelo.innerText = "Modelo cargado exitosamente.";
     mensajeCargaModelo.style.display = 'block';
+    // Almacenar el estado de la carga del modelo en el almacenamiento local
+    localStorage.setItem('modelo_cargado', 'true');
+     // Habilitar el botón de siguiente fase 3
+    btnSiguienteFase3.disabled = false;
   }
 
 
@@ -415,11 +424,65 @@
 
         // Mostrar la sección de resultado de predicción
         document.getElementById('resultado_prediccion').style.display = 'block';
+        completarFase(3);
     })
     .catch(error => {
         console.error('Error al realizar la predicción:', error);
     });
   }
+
+
+  function redirigirDetallePrediccion() {
+        var idEstudiante = document.getElementById('btnSiguienteFase4').getAttribute('data-id-estudiante');
+        window.location.href = '/detalle_prediccion/' + idEstudiante + '/';
+  }
+
+  window.onload = function() {
+    
+    var faseGuardada = localStorage.getItem('faseActual');
+    var btnSiguienteFase2 = document.getElementById('btnSiguienteFase2');
+    var estadoAlmacenado = localStorage.getItem('btnSiguienteFase2_estado');
+
+    // Si el estado almacenado está deshabilitado, deshabilitar el botón de siguiente fase 2, de lo contrario, habilitarlo
+    btnSiguienteFase2.disabled = estadoAlmacenado === 'disabled';
+
+    
+    // Obtener el estado de completitud de las fases anteriores y cambiar los colores en consecuencia
+    for (var i = 1; i <= faseGuardada; i++) {
+        var faseCompleta = localStorage.getItem('fase' + i + '_completa');
+        if (faseCompleta === 'true') {
+            completarFase(i);
+            completarFase(2);
+        }
+    }
+
+    // Reiniciar el estado de completarFase solo si la URL actual corresponde a la página específica
+    if (window.location.href.includes("/progreso_fases/")) {
+        completarFase(1)
+        localStorage.clear(); // Reiniciar todos los datos almacenados en el localStorage
+    }
+    
+
+    if (window.location.href.includes("/transformar_datos/")) {
+        faseGuardada = 2;
+        document.getElementById('faseTitulo').innerHTML = "<h4>Detalles de la Fase " + (2) + "</h4>";
+    } else if (window.location.href.includes("/cargar_modelo/")) {
+        faseGuardada = 3;
+        document.getElementById('faseTitulo').innerHTML = "<h4>Detalles de la Fase " + (3) + "</h4>";
+        completarFase(3);
+    } else if (window.location.href.includes("/realizar_prediccion/")) {
+        faseGuardada = 4;
+        document.getElementById('faseTitulo').innerHTML = "<h4>Detalles de la Fase " + (4) + "</h4>";
+        completarFase(4);
+        
+    } else {
+      mostrarDetalles('fase1');
+     
+    }
+    // Mostrar los detalles de la fase guardada, si existe
+    mostrarDetalles('fase' + faseGuardada);
+  }
+
 
 
 

@@ -33,7 +33,7 @@ class PlanificacionCreateView(CreateView):
         planificacion.diagnostico = diagnostico
         planificacion.save()
 
-        return redirect('index')  # Redirige a donde desees después de crear al estudiante
+        return redirect('index')  
 
     
 
@@ -56,8 +56,8 @@ class PlanificacionDeleteView(DeleteView):
 
 class VerPlanificacionView(DetailView):
     model = Planificacion
-    template_name = 'planificaciones/verPlanificacion.html'  # Reemplaza 'usuarios/detalle_representante.html' con la ruta correcta a tu plantilla
-    context_object_name = 'objects'  # Esto define el nombre de la variable en la plantilla
+    template_name = 'planificaciones/verPlanificacion.html' 
+    context_object_name = 'objects' 
 
 #semanas
 
@@ -132,7 +132,6 @@ class PlanificacionSemanaListView(ListView):
     def get_queryset(self):
         planificacion_id = self.kwargs['pk']
         semana_id = self.kwargs.get('pk1', None)
-        
         # Obtener la planificación y, opcionalmente, la semana específica si se proporciona pk1
         if semana_id:
             return PlanificacionSemana.objects.filter(planificacion=planificacion_id, numero_semana=semana_id)
@@ -141,16 +140,11 @@ class PlanificacionSemanaListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['planificacion_id'] = self.kwargs['pk']  # Pasamos el ID de la planificación
-        
+        context['planificacion_id'] = self.kwargs['pk']  # Pasamos el ID de la planificación 
         planificacion = get_object_or_404(Planificacion, pk=self.kwargs['pk'])
-
         estudiante = planificacion.estudiante if planificacion.estudiante else "Planificación"
-
         # Agrega el nombre al contexto
         context['estudiante'] = estudiante
-
-        
         return context
     
     

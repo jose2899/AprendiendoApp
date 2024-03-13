@@ -33,7 +33,7 @@ class ListarBitacoraView(ListView):
         return context
 
     def get_queryset(self):
-        return Bitacora.objects.all()  # Puedes ajustar esto según tus necesidades
+        return Bitacora.objects.all()  
     
 class VerBitacoraView(DetailView):
     model = Bitacora
@@ -73,7 +73,6 @@ class CrearNuevaBitacoraView(CreateView):
     def get_success_url(self):
         return reverse('ver_bitacora', kwargs={'pk': self.object.bitacora.id})
 
-
     
 class DetalleBitacoraView(DetailView):
     model = Bitacora
@@ -86,3 +85,6 @@ class DetalleBitacoraView(DetailView):
         context['bitacoras_estudiante'] = Bitacora.objects.filter(estudiante=context['bitacora'].estudiante).exclude(pk=context['bitacora'].pk)
         context['nueva_bitacora_form'] = BitacoraForm()
         return context
+    
+
+    

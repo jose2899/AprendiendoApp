@@ -22,11 +22,9 @@ class ListarRepresentanteView(ListView):
     model = Representante
     template_name = 'usuarios/listarUsuarios.html' 
     paginate_by = 10
-    context_object_name = 'objects'  # Nombre de la variable en la plantilla que contiene la lista de Representantes
+    context_object_name = 'objects'  
     
     def get_queryset(self):
-        # Obtén la lista de representantes que deseas mostrar
-        # Puedes filtrarlos de acuerdo a tus necesidades aquí
         return Representante.objects.all()
     
 class CrearEstudianteView(CreateView):
@@ -45,7 +43,7 @@ class CrearEstudianteView(CreateView):
         estudiante.representante = representante
         estudiante.save()
 
-        return redirect('index')  # Redirige a donde desees después de crear al estudiante
+        return redirect('index') 
 
 
 class ListarEstudianteView(ListView):
@@ -57,8 +55,8 @@ class ListarEstudianteView(ListView):
 
 class VerRepresentanteView(DetailView):
     model = Representante
-    template_name = 'usuarios/verRepresentante.html'  # Reemplaza 'usuarios/detalle_representante.html' con la ruta correcta a tu plantilla
-    context_object_name = 'representante'  # Esto define el nombre de la variable en la plantilla
+    template_name = 'usuarios/verRepresentante.html' 
+    context_object_name = 'representante'  
 
 
 class EditarRepresentanteView(UpdateView):
@@ -75,8 +73,8 @@ class EliminarRepresentanteView(DeleteView):
 
 class VerEstudianteView(DetailView):
     model = Estudiante
-    template_name = 'usuarios/verEstudiante.html'  # Reemplaza 'usuarios/detalle_representante.html' con la ruta correcta a tu plantilla
-    context_object_name = 'objects'  # Esto define el nombre de la variable en la plantilla
+    template_name = 'usuarios/verEstudiante.html' 
+    context_object_name = 'objects'  
 
 
 class EditarEstudianteView(UpdateView):
