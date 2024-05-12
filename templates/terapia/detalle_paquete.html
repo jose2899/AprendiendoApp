@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Información del Psicólogo y Horas</title>
+</head>
+<body>
+    <h1>Información del Psicólogo y Horas para el Estudiante</h1>
+    {% if info_psicologos_horas %}
+        {% with first_info=info_psicologos_horas.0 %}
+        <form method="post">
+            {% csrf_token %}
+            <input type="hidden" name="terapia_id" value="{{ first_info.terapia.id }}">
+            {{ first_info.form.as_p }}
+            <button type="submit">Guardar Fecha de Inicio</button>
+        </form>
+            <h2>Terapia para el Paquete {{ first_info.terapia.paquete }}</h2>
+            
+            <p><strong>Estudiante:</strong> {{ first_info.terapia.estudiante }}</p>
+            <p><strong>Psicólogo:</strong> {{ first_info.terapia.psicologo }}</p>
+            <h3>Horarios:</h3>
+            <ul>
+                {% for horario in first_info.horarios %}
+                    <li>{{ horario.dia_semana.nombre }} - {{ horario.hora_inicio }}</li>
+                {% endfor %}
+            </ul>
+            <!-- Formulario para agregar fecha de inicio (solo se muestra una vez) -->
+
+        {% endwith %}
+        {% if first_info.form.errors %}
+            <p style="color: red;">{{ first_info.form.errors }}</p>
+        {% endif %}
+        {% for info in info_psicologos_horas %}
+            {% if not forloop.first %}
+                <hr> <!-- Separador entre cada conjunto de información de terapia -->
+                <p><strong>Psicólogo:</strong> {{ info.terapia.psicologo }}</p>
+                <h3>Horarios:</h3>
+                <ul>
+                    {% for horario in info.horarios %}
+                        <li>{{ horario.dia_semana.nombre }} - {{ horario.hora_inicio }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        {% endfor %}
+    {% else %}
+        <p>No hay información disponible.</p>
+    {% endif %}
+</body>
+</html>

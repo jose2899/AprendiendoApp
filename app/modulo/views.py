@@ -10,6 +10,7 @@ from sklearn.model_selection import cross_val_predict
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, confusion_matrix
 from app.modulo.forms import ModeloForm
 from sklearn.metrics import classification_report
+from wkhtmltopdf.views import PDFTemplateResponse
 
 import joblib
 import pandas as pd
@@ -133,7 +134,7 @@ def realizar_prediccion(request, estudiante_id):
 
     return render(request, 'modulo/fases_proceso.html', context)
 
-def detalle_prediccion(request, estudiante_id):
+def exportar_prediccion_pdf(request, estudiante_id):
     estudiante = get_object_or_404(Estudiante, pk=estudiante_id)
     planificaciones = Planificacion.objects.filter(estudiante=estudiante)
     bitacoras = NuevaBitacora.objects.filter(bitacora__estudiante=estudiante)
@@ -188,6 +189,9 @@ def detalle_prediccion(request, estudiante_id):
         context['reporte_clasificacion'] = reporte_clasificacion
         context['matriz_confusion'] = matriz.tolist()
 
-        return render(request, 'modulo/resultado_prediccion.html', context)
+        return PDFTemplateResponse(request=request,
+                               template='modulo/resultado_prediccion.html',
+                               filename=f'detalle_prediccion_{estudiante_id}.pdf',
+                               context=context)
 
     return render(request, 'modulo/fases_proceso.html', context)

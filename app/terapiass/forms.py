@@ -1,55 +1,36 @@
 # terapias/forms.py
 from django import forms
-from app.terapiass.models import Terapia, AsignacionEstudiante, AsignacionPsicologo, HorarioTerapia
+from django.forms import inlineformset_factory
+from app.terapiass.models import Terapia, Horario, AsignacionFechaTerapia, Asistencia
 from app.terapiass.models import DiaSemana
-from app.terapiass.utils import calculate_start_date
-from datetime import datetime, timedelta
-from app.usuarios.usuario.models import Estudiante
 from app.usuarios.psicologo.models import Psicologo
-from django.forms.widgets import CheckboxSelectMultiple
-from app.servicios.models import Paquete
-from django.forms import formset_factory
-from django.forms import modelformset_factory
+from app.usuarios.usuario.models import Estudiante
 
 
 class TerapiaForm(forms.ModelForm):
     class Meta:
         model = Terapia
-        fields = ['paquete', 'fecha_inicio']
+        fields = ['paquete', 'psicologo', 'estudiante']
+  
+class HorarioForm(forms.ModelForm):
+    class Meta:
+        model = Horario
+        fields = ['dia_semana', 'hora_inicio']
         widgets = {
-            'fecha_inicio': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+            'hora_inicio': forms.TimeInput(attrs={'type': 'time'}),
         }
 
-class AsignacionPsicologoForm(forms.ModelForm):
-    
-    dia_semana = forms.ModelMultipleChoiceField(
-        queryset=DiaSemana.objects.all(),
-        widget=forms.CheckboxSelectMultiple,
-    )
+HorarioFormSet = inlineformset_factory(Terapia, Horario, form=HorarioForm, extra=6, can_delete=True)
 
+class FechaTerapiaForm(forms.ModelForm):
     class Meta:
-        model = AsignacionPsicologo
-        fields = ['psicologo', 'dia_semana']
-
-    def __init__(self, *args, **kwargs):
-        super(AsignacionPsicologoForm, self).__init__(*args, **kwargs)
-        self.fields['dia_semana'].widget.attrs.update({'class': 'selectpicker'})
-    
-    def set_dia_semana_choices(self):
-        self.fields['dia_semana'].choices = [(dia.nombre, dia.nombre) for dia in DiaSemana.objects.all()]
-
-AsignacionPsicologoFormSet = modelformset_factory(AsignacionPsicologo, form=AsignacionPsicologoForm, extra=1)
-
-
-class AsignacionEstudianteForm(forms.ModelForm):
+        model = AsignacionFechaTerapia
+        fields = ['fecha_inicio']
+        widgets = {
+            'fecha_inicio': forms.DateInput(attrs={'type': 'date'}),
+        }
+        
+class AsistenciaForm(forms.ModelForm):
     class Meta:
-        model = AsignacionEstudiante
-        fields = ['estudiante']
-
-
-class HorarioTerapiaForm(forms.ModelForm):
-    class Meta:
-        model = HorarioTerapia
-        fields = ['asignacion_psicologo', 'hora_inicio', 'hora_fin']
-
-HorarioTerapiaFormSet = forms.inlineformset_factory(AsignacionPsicologo, HorarioTerapia, form=HorarioTerapiaForm, extra=0)
+        model = Asistencia
+        fields = ['estudiante', 'asistio']

@@ -2,28 +2,62 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Detalles de Predicción</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f8f8;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1, h2 {
+            color: #333;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            margin-bottom: 5px;
+        }
+        pre {
+            white-space: pre-wrap;
+            background-color: #f5f5f5;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+    </style>
 </head>
 <body>
-    <h1>Detalles de Predicción</h1>
-    <h2>Predicción:</h2>
-    <p>La predicción es: {{ prediccion }}</p>
+    <div class="container">
+        <h1>Detalles de Predicción</h1>
+        
+        <h2>Predicción:</h2>
+        <p>La predicción es: <strong>{{ prediccion }}</strong></p>
 
-    <h2>Temas Relevantes:</h2>
-    <ul>
-        {% for tema in temas_relevantes %}
-            <li>{{ tema }}</li>
-        {% endfor %}
-    </ul>
+        <h2>Temas Relevantes:</h2>
+        <ul>
+            {% for tema in temas_relevantes %}
+                <li>{{ tema }}</li>
+            {% endfor %}
+        </ul>
 
-    <h2>Precisión de Prueba:</h2>
-    <p>La precisión de prueba es: {{ precision_prueba }}</p>
+        <h2>Precisión de Prueba:</h2>
+        <p>La precisión de prueba es: <strong>{{ precision_prueba }}</strong></p>
 
-    <h2>Reporte de Clasificación:</h2>
-    <pre>{{ reporte_clasificacion }}</pre>
-
-    <h2>Matriz de Confusión:</h2>
-    <pre>{{ matriz_confusion }}</pre>
+        <h2>Reporte de Clasificación:</h2>
+        <pre>{{ reporte_clasificacion }}</pre>
+    </div>
 </body>
 </html>

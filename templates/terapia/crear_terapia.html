@@ -1,78 +1,18 @@
-<form method="post" action="{% url 'crear_terapia' %}">
-  {% csrf_token %}
-  {{ terapia_form.as_p }}
+<form method="post">
+    {% csrf_token %}
+    <h2>Crear Terapia</h2>
+    {{ terapia_form.as_p }}
 
-  <!-- Aquí se agregarán los formularios de asignación de psicólogos -->
-  <div id="psicologos-container">
-    <h2>Asignar Psicólogo</h2>
-    {{ asignacion_form.as_p }}
-  </div>
-
-  <!-- Agrega un campo de selección para "Día de la semana" -->
-  {{ horario_form.dia_semana }}
-
-  <!-- Campo de "Hora de inicio" oculto por defecto -->
-  <div id="hora-inicio" style="display: none;">
-    {{ horario_form.hora_inicio }}
-  </div>
-
-  <button type="submit" name="action" value="guardar">Guardar Formulario</button>
-  <button type="submit" name="action" value="crear">Crear Terapia</button>
-</form>
-
-{% if terapia_form.errors %}
-  <div class="alert alert-danger mt-3" role="alert">
-    <strong>Error:</strong> Por favor, corrige los errores a continuación.
-    <ul>
-      {% for field_errors in terapia_form.errors.values %}
-        {% for error in field_errors %}
-          <li>{{ error }}</li>
-        {% endfor %}
-      {% endfor %}
-    </ul>
-  </div>
-{% endif %}
-
-{% for message in messages %}
-  <div class="alert alert-danger mt-3" role="alert">
-    {{ message }}
-  </div>
-{% endfor %}
-
-
-
-<script>
-  document.addEventListener('DOMContentLoaded', function() {
-    let psicologosContainer = document.querySelector('#psicologos-container');
-    let addPsicologoButton = document.querySelector('#add-psicologo-button');
-
-    let psicologoCount = 0;  // Contador de psicólogos
-
-    addPsicologoButton.addEventListener('click', function() {
-      psicologoCount++;
-      let newPsicologoForm = document.createElement('div');
-      newPsicologoForm.classList.add('psicologo-form');
-
-      newPsicologoForm.innerHTML = `
-        <h2>Asignar Psicólogo ${psicologoCount}</h2>
-        {{ asignacion_form.as_p }}
-      `;
-
-      psicologosContainer.appendChild(newPsicologoForm);
-    });
-  });
-</script>
-
-<script>
-  // Función para mostrar/ocultar el campo "Hora de inicio" según la selección del "Día de la semana"
-  function showHideHoraInicio() {
-    var diaSemana = document.querySelector('#id_dia_semana').value;
-    var horaInicio = document.querySelector('#hora-inicio');
+    <h2>Agregar Horario</h2>
+    {{ horario_formset.management_form }}
     
-    if (diaSemana) {
-      horaInicio.style.display = 'block';
-    } else {
-      horaInicio.style.display = 'none';
-    }
-  }
-</script>
+    <table>
+        {% for form in horario_formset %}
+            {{ form.as_table }}
+        {% endfor %}
+    </table>
+    
+
+    <button type="submit" name="action" value="save" class="btn btn-primary">Guardar y continuar</button>
+    <button type="submit" name="action" value="add_psicologo" class="btn btn-secondary">Agregar Otro Psicólogo</button>
+</form>

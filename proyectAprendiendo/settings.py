@@ -50,7 +50,8 @@ INSTALLED_APPS = [
     'widget_tweaks',
     'app.horario',
     'app.terapiass',
-    'app.modulo'
+    'app.modulo',
+    'wkhtmltopdf'
 ]
 
 MIDDLEWARE = [
@@ -154,3 +155,5 @@ EMAIL_HOST_PASSWORD = '0980089922'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+WKHTMLTOPDF_CMD = 'C:/Program Files/wkhtmltopdf/bin/wkhtmltopdf.exe'

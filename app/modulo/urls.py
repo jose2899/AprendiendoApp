@@ -1,7 +1,7 @@
 from django.urls import path
 
 #vistas
-from app.modulo.views import seleccionar_estudiante, transformar_datosF, cargar_modelo, realizar_prediccion, detalle_prediccion
+from app.modulo.views import seleccionar_estudiante, transformar_datosF, cargar_modelo, realizar_prediccion, exportar_prediccion_pdf
 from django.views.generic import TemplateView
 
 urlpatterns = [
@@ -9,5 +9,5 @@ urlpatterns = [
     path('progreso_fases/<int:estudiante_id>/transformar_datos/', transformar_datosF, name='transformar_datosF'),
     path('progreso_fases/<int:estudiante_id>/cargar_modelo/', cargar_modelo, name='cargar_modelo'),
     path('progreso_fases/<int:estudiante_id>/realizar_prediccion/', realizar_prediccion, name='realizar_prediccion'),
-    path('detalle_prediccion/<int:estudiante_id>/', detalle_prediccion, name='detalle_prediccion'),
+    path('exportar_prediccion/<int:estudiante_id>/', exportar_prediccion_pdf, name='exportar_prediccion'),
 ]

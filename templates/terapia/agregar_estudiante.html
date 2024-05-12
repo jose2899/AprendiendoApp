@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agregar Estudiante a Terapia</title>
+</head>
+<body>
+    <h1>Agregar Estudiante a Terapia</h1>
+    <p>Terapia: {{ terapia }}</p>
+    <h2>Detalles de la Terapia</h2>
+    <ul>
+        <li>Psicólogo: {{ terapia.psicologo }}</li>
+        <li>Días de la semana:
+            <ul>
+                {% for horario in terapia.horarios.all %}
+                    <li>{{ horario.dia_semana }} - {{ horario.hora_inicio }}</li>
+                {% endfor %}
+            </ul>
+        </li>
+    </ul>
+    <h2>Psicólogos Disponibles</h2>
+    <ul>
+        {% for psicologo in psicologos %}
+            <li>{{ psicologo }}</li>
+        {% endfor %}
+    </ul>
+    
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+
+        <button type="submit">Agregar Estudiante</button>
+    </form>
+</body>
+</html>
