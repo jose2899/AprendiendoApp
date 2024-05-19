@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  {% load static %}
+  <meta charset="UTF-8">
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
+  <title>aprendiendo</title>
+
+  <!-- General CSS Files -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+  <!--Calendario-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.9.0/main.min.css">
+
+  <!-- CSS Libraries -->
+{% block plugins_css %}{% endblock %}
+
+  <!-- Template CSS -->
+  <link rel="stylesheet" href="{% static 'stisla/css/style.css' %}">
+  <link rel="stylesheet" href="{% static 'stisla/css/components.css' %}">
+  
+
+</head>
+
+<body>
+  <div id="app">
+    <div class="main-wrapper">
+      <div class="navbar-bg"></div>
+      <nav class="navbar navbar-expand-lg main-navbar">
+        <form class="form-inline mr-auto">
+          <ul class="navbar-nav mr-3">
+            <li><a href="#" data-toggle="sidebar" class="nav-link nav-link-lg"><i class="fas fa-bars"></i></a></li>
+            <li><a href="#" data-toggle="search" class="nav-link nav-link-lg d-sm-none"><i class="fas fa-search"></i></a></li>
+          </ul>
+
+          <div class="search-element">
+            <form method="GET" action="{% url 'index' %}" class="form-inline">
+                <input class="form-control" type="search" name="q" placeholder="Buscar" aria-label="Search" data-width="250">
+                <button class="btn" type="submit"><i class="fas fa-search"></i></button>
+            </form>
+            <div class="search-backdrop"></div>
+            <div class="search-result">
+                {% if query %}
+                    <div class="search-header">
+                        Resultados
+                    </div>
+                    <!-- Resultados de estudiantes -->
+                    {% if resultados_estudiantes %}
+                        <div class="search-item">
+                            <a href="#">
+                                <img class="mr-3 rounded" width="30" src="../assets/img/products/product-1-50.png" alt="product">
+                                Estudiantes
+                            </a>
+                        </div>
+                    {% endif %}
+                    <!-- Resultados de administradores -->
+                    {% if resultados_admins %}
+                        <div class="search-item">
+                            <a href="#">
+                                <img class="mr-3 rounded" width="30" src="../assets/img/products/product-1-50.png" alt="product">
+                                Administradores
+                            </a>
+                        </div>
+                    {% endif %}
+                    <!-- Resultados de psicólogos -->
+                    {% if resultados_psicologos %}
+                        <div class="search-item">
+                            <a href="#">
+                                <img class="mr-3 rounded" width="30" src="../assets/img/products/product-1-50.png" alt="product">
+                                Psicólogos
+                            </a>
+                        </div>
+                    {% endif %}
+                {% endif %}
+            </div>
+          </div>
+      
+        </form>
+        
+        <ul class="navbar-nav navbar-right">
+          <li class="dropdown"><a href="#" data-toggle="dropdown" class="nav-link dropdown-toggle nav-link-lg nav-link-user">
+            <img alt="image" src="../assets/img/avatar/avatar-1.png" class="rounded-circle mr-1">
+            <div class="d-sm-none d-lg-inline-block">{{ request.user.email }}</div></a>
+            <div class="dropdown-menu dropdown-menu-right">
+              <div class="dropdown-title">Logeado {{ request.user.last_login }}</div>
+              <a href="features-profile.html" class="dropdown-item has-icon">
+                <i class="far fa-user"></i> Perfil
+              </a>
+              <a href="features-activities.html" class="dropdown-item has-icon">
+                <i class="fas fa-bolt"></i> Actividades
+              </a>
+              <a href="features-settings.html" class="dropdown-item has-icon">
+                <i class="fas fa-cog"></i> Configuración
+              </a>
+              <div class="dropdown-divider"></div>
+              <a href="{% url 'logout' %}" class="dropdown-item has-icon text-danger">
+                <i class="fas fa-sign-out-alt"></i> Salir
+              </a>
+            </div>
+          </li>
+        </ul>
+      </nav>
+      <div class="main-sidebar sidebar-style-2">
+        <aside id="sidebar-wrapper">
+          <div class="sidebar-brand">
+            <a href="index.html">Aprendiendo Juntos</a>
+          </div>
+          <div class="sidebar-brand sidebar-brand-sm">
+            <a href="index.html">AP</a>
+          </div>
+          {% include "menu.html" %}
+        </aside>
+      </div>
+
+      <!-- Main Content -->
+      <div class="main-content">
+{% block content %}{% endblock %}
+      </div>
+      
+         <!--  Footer -->
+      {% include 'footer.html' %}
+      <!--  End Footer -->
+    
+    </div>
+
+  </div>
+
+  <!-- General JS Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.nicescroll/3.7.6/jquery.nicescroll.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+  
+  <!--Calendario-->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.9.0/main.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+  
+    
+
+  <!-- ScrollReveal-->
+  <script src="{% static 'scrollreveal/scrollreveal.min.js' %}"></script>
+
+  <!--Stisla-->
+  <script src="{% static 'stisla/js/stisla.js' %}"></script>
+  
+
+  <!-- JS Libraies -->
+  {% block plugins_js %}
+
+  {% endblock %}
+
+
+  <!-- Page Specific JS File -->
+ {% block page_js %}
+  
+  {% endblock %}
+  
+    <!-- Template JS File -->
+    <script src="{% static 'stisla/js/scripts.js' %}"></script>
+    <script src="{% static 'stisla/js/custom.js' %}"></script>
+    
+</body>
+</html>

@@ -1,0 +1,37 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+  <h2>Lista de Eventos</h2>
+  <a href="{% url 'crear_evento' %}" class="btn btn-success">Crear Evento</a>
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>Título</th>
+        <th>Fecha</th>
+        <th>Estudiante</th>
+        <th>Observación</th>
+        <th>Fecha de Término</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for evento in eventos %}
+        <tr>
+          <td>{{ evento.titulo }}</td>
+          <td>{{ evento.fecha }}</td>
+          <td>{{ evento.estudiante }}</td>
+          <td>{{ evento.observacion }}</td>
+          <td>{{ evento.fecha_termino }}</td>
+          <td>
+            <a href="#" class="btn btn-primary">Editar</a>
+            <a href="#" class="btn btn-danger">Eliminar</a>
+          </td>
+        </tr>
+      {% empty %}
+        <tr>
+          <td colspan="6">No hay eventos disponibles.</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}

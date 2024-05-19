@@ -1,0 +1,104 @@
+{% extends 'layout.html' %}
+{% load static %}
+
+{% block content %}
+<section class="section">
+  <div class="container mt-5">
+    <div class="row justify-content-center">
+      <div class="col-12 col-sm-10 col-md-8 col-lg-9">
+        <div class="card card-primary">
+          <div class="card-header bg-fdb515">
+            <h4 class="text-white">Crear Terapia</h4>
+          </div>
+          <div class="card-body">
+            {% if messages %}
+              <div class="alert alert-danger">
+                {% for message in messages %}
+                  <p>{{ message }}</p>
+                {% endfor %}
+              </div>
+            {% endif %}
+            <form id="terapia_form" method="POST" enctype="multipart/form-data" autocomplete='off'>
+              {% csrf_token %}
+              <div class="form-group">
+                {{ form_inicio.as_p }}
+              </div>
+              
+              <div class="form-group" style="margin-bottom: 20px;">
+                <h2 style="color: #333; font-size: 24px; margin-bottom: 20px;">Agregar Horario</h2>
+                <div id="horarios_container">
+                  {{ horario_formset.management_form }}
+                  <div class="row">
+                    {% for form in horario_formset %}
+                      <div class="col-md-6" style="padding-right: 15px; padding-left: 15px;">
+                        <div class="horario-form" style="border: 1px solid #ccc; padding: 15px; margin-bottom: 15px;">
+                          {{ form.as_table }}
+                        </div>
+                      </div>
+                    {% endfor %}
+                  </div>
+                </div>
+                <button type="button" id="add_horario_btn" class="btn btn-primary">Agregar otro horario</button>
+              </div>
+            
+              <div class="mt-4 text-center">
+                <button type="submit" name="action" value="save" class="btn btn-primary">Guardar y continuar</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const addHorarioBtn = document.getElementById('add_horario_btn');
+  const horariosContainer = document.getElementById('horarios_container');
+  const totalForms = document.querySelector('input[name="form-TOTAL_FORMS"]');
+  const paqueteId = '{{ paquete.id }}'; // Obtener el paquete ID desde la plantilla
+
+  addHorarioBtn.addEventListener('click', function() {
+    const formIdx = parseInt(totalForms.value);
+    const emptyForm = document.querySelector('.horario-form').cloneNode(true);
+
+    emptyForm.querySelectorAll('input, select, textarea').forEach(function(input) {
+      const newName = input.name.replace(/-\d+-/, `-${formIdx}-`);
+      const newId = input.id.replace(/-\d+-/, `-${formIdx}-`);
+
+      input.name = newName;
+      input.id = newId;
+
+      if (input.type !== 'hidden') {
+        input.value = '';
+      }
+    });
+
+    // Asegurarse de que el campo 'paquete' tenga el ID correcto
+    const paqueteInput = emptyForm.querySelector('input[name$="paquete"]');
+    if (paqueteInput) {
+      paqueteInput.value = paqueteId;
+    }
+
+    totalForms.value = formIdx + 1;
+    horariosContainer.appendChild(emptyForm);
+  });
+});
+</script>
+
+<style>
+/* Estilos personalizados */
+.card {
+  margin-top: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+}
+.bg-fdb515 {
+  background-color: #FDB515 !important;
+}
+.text-white {
+  color: #16161d !important;
+}
+</style>
+{% endblock %}

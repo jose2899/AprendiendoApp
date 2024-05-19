@@ -1,0 +1,96 @@
+{% extends 'layout.html' %}
+{% load static %}
+{% block content %}
+<section class="section">
+    <div class="section-body">
+        <div class="row justify-content-center">
+            <div class="col-lg-10"> <!-- Cambié a col-lg-10 para hacer la plantilla más ancha -->
+                <div class="card">
+                    <div class="card-header bg-fdb515 text-white">
+                        <h4 class="text-white">Detalles del Representante <i class="fas fa-user"></i></h4> 
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <table class="table table-bordered">
+                                    <tr>
+                                        <th class="text-right">Nombre:</th>
+                                        <td>{{ object.nombre }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th class="text-right">Apellido:</th>
+                                        <td>{{ object.apellido }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th class="text-right">Teléfono:</th>
+                                        <td>{{ object.telefono }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th class="text-right">Celular:</th>
+                                        <td>{{ object.celular }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th class="text-right">Email:</th>
+                                        <td>{{ object.email }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th class="text-right">Cédula:</th>
+                                        <td>{{ object.cedula }}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="col-md-6">
+                                <table class="table table-bordered">
+                                    <tr>
+                                        <th class="text-right">Servicio:</th>
+                                        <td>{{ object.servicios }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th class="text-right">Otra terapia:</th>
+                                        <td>{{ object.otra_terapia }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th class="text-right">¿Cómo conoció nuestra institución?</th>
+                                        <td>{{ object.conocido }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th class="text-right">Observación:</th>
+                                        <td>{{ object.observacion }}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer text-right">
+                        <a href="{% url 'listar_representantes' %}" class="btn btn-primary"><i class="fas fa-arrow-left"></i> Volver</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    /* Agrega estilos personalizados aquí */
+    .card {
+        margin-top: 20px;
+        border-radius: 10px;
+        box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+    }
+    .bg-fdb515 {
+        background-color: #FDB515 !important; /* Agrega !important para asegurar que el color se aplique */
+    }
+    th {
+        width: 40%;
+        text-align: right;
+        vertical-align: top;
+        background-color: #f2f2f2;
+    }
+    td {
+        padding-left: 10px;
+    }
+</style>
+
+
+
+{% endblock content %}

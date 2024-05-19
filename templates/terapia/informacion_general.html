@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Información General del Estudiante</title>
+</head>
+<body>
+    <h1>Información General del Estudiante</h1>
+    <h2>Estudiante: {{ estudiante.nombre }}</h2>
+    <h3>Paquetes y Terapias</h3>
+    <ul>
+        {% for info in info_psicologos_horas %}
+            <li>
+                <strong>Paquete:</strong> {{ info.terapia.paquete }}<br>
+                <strong>Terapia:</strong> {{ info.terapia }}<br>
+                {% if info.terapia.fechaTerapia.all %}
+                    <strong>Fecha de Inicio:</strong> {{ info.terapia.fechaTerapia.all.0.fecha_inicio }}<br>
+                {% endif %}
+                <h4>Psicólogos y Horarios:</h4>
+                <ul>
+                    {% for horario in info.horarios %}
+                        <li>
+                            <strong>Psicólogo:</strong> {{ horario.terapia.psicologo }}<br>
+                            <strong>Horario:</strong> {{ horario.dia_semana.nombre }} - {{ horario.hora_inicio }}<br>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

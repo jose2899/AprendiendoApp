@@ -1,0 +1,58 @@
+{% extends 'layout.html' %}
+{% load static %}
+
+
+{% block plugins_css %}
+  <link rel="stylesheet" href="{% static 'stisla/css/fullcalendar.min.css' %}">
+{% endblock %}
+
+{% block content %}
+        <section class="section">
+          <div class="section-header">
+            <h1>Calendario</h1>
+            <div class="section-header-breadcrumb">
+              <div class="breadcrumb-item active"><a href="#">Dashboard</a></div>
+              <div class="breadcrumb-item"><a href="#">Terapias</a></div>
+              <div class="breadcrumb-item">Calendario</div>
+            </div>
+          </div>
+
+          <div class="section-body">
+            <div class="row">
+              <div class="col-12">
+                <div class="card">
+                  <div class="card-header">
+                    <h4>Calendario</h4>
+                  </div>
+                  <div class="card-body">
+                    <div class="fc-overflow">
+                      <div id="myEvent"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+{% endblock %}
+
+{% block plugins_js %}
+  <script src="https://demo.getstisla.com/assets/modules/fullcalendar/fullcalendar.min.js"></script>
+  <script src="{% static 'stisla/js/modules-calendar.js' %}"></script>
+
+{% endblock %}
+
+{% block page_js %}
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var calendarEl = document.getElementById('myEvent');
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+              initialView: 'dayGridMonth',
+              events: '/calendario/eventos/',
+            });
+        
+            calendar.render();
+        });
+    </script>
+{% endblock %}

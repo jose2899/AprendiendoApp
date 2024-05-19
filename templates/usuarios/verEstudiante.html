@@ -1,0 +1,87 @@
+{% extends 'layout.html' %}
+{% load static %}
+{% block content %}
+<section class="section">
+    <div class="section-body">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Detalles del Estudiante <i class="fas fa-user"></i></h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <tr>
+                                    <th>representante:</th>
+                                    <td>{{ objects.representante }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Nombre:</th>
+                                    <td>{{ objects.nombre }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Apellido:</th>
+                                    <td>{{ objects.apellido }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Genero:</th>
+                                    <td>{{ objects.genero }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Cedula:</th>
+                                    <td>{{ objects.cedula }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Fecha de nacimiento:</th>
+                                    <td>{{ objects.fecha_nacimiento }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Edad:</th>
+                                    <td>{{ objects.edad }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Año de educacion:</th>
+                                    <td>{{ objects.año_educacion }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Institucion educativa:</th>
+                                    <td>{{ objects.fecha }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Motivo:</th>
+                                    <td>{{ objects.motivo }}</td>
+                                </tr>
+
+                            </table>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <a href="{% url 'listar_estudiantes' %}" class="btn btn-primary"><i class="fas fa-arrow-left"></i> Volver</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    /* Agrega estilos personalizados aquí */
+    .card {
+        margin-top: 20px;
+    }
+    table {
+        width: 100%;
+    }
+    th {
+        width: 50%;
+        text-align: right;
+        vertical-align: top;
+    }
+    td {
+        width: 70%;
+        padding-left: 10px;
+    }
+</style>
+
+{% endblock content %}

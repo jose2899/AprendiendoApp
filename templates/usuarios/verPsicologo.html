@@ -1,0 +1,71 @@
+{% extends 'layout.html' %}
+{% load static %}
+{% block content %}
+<section class="section">
+    <div class="section-body">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Detalles del Psicologo <i class="fas fa-user"></i></h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <tr>
+                                    <th>Nombre:</th>
+                                    <td>{{ object.nombre }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Apellido:</th>
+                                    <td>{{ object.apellido }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Cedula:</th>
+                                    <td>{{ object.cedula }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Email:</th>
+                                    <td>{{ object.email }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Foto:</th>
+                                    <td>{{ object.foto }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Celular:</th>
+                                    <td>{{ object.celular }}</td>
+                                </tr>
+                            
+                            </table>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <a href="{% url 'listar_psicologos' %}" class="btn btn-primary"><i class="fas fa-arrow-left"></i> Volver</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    /* Agrega estilos personalizados aquí */
+    .card {
+        margin-top: 20px;
+    }
+    table {
+        width: 100%;
+    }
+    th {
+        width: 50%;
+        text-align: right;
+        vertical-align: top;
+    }
+    td {
+        width: 70%;
+        padding-left: 10px;
+    }
+</style>
+
+{% endblock content %}

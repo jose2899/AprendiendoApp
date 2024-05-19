@@ -1,0 +1,81 @@
+{% extends 'layout.html' %}
+{% load static %}
+{% block content %}
+<section class="section">
+    <div class="section-body">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Detalles del Usuario <i class="fas fa-user"></i></h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <tr>
+                                    <th>Usuario:</th>
+                                    <td>{{ objects.user }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Nombre:</th>
+                                    <td>{{ objects.nombre }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Apellido:</th>
+                                    <td>{{ objects.apellido }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Email:</th>
+                                    <td>{{ objects.email }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Foto:</th>
+                                    {% if user.foto %}
+                                        <td>
+                                            <img alt="image" src="{{ user.foto.url }}" class="rounded-circle" width="35" data-toggle="tooltip" title="{{ user.nombre }}">
+                                        </td>
+                                    {% else %}
+                                    <td><div class="badge badge-danger">No foto</div></td>
+                                    {% endif %}
+                                </tr>
+                                <tr>
+                                    <th>Celular:</th>
+                                    <td>{{ objects.celular }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Direccion:</th>
+                                    <td>{{ objects.direccion }}</td>
+                                </tr>
+
+                            </table>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <a href="{% url 'listar_admin' %}" class="btn btn-primary"><i class="fas fa-arrow-left"></i> Volver</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    /* Agrega estilos personalizados aquí */
+    .card {
+        margin-top: 20px;
+    }
+    table {
+        width: 100%;
+    }
+    th {
+        width: 50%;
+        text-align: right;
+        vertical-align: top;
+    }
+    td {
+        width: 70%;
+        padding-left: 10px;
+    }
+</style>
+
+{% endblock content %}

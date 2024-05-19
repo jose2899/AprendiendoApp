@@ -1,0 +1,72 @@
+{% extends 'layout.html' %}
+{% load static %}
+{% block content %}
+<section class="section">
+    <div class="section-body">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Detalles de la planificacion <i class="fas fa-user"></i></h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <tr>
+                                    <th>Nombre:</th>
+                                    <td>{{ object.estudiante.nombre }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Apellido:</th>
+                                    <td>{{ object.estudiante.apellido }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Diagnostico:</th>
+                                    <td>{{ object.diagnostico }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Edad biologica:</th>
+                                    <td>{{ object.edad_biologica }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Edad cognitiva lenguaje comprensivo:</th>
+                                    <td>{{ object.edad_cognitiva_lenguaje_verbal }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Edad cognitiva lenguaje comprensivo:</th>
+                                    <td>{{ object.edad_cognitiva_lenguaje_comprensivo }}</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <a href="{% url 'listar_planificacion' %}" class="btn btn-primary"><i class="fas fa-arrow-left"></i> Volver</a>
+                    </div>
+                    <a href="#" class="btn btn-secondary mt-3">Ver Semanas</a>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    /* Agrega estilos personalizados aquí */
+    .card {
+        margin-top: 20px;
+    }
+    table {
+        width: 100%;
+    }
+    th {
+        width: 50%;
+        text-align: right;
+        vertical-align: top;
+    }
+    td {
+        width: 70%;
+        padding-left: 10px;
+    }
+</style>
+
+{% endblock content %}

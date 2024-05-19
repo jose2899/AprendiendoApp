@@ -1,0 +1,17 @@
+<form method="post">
+  {% csrf_token %}
+  <h2>Agregar Psicólogo a {{ terapia.paquete }}</h2>
+  {{ form.as_p }}
+
+  <h2>Agregar Horario</h2>
+    {{ horario_formset.management_form }}
+    
+    <table>
+        {% for form in horario_formset %}
+            {{ form.as_table }}
+        {% endfor %}
+    </table>
+  
+  <button type="submit" name="action" value="add_psicologo">Agregar Psicólogo</button>
+  <a href="{% url 'detalle_paquete' terapia.id %}" class="btn btn-primary">Guardar y continuar</a>
+</form>

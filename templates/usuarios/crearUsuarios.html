@@ -1,0 +1,79 @@
+{% extends 'layout.html' %}
+{% load static %}
+{% block content %}
+<section class="section">
+  <div class="container mt-5">
+    <div class="row">
+      <div class="col-12 col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-8 offset-lg-2 col-xl-8 offset-xl-2">
+        <div class="card card-primary">
+          <div class="card-header"><h4>Registar nuevo Representante</h4></div>
+          <div class="card-body">
+            <form method="POST" enctype="multipart/form-data" autocomplete='off'>
+              {% csrf_token %}
+              <div class="row">
+                <div class="form-group col-6">
+                  {{ form.nombre.label }}
+                  {{ form.nombre}}
+                
+                </div>
+                <div class="form-group col-6">
+                  {{ form.apellido.label }}
+                  {{ form.apellido}}
+                </div>
+                <div class="form-group col-6">
+                  {{ form.telefono.label }}
+                  {{ form.telefono }}
+                </div>
+                <div class="form-group col-6">
+                  {{ form.celular.label }}
+                  {{ form.celular }}
+                </div>
+                <div class="form-group col-6">
+                  {{ form.email.label }}
+                  {{ form.email }}
+                </div>
+                <div class="form-group col-6">
+                  {{ form.cedula.label }}
+                  {{ form.cedula }}
+                </div>
+              </div>
+
+              <div class="form-group">
+                {{ form.servicios.label }}
+                {{ form.servicios }}
+              </div>
+            
+              <div class="row">
+                <div class="form-group col-6">
+                  {{ form.otra_terapia.label }}
+                  {{ form.otra_terapia}}
+                
+                </div>
+                <div class="form-group col-6">
+                  {{ form.conocido.label }}
+                  {{ form.conocido}}
+                </div>
+              </div>
+
+              <div class="form-group">
+                {{ form.observacion.label }}
+                {{ form.observacion }}
+              </div>
+              
+              <div class="form-group">
+                <div class="text-center mt-4 mb-3">
+                  <button type="submit" class="btn btn-primary btn-lg btn-block">
+                    Registrar Representante
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock content %}
+
+

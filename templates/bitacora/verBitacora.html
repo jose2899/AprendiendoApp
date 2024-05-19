@@ -1,0 +1,68 @@
+{% extends 'layout.html' %}
+{% load static %}
+{% block content %}
+<section class="section">
+    <div class="section-body">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Detalles de la Bitacora <i class="fas fa-user"></i></h4>
+                        <a href="{% url 'crear_nueva_bitacora' bitacora_id=object.id %}" class="btn btn-success float-right">Crear Bitacora</a>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <tr>
+                                    <th>Estudiante:</th>
+                                    <td>{{ object.estudiante }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Planificacion:</th>
+                                    <td>{{ object.planificacion }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Diagnostico:</th>
+                                    <td>{{ object.diagnostico }}</td>
+                                </tr>
+                            </table>
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Fecha</th>
+                                        <th>Observacion Conducta</th>
+                                        <th>Temas Trabajados</th>
+                                        <th>Avance</th>
+                                        <th>Firma Terapeuta</th>
+                                        <th>Revisado Por</th>
+                                        <th>Asistencias</th>
+                                        <th>Acción</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for nueva_bitacora in nuevas_bitacoras %}
+                                    <tr>
+                                        <td>{{ nueva_bitacora.fecha }}</td>
+                                        <td>{{ nueva_bitacora.observacion_conducta }}</td>
+                                        <td>{{ nueva_bitacora.temas_trabajados }}</td>
+                                        <td>{{ nueva_bitacora.avance }}</td>
+                                        <td>{{ nueva_bitacora.firma_terapeuta }}</td>
+                                        <td>{{ nueva_bitacora.revisado_por }}</td>
+                                        <td>{{ nueva_bitacora.asistencias }}</td>
+                                        <td>
+                                            <a href="{% url 'ver_bitacora' pk=object.pk %}" class="btn btn-primary"><i class="fa fa-eye"></i></a>
+                                            <a href="{% url 'editar_bitacora' pk=object.pk %}" class="btn btn-warning"><i class="fas fa-edit"></i></a>
+                                            <a href="{% url 'eliminar_bitacora' pk=object.pk %}" class="btn btn-danger"><i class="fas fa-trash"></i></a>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock content %}

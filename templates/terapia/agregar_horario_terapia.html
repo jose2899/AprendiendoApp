@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Agregar Horario de Terapia</title>
+</head>
+<body>
+    <h1>Agregar Horario de Terapia</h1>
+    <h2>Terapia para el paquete: {{ terapia.paquete }}</h2>
+    <p>Fecha de Inicio: {{ terapia.fecha_inicio }}</p>
+    
+    <h3>Asignaciones de Psicólogos:</h3>
+    <ul>
+        {% for asignacion in asignaciones %}
+            <li>
+                {{ asignacion.psicologo.nombre }} - Días:
+                {% for dia in asignacion.dia_semana.all %}
+                    {{ dia.nombre }},
+                {% endfor %}
+            </li>
+                {% csrf_token %}
+                <input type="hidden" name="asignacion_psicologo_id" value="{{ asignacion.id }}">
+                <table>
+                    <tr>
+                        <th>Día de la semana</th>
+                        <th>Hora de inicio</th>
+                        <th>Hora de fin</th>
+                    </tr>
+                    {% for dia in asignacion.dia_semana.all %}
+                        <tr>
+                            <td>{{ dia.nombre }}</td>
+                            <td><input type="time" name="hora_inicio_{{ dia.id }}"></td>
+                            <td><input type="time" name="hora_fin_{{ dia.id }}"></td>
+                        </tr>
+                    {% endfor %}
+                </table>
+                <button type="submit">Guardar Horarios</button>
+            </form>
+        {% endfor %}
+    </ul>
+</body>
+</html>

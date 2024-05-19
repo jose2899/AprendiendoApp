@@ -1,0 +1,104 @@
+<div class="main-sidebar sidebar-style-2">
+  <aside id="sidebar-wrapper">
+    <div class="sidebar-brand">
+      <a href="{% url 'index' %}">Aprendiendo Juntos</a>
+    </div>
+    <div class="sidebar-brand sidebar-brand-sm">
+      <a href="home.html">AJ</a>
+    </div>
+    <ul class="sidebar-menu">
+      <li class="menu-header">Dashboard</li>
+      <li class="dropdown active">
+        <a href="#" class="nav-link has-dropdown"><i class="fas fa-fire"></i><span>Dashboard</span></a>
+        <ul class="dropdown-menu">
+          <li class=active><a class="nav-link" href="{% url 'index' %}">Inicio</a></li>
+        </ul>
+      </li>
+      <li class="menu-header">Servicios</li>
+      <li class="dropdown">
+        <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-columns"></i> <span>Servicios individualizados</span></a>
+        <ul class="dropdown-menu">
+          <li><a class="nav-link" href="{% url 'servicios' %}">Detalles</a></li>
+        </ul>
+      </li>
+      <li class="dropdown">
+        <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-columns"></i> <span>Servicios de rehabilitación</span></a>
+        <ul class="dropdown-menu">
+          <li><a class="nav-link" href="{% url 'serviciosR' %}">Detalles</a></li>
+        </ul>
+      </li>
+      <li class="dropdown">
+        <a href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-columns"></i> <span>Servicios grupales - Talleres</span></a>
+        <ul class="dropdown-menu">
+          <li><a class="nav-link" href="{% url 'serviciosG' %}">Detalles</a></li>
+        </ul>
+      </li>
+      <li class="menu-header">Usuarios</li>
+      <li class="dropdown">
+        <a href="#" class="nav-link has-dropdown"><i class="fas fa-th-large"></i> <span>Admin</span></a>
+        <ul class="dropdown-menu">
+          <li><a class="nav-link" href="{% url 'crear_admin' %}">Crear Admin</a></li>
+          <li><a class="nav-link" href="{% url 'listar_admin' %}">Ver Admin</a></li> 
+        </ul>
+      </li>
+      <li class="dropdown">
+        <a href="#" class="nav-link has-dropdown"><i class="fas fa-plug"></i> <span>Representates</span></a>
+        <ul class="dropdown-menu">
+          <li><a class="nav-link" href="{% url 'crear_representante' %}">Crear Representante</a></li>
+          <li><a class="nav-link" href="{% url 'listar_representantes' %}">Ver Representante</a></li>
+        </ul>
+      </li>
+      <li class="dropdown">
+        <a href="#" class="nav-link has-dropdown"><i class="far fa-file-alt"></i> <span>Estudiantes</span></a>
+        <ul class="dropdown-menu">
+          
+          <li><a class="nav-link" href="{% url 'crear_estudiante' %}">Crear Estudiante</a></li>
+          <li><a class="nav-link" href="{% url 'listar_estudiantes' %}">Ver Estudiantes</a></li>
+
+        </ul>
+      </li>
+      <li class="dropdown">
+        <a href="#" class="nav-link has-dropdown"><i class="fas fa-map-marker-alt"></i> <span>Psicologos</span></a>
+        <ul class="dropdown-menu">
+          <li><a href="{% url 'crear_psicologo' %}">Crear Psicologo</a></li>
+          <li><a href="{% url 'listar_psicologos' %}">Ver Psicologo</a></li>
+        </ul>
+      </li>            
+    
+      <li class="menu-header">Terapias</li>
+      <li class="dropdown">
+        <a href="#" class="nav-link has-dropdown"><i class="far fa-user"></i><span>Gestión</span></a>
+        <ul class="dropdown-menu">
+          <li><a href="{% url 'crear_planificacion' %}">Crear planificacion</a></li> 
+          <li><a href="{% url 'listar_planificacion' %}">Ver Planificacion</a></li> 
+          <li><a href="{% url 'crear_bitacora' %}">Crear bitacora</a></li> 
+          <li><a href="{% url 'listar_bitacora' %}">Ver bitacora</a></li> 
+        </ul>
+      </li>
+      <li class="dropdown">
+        <a href="#" class="nav-link has-dropdown"><i class="fas fa-exclamation"></i> <span>Calendario</span></a>
+        <ul class="dropdown-menu">
+          <li><a class="nav-link" href="">Ver calendario</a></li> 
+        </ul>
+      </li>
+      <li class="dropdown">
+        <a href="#" class="nav-link has-dropdown"><i class="fas fa-bicycle"></i> <span>Horario</span></a>
+        <ul class="dropdown-menu">
+          <li><a class="nav-link" href="{% url 'listar_horario' %}">Ver horario</a></li>
+          <li><a class="nav-link" href="{% url 'crearHorario' %}">Crear horario</a></li>
+        </ul>
+      </li>
+      <li class="dropdown">
+        <a href="#" class="nav-link has-dropdown"><i class="fas fa-ellipsis-h"></i> <span>Módulo predictivo</span></a>
+        <ul class="dropdown-menu">
+          <li><a href="{% url 'listar_estudiantes_tdah' %}">Inicio</a></li>
+        </ul>
+      </li>            
+    </ul>
+
+    <div class="mt-4 mb-4 p-3 hide-sidebar-mini">
+      <a href="https://aprendiendojuntos.ec/" class="btn btn-primary btn-lg btn-block btn-icon-split">
+        <i class="fas fa-rocket"></i> Sitio Aprendiendo Juntos
+      </a>
+    </div>        </aside>
+</div>

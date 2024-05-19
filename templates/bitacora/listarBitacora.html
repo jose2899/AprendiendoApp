@@ -1,0 +1,56 @@
+{% extends 'layout.html' %}
+{% load static %}
+{% block content %}
+<section class="section">
+    <div class="section-body">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Bitácoras Registradas <i class="fas fa-user"></i></h4>
+                    </div>
+                    <div class="card-body">
+                        {% if bitacoras %}
+                            <div class="table-responsive">
+                                <table class="table table-striped" id="sortable-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Estudiante</th>
+                                            <th>Planificacion</th>
+                                            <th>Diagnostico</th>
+                                            <th>Acción</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for bitacora in bitacoras %}
+                                            <tr>
+                                                <td>{{ bitacora.estudiante.nombre }}</td>
+                                                <td>{{ bitacora.planificacion }}</td>
+                                                <td>{{ bitacora.diagnostico }}</td>
+                                                <td>
+                                                    <div class="btn-group" role="group">
+                                                        <a href="{% url 'ver_bitacora' pk=bitacora.pk %}" class="btn btn-primary"><i class="fa fa-eye"></i></a>
+                                                        <a href="{% url 'editar_bitacora' pk=bitacora.pk %}" class="btn btn-warning"><i class="fas fa-edit"></i></a>
+                                                        <a href="{% url 'eliminar_bitacora' pk=bitacora.pk %}" class="btn btn-danger"><i class="fas fa-trash"></i></a>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        {% else %}
+                            <p>No hay bitácoras registradas.</p>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="pagination">
+                    <div class="card-footer text-right">
+                        <!-- Código de paginación aquí -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock content %}

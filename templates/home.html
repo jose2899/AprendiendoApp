@@ -1,0 +1,170 @@
+{% extends 'layout.html' %}
+{% load static %}
+
+{% block content %}
+        <section class="section">
+          <div style="height: 50px;"></div>
+          <div class="row">
+            <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+              <div class="card card-statistic-1">
+                <div class="card-icon bg-primary">
+                  <i class="far fa-user"></i>
+                </div>
+                <div class="card-wrap">
+                  <div class="card-header">
+                    <h4>Total Alumnos</h4>
+                  </div>
+                  <div class="card-body">
+                    {{ total_estudiantes }}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+              <div class="card card-statistic-1">
+                <div class="card-icon bg-danger">
+                  <i class="far fa-newspaper"></i>
+                </div>
+                <div class="card-wrap">
+                  <div class="card-header">
+                    <h4>Total Administradores</h4>
+                  </div>
+                  <div class="card-body">
+                    {{ total_admins }}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+              <div class="card card-statistic-1">
+                <div class="card-icon bg-warning">
+                  <i class="far fa-file"></i>
+                </div>
+                <div class="card-wrap">
+                  <div class="card-header">
+                    <h4>Total terapias en curso</h4>
+                  </div>
+                  <div class="card-body">
+                    {{ total_bitacora }}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+              <div class="card card-statistic-1">
+                <div class="card-icon bg-success">
+                  <i class="fas fa-circle"></i>
+                </div>
+                <div class="card-wrap">
+                  <div class="card-header">
+                    <h4>Total terapias terminadas</h4>
+                  </div>
+                  <div class="card-body">
+                    42
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-8 col-md-12 col-12 col-sm-12">
+              <div class="card">
+                  <div class="card-header">
+                      <h4>Estadísticas</h4>
+                      <div class="card-header-action">
+                          <div class="btn-group">
+                              <a class="btn">Month</a>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="card-body">
+                      <canvas id="myChart" height="182"></canvas>
+                      <div class="statistic-details mt-sm-4">
+                          <div class="statistic-details-item">
+                            {% for mes in estudian_por_mes %}
+                              <span class="text-muted">{{ mes.mes|date:"F" }}</span>
+                              <div class="detail-value">{{ mes.total }}</div>
+                              <div class="detail-name">Niños registrados</div>
+                            {% endfor %}
+                          </div>
+                          
+                      </div>
+                  </div>
+              </div>
+            </div>
+            
+            <div class="col-lg-4 col-md-12 col-12 col-sm-12">
+              <div class="card">
+                  <div class="card-header">
+                      <h4>Actividades recientes</h4>
+                  </div>
+                  <div class="card-body">
+                      <ul class="list-unstyled list-unstyled-border">
+                          {% for estudi in ultimos_estudi %}
+                          <li class="media">
+                              <!-- Aquí puedes mostrar la información del niño -->
+                              <!-- Por ejemplo, la imagen del niño, el nombre, etc. -->
+                              <div class="media-body">
+                                  <div class="float-right">{{ estudi.fecha }}</div>
+                                  <div class="media-title">{{ estudi.nombre }} {{ estudi.apellido }}</div>
+                                  <span class="text-small text-muted">Registrado recientemente</span>
+                              </div>
+                          </li>
+                          {% endfor %}
+                      </ul>
+                  </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="row">
+
+            <div class="col-lg-6 col-md-12 col-12 col-sm-12">
+              <div class="card">
+                  <div class="card-header">
+                      <h4>Terapias</h4>
+                  </div>
+                  <div class="card-body">
+                      {% for diagnóstico, cantidad in diagnósticos_ordenados %}
+                      <div class="mb-4">
+                          <div class="text-small float-right font-weight-bold text-muted">{{ cantidad }}</div>
+                          <div class="font-weight-bold mb-1">{{ diagnóstico }}</div>
+                          <div class="progress" data-height="3">
+                              <div class="progress-bar" role="progressbar" data-width="{{ cantidad }}%" aria-valuenow="{{ cantidad }}" aria-valuemin="0" aria-valuemax="100"></div>
+                          </div>
+                      </div>
+                      {% endfor %}
+                  </div>
+              </div>
+            </div>
+          
+            <div class="col-lg-6 col-md-12 col-12 col-sm-12">
+              <div class="card">
+                  <div class="card-header">
+                      <h4>Piscólogos</h4>
+                  </div>
+                  <div class="card-body">
+                      <div class="row pb-2">
+                          {% for psicologo in primeros_psicologos %}
+                          <div class="col-6 col-sm-3 col-lg-3 mb-4 mb-md-0">
+                              <div class="avatar-item mb-0">
+                                  <img alt="image" src="" class="img-fluid" data-toggle="tooltip" title="{{ psicologo.nombre }}">
+                                  <div class="avatar-badge" data-toggle="tooltip"><i class="fas fa-user"></i></div>
+                              </div>
+                          </div>
+                          {% endfor %}
+                      </div>
+                  </div>
+              </div>
+            </div>
+          
+          
+          
+
+          </div>
+          
+        </section>
+
+      
+{% endblock %}
+

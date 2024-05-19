@@ -1,0 +1,89 @@
+<!-- Detalles del Estudiante en una sola Tabla -->
+{% extends 'layout.html' %}
+{% load static %}
+
+{% block content %}
+  <section class="section">
+    <div class="section-body">
+      <div class="row">
+        <div class="col-12">
+          <div class="card">
+            <div class="card-header">
+              <h4>Detalles del Estudiante <i class="fas fa-user"></i></h4>
+            </div>
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table table-bordered">
+                  <thead>
+                    <tr>
+                      <th class="text-center">Sexo</th>
+                      <th class="text-center">Edad</th>
+                      <th class="text-center">Observación de Conducta</th>
+                      <th class="text-center">Temas Trabajados</th>
+                      <th class="text-center">Avance</th>
+                      <th class="text-center">Asistencias</th>
+                      <!-- Agrega otros campos según sea necesario -->
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for bitacora in bitacoras %}
+                      <tr>
+                        <td class="text-center">{{ estudiante.genero }}</td>
+                        <td class="text-center">{{ estudiante.edad }}</td>
+                        <td class="text-center">{{ bitacora.observacion_conducta }}</td>
+                        <td class="text-center">{{ bitacora.temas_trabajados }}</td>
+                        <td class="text-center">{{ bitacora.avance }}</td>
+                        <td class="text-center">{{ bitacora.asistencias }}</td>
+                        <!-- Agrega otros campos según sea necesario -->
+                      </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+                 <!-- Agrega un formulario para la predicción -->
+                  <form method="post" action="{% url 'detalle_estudiante_tdah' estudiante.id %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-primary">Predecir Avance</button>
+                  </form>
+              </div>
+              {% if prediccion is not None %}
+                <div class="mt-4">
+                  <h4 class="mb-3 text-center">Resultado de la Predicción</h4>
+                  <p class="h2 text-primary text-center">¡Análisis Completado!</p>
+                  <p class="lead mt-3 text-center">Según el modelo, el niño tiene un <span class="text-danger">{{ prediccion }}</span> avance.</p>
+                  <p class="mb-1 text-center">Recomendamos enfocarse en los siguientes temas:</p>
+              
+                  <div class="card">
+                    <div class="card-body">
+                      <div class="row">
+                        {% for tema in temas_relevantes %}
+                          {% comment %} Asignar un rango de importancia (1 a 5) {% endcomment %}
+                          {% with forloop.counter as rango %}
+                            <div class="col-md-4 mb-3">
+                              <div class="card {% if rango == 1 %}bg-danger{% elif rango == 2 %}bg-danger{% elif rango == 3 %}bg-warning{% elif rango == 4 %}bg-warning{% else %}bg-success{% endif %} text-white">
+                                <div class="card-body text-center">
+                                  <p class="h4">{{ tema }}</p>
+                                  <p class="h5">Importancia: {{ rango }}</p>
+                                </div>
+                              </div>
+                            </div>
+                          {% endwith %}
+                        {% endfor %}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              {% endif %}
+            
+            
+
+            
+            
+
+            
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+{% endblock %}

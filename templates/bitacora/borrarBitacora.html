@@ -1,0 +1,24 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+
+  <div class="container">
+    <div class="row justify-content-center mt-4">
+      <div class="col-md-8">
+        <div class="card">
+          <div class="card-header">
+            <h2 class="mb-0">Confirmar Eliminación</h2>
+          </div>
+          <div class="card-body">
+            <p>¿Estás seguro de que deseas eliminar la bitacora de "{{ bitacora.estudiante }}"?</p>
+            <form method="post">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-danger">Confirmar Eliminación</button>
+              <a href="{% url 'listar_bitacora' %}" class="btn btn-secondary ml-2">Cancelar</a>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock content %}
