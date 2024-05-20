@@ -24,6 +24,7 @@ class HorarioTerapia(models.Model):
     dia_semana = models.ForeignKey(DiaSemana, on_delete=models.CASCADE)
     hora_inicio = models.TimeField()
     fecha_inicio = models.DateField()
+    fecha_dia = models.DateField(null=True, blank=True)
     def __str__(self):
         return f'Horario para {self.psicologo} el {self.dia_semana} a las {self.hora_inicio} del {self.paquete}'
 

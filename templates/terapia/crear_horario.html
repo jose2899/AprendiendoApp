@@ -8,9 +8,15 @@
       <div class="col-12 col-sm-10 col-md-8 col-lg-9">
         <div class="card card-primary">
           <div class="card-header bg-fdb515">
-            <h4 class="text-white">Crear Terapia</h4>
+            <h4 class="text-white">Crear Terapia para {{ paquete.servicios }}</h4>
           </div>
           <div class="card-body">
+            <div class="form-group" style="margin-bottom: 20px;">
+              <h2 style="color: #333; font-size: 24px; margin-bottom: 20px;">Información del Paquete</h2>
+              <p>Horas del Paquete: {{ paquete.horas }}</p>
+              <p>Representante: {{ paquete.representante }}</p>
+              <p>Estudiante: {{ paquete.estudiante }}</p>
+            </div>
             {% if messages %}
               <div class="alert alert-danger">
                 {% for message in messages %}
