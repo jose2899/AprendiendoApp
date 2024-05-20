@@ -2,16 +2,26 @@
 {% load static %}
 {% block content %}
 <section class="section">
+<<<<<<< HEAD
     <div class="container mt-5">
         <div class="row justify-content-center">
             <div class="col-lg-6"> <!-- Se reduce el tamaño de las columnas para ampliar el cuerpo -->
                 <div class="card">
                     <div class="card-header bg-fdb515">
                         <h4 class="text-white"  >Crear Paquete para {{ servicio.nombre }}</h4>
+=======
+    <div class="section-body">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="textos-aliados">Crear Paquete para {{ servicio.nombre }}</h2>
+>>>>>>> 58ca78afafb93ce38d26e19bdf0e79d9c5449f2c
                     </div>
                     <div class="card-body">
                         <form method="post">
                             {% csrf_token %}
+<<<<<<< HEAD
                             <div class="form-group">
                                 <h6>Ingrese las horas del paquete:</h6>
                                 <div></div>
@@ -36,6 +46,10 @@
                                 <a href="{% url 'servicios' %}" class="btn btn-primary mr-3">Atras</a>
                                 <button type="submit" class="btn btn-primary">Crear Paquete</button>
                             </div>
+=======
+                            {{ form.as_p }}
+                            <button type="submit" class="btn btn-primary">Crear Paquete</button>
+>>>>>>> 58ca78afafb93ce38d26e19bdf0e79d9c5449f2c
                         </form>
                     </div>
                 </div>
@@ -43,6 +57,7 @@
         </div>
     </div>
 </section>
+<<<<<<< HEAD
 
 <style>
     /* Agrega estilos personalizados aquí */
@@ -58,4 +73,6 @@
         color: #16161d !important; /* Cambia el color del texto a negro */
     }
 </style>
+=======
+>>>>>>> 58ca78afafb93ce38d26e19bdf0e79d9c5449f2c
 {% endblock %}

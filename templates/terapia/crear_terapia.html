@@ -1,0 +1,18 @@
+<form method="post">
+    {% csrf_token %}
+    <h2>Crear Terapia</h2>
+    {{ terapia_form.as_p }}
+
+    <h2>Agregar Horario</h2>
+    {{ horario_formset.management_form }}
+    
+    <table>
+        {% for form in horario_formset %}
+            {{ form.as_table }}
+        {% endfor %}
+    </table>
+    
+
+    <button type="submit" name="action" value="save" class="btn btn-primary">Guardar y continuar</button>
+    <button type="submit" name="action" value="add_psicologo" class="btn btn-secondary">Agregar Otro Psicólogo</button>
+</form>

@@ -13,11 +13,22 @@ class DiaSemana(models.Model):
     def __str__(self):
         return self.nombre
     
+<<<<<<< HEAD
+=======
+class Terapia(models.Model):
+    paquete = models.ForeignKey(Paquete, on_delete=models.CASCADE)
+    psicologo = models.ForeignKey(Psicologo, on_delete=models.CASCADE)
+    estudiante = models.ForeignKey(Estudiante, on_delete=models.CASCADE)
+    def __str__(self):
+        return f'Terapia para el paquete {self.paquete} con el psicologo - {self.psicologo} y con el estudiante - {self.estudiante}'
+
+>>>>>>> 58ca78afafb93ce38d26e19bdf0e79d9c5449f2c
 class Diagnostico(models.Model):
     nombre_diagnostico = models.CharField(max_length=100, unique=True)
     def __str__(self):
         return self.nombre_diagnostico
     
+<<<<<<< HEAD
 class HorarioTerapia(models.Model):
     paquete = models.ForeignKey(Paquete, on_delete=models.CASCADE)
     psicologo = models.ForeignKey(Psicologo, on_delete=models.CASCADE, related_name='horarios')
@@ -35,6 +46,21 @@ class HorarioTerapia(models.Model):
     # Otros campos si es necesario
    # def __str__(self):
    #     return f'Asignado a la terapia {self.terapia} desde {self.fecha_inicio}'
+=======
+class Horario(models.Model):
+    terapia = models.ForeignKey(Terapia, related_name='horarios', on_delete=models.CASCADE)
+    dia_semana = models.ForeignKey(DiaSemana, on_delete=models.CASCADE)
+    hora_inicio = models.TimeField()   
+    def __str__(self):
+        return f'Horario para {self.terapia.psicologo} el {self.dia_semana} a las {self.hora_inicio} para {self.terapia.estudiante}'
+
+class AsignacionFechaTerapia(models.Model):
+    terapia = models.ForeignKey(Terapia, related_name='fechaTerapia', on_delete=models.CASCADE)
+    fecha_inicio = models.DateField()
+    # Otros campos si es necesario
+    def __str__(self):
+        return f'Asignado a la terapia {self.terapia} desde {self.fecha_inicio}'
+>>>>>>> 58ca78afafb93ce38d26e19bdf0e79d9c5449f2c
     
 class Asistencia(models.Model):
     estudiante = models.ForeignKey(Estudiante, on_delete=models.CASCADE)
