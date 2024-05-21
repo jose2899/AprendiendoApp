@@ -13,11 +13,7 @@
                         <ul>
                             {% for paquete in paquetes %}
                                 <li>{{ paquete.horas }} horas - {{ paquete.servicios }} - {{ paquete.representante }}</li>
-<<<<<<< HEAD
                                 <a href="{% url 'crear_horario'%}" class="btn btn-primary">Crear horario</a>
-=======
-                                <a href="{% url 'crear_terapia'%}" class="btn btn-primary">Crear Terapia</a>
->>>>>>> 58ca78afafb93ce38d26e19bdf0e79d9c5449f2c
 
                             {% endfor %}
                         </ul>

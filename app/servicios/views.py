@@ -49,11 +49,7 @@ class CrearPaqueteView(View):
             paquete = form.save(commit=False)
             paquete.servicios = servicio
             paquete.save()
-<<<<<<< HEAD
             return redirect('crear_horario', paquete_id = paquete.id)
-=======
-            return redirect('lista_paquetes', servicio_id=servicio_id)
->>>>>>> 58ca78afafb93ce38d26e19bdf0e79d9c5449f2c
         return render(request, 'servicios/crear_paquete.html', {'form': form, 'servicio': servicio})
 
 class ListarPaquetesView(View):
