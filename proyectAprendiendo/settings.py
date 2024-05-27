@@ -48,9 +48,10 @@ INSTALLED_APPS = [
     'app.planificaciones',
     'app.bitacora',
     'widget_tweaks',
-    'app.horario',
+    'app.horarios',
     'app.terapiass',
     'app.modulo',
+    'app.controlRoles',
     'wkhtmltopdf'
 ]
 

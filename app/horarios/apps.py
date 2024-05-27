@@ -1,4 +1,6 @@
 from django.apps import AppConfig
-class AdminisConfig(AppConfig):
+
+
+class HorariosConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'app.usuarios.adminis'
+    name = 'app.horarios'

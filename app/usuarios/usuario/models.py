@@ -36,6 +36,11 @@ class Representante(models.Model):
     
     def __str__(self):
         return self.nombre_completo()
+    
+    class Meta:
+        permissions = [
+            ("can_create_representante", "Can create Representante"),
+        ]
 
 class Estudiante(models.Model):
     representante = models.ForeignKey(Representante, on_delete=models.CASCADE)
@@ -55,3 +60,8 @@ class Estudiante(models.Model):
     
     def __str__(self):
         return self.nombre_completo()
+    
+    class Meta:
+        permissions = [
+            ("can_create_estudiante", "Can create Estudiante"),
+        ]

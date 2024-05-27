@@ -1,3 +1,8 @@
+from django.contrib.auth.decorators import permission_required
+from django.utils.decorators import method_decorator
+from app.controlRoles.utils import permission_required_custom
+from django.contrib.auth.models import User, Group
+
 #vistas
 from django.views.generic import CreateView, ListView, UpdateView, DeleteView, DetailView
 
@@ -11,6 +16,8 @@ from app.usuarios.adminis.models import Adminis
 #forms
 from app.usuarios.adminis.forms import AdminisForm
 
+#actualizar permisos
+@method_decorator(permission_required('adminis.can_create_adminis'), name='dispatch')
 class CrearAdminisView(CreateView):
     model = Adminis
     form_class = AdminisForm
@@ -21,11 +28,14 @@ class CrearAdminisView(CreateView):
         # Crear un usuario
         user = User.objects.create_user(username=form.cleaned_data['username'], password=form.cleaned_data['password'], email=form.cleaned_data['email'])
 
+        # Asignar el usuario al grupo Administradores
+        admin_group = Group.objects.get(name='Administradores')
+        user.groups.add(admin_group)
+        
         # Guardar el admin y relacionarlo con el usuario
         self.object = form.save(commit=False)
         self.object.user = user
         self.object.save()
-
         return super().form_valid(form)
 
     def get_context_data(self, **kwargs):
@@ -44,12 +54,14 @@ class VerAdminisView(DetailView):
     template_name = 'usuarios/verAdmin.html'  
     context_object_name = 'objects'  
 
+@method_decorator(permission_required_custom('adminis.can_create_adminis'), name='dispatch')
 class EditarAdminisView(UpdateView):
     model = Adminis
     form_class = AdminisForm
     template_name = 'usuarios/editarAdmin.html'
     success_url = reverse_lazy('listar_admin')
 
+@method_decorator(permission_required_custom('adminis.can_create_adminis'), name='dispatch')
 class EliminarAdminisView(DeleteView):
     model = Adminis
     template_name = 'usuarios/eliminarAdmin.html' 

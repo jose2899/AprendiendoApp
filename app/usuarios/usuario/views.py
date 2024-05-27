@@ -1,5 +1,7 @@
 from django.shortcuts import render, redirect
-
+from django.contrib.auth.decorators import permission_required
+from django.utils.decorators import method_decorator
+from app.controlRoles.utils import permission_required_custom
 #vistas
 from django.views.generic import CreateView, ListView, DetailView, UpdateView, DeleteView
 #imports Django
@@ -11,7 +13,7 @@ from app.usuarios.usuario.models import Representante, Estudiante
 from app.usuarios.usuario.forms import RepresentanteForm, EstudianteForm
 
 # Create your views here.
-
+@method_decorator(permission_required('adminis.can_create_adminis'), name='dispatch')
 class CrearRepresentanteView(CreateView):
     model = Representante
     form_class = RepresentanteForm
@@ -27,6 +29,7 @@ class ListarRepresentanteView(ListView):
     def get_queryset(self):
         return Representante.objects.all()
     
+@method_decorator(permission_required('adminis.can_create_adminis'), name='dispatch')
 class CrearEstudianteView(CreateView):
     model = Estudiante
     form_class = EstudianteForm
@@ -58,13 +61,14 @@ class VerRepresentanteView(DetailView):
     template_name = 'usuarios/verRepresentante.html' 
     context_object_name = 'representante'  
 
-
+@method_decorator(permission_required_custom('adminis.can_create_adminis'), name='dispatch')
 class EditarRepresentanteView(UpdateView):
     model = Representante
     form_class = RepresentanteForm
     template_name = 'usuarios/editarRepresentante.html'
     success_url = reverse_lazy('listar_representantes')
 
+@method_decorator(permission_required_custom('adminis.can_create_adminis'), name='dispatch')
 class EliminarRepresentanteView(DeleteView):
     model = Representante
     template_name = 'usuarios/eliminarRepresentante.html' 
@@ -76,13 +80,14 @@ class VerEstudianteView(DetailView):
     template_name = 'usuarios/verEstudiante.html' 
     context_object_name = 'objects'  
 
-
+@method_decorator(permission_required_custom('adminis.can_create_adminis'), name='dispatch')
 class EditarEstudianteView(UpdateView):
     model = Estudiante
     form_class = EstudianteForm
     template_name = 'usuarios/editarEstudiante.html'
     success_url = reverse_lazy('listar_estudiantes')
 
+@method_decorator(permission_required_custom('adminis.can_create_adminis'), name='dispatch')
 class EliminarEstudianteView(DeleteView):
     model = Estudiante
     template_name = 'usuarios/eliminarEstudiante.html' 

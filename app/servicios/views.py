@@ -1,5 +1,7 @@
 from django.shortcuts import render, redirect
-
+from django.contrib.auth.decorators import permission_required
+from django.utils.decorators import method_decorator
+from app.controlRoles.utils import permission_required_custom
 #modelos
 from app.servicios.models import Servicios
 from app.servicios.models import Paquete
@@ -35,7 +37,8 @@ class ServiciosGView(ListView):
         context = super().get_context_data(**kwargs)
         context['servicios'] = Servicios.objects.all()
         return context
-
+    
+@method_decorator(permission_required_custom('adminis.can_create_adminis'), name='dispatch')
 class CrearPaqueteView(View):
     def get(self, request, servicio_id):
         servicio = Servicios.objects.get(pk=servicio_id)

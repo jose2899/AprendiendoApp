@@ -2,9 +2,26 @@ from django import forms
 from app.usuarios.psicologo.models import Psicologo
 
 class PsicologoForm(forms.ModelForm):
+    username = forms.CharField(label="Ingrese su cuenta", widget=forms.TextInput(
+        attrs={
+            'class': 'form-control',
+            'placeholder': 'Ingrese su cuenta',
+            'required': 'required',
+        }
+    ))
+
+    password = forms.CharField(label="Ingrese su contraseña", widget=forms.PasswordInput(
+        attrs={
+            'class': 'form-control',
+            'placeholder': 'Ingrese su contraseña',
+            'required': 'required',
+            'autocomplete': 'new-password'
+        }
+    ))
+
     class Meta:
         model = Psicologo
-        fields = ['nombre', 'apellido','cedula','email','foto','celular',]
+        fields = ['nombre', 'apellido','cedula','email','foto','celular','username', 'password']
         
         labels = {
             'nombre': 'Ingrese sus nombres',
