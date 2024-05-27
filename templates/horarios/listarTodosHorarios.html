@@ -1,0 +1,34 @@
+{% extends 'layout.html' %}
+{% load static %}
+{% block content %}
+<h2>Todos los horarios</h2>
+
+{% if horarios_info %}
+    <table>
+        <thead>
+            <tr>
+                <th>Fecha</th>
+                <th>Hora</th>
+                <th>Estudiante</th>
+                <th>Representante</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in horarios_info %}
+                <tr>
+                    <td>{{ item.horario.fecha_dia }}</td>
+                    <td>{{ item.horario.hora_inicio }}</td>
+                    <td>{{ item.estudiante.nombre }}</td>  <!-- Ajusta 'nombre' según el campo real en el modelo Estudiante -->
+                    <td>{{ item.representante.nombre }}</td>  <!-- Ajusta 'nombre' según el campo real en el modelo Representante -->
+                    <td>
+                        <a href="{}">Registrar Asistencia</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <p>No tienes horarios asignados.</p>
+{% endif %}
+{% endblock %}

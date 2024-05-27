@@ -1,0 +1,36 @@
+{% extends 'layout.html' %}
+{% load static %}
+{% block content %}
+<h2>Horarios de hoy</h2>
+{% if horarios_info %}
+    <table>
+        <thead>
+            <tr>
+                <th>Hora de Inicio</th>
+                <th>Día de la Semana</th>
+                <th>Fecha de Inicio</th>
+                <th>Estudiante</th>
+                <th>Representante</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in horarios_info %}
+                <tr>
+                    <td>{{ item.hora_inicio }}</td>
+                    <td>{{ item.dia_semana }}</td>
+                    <td>{{ item.fecha_inicio }}</td>
+                    <td>{{ item.estudiante.nombre }}</td>
+                    <td>{{ item.representante.nombre }}</td>
+                    <td>
+                        <a href="{}">Registrar Asistencia</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <a href="{% url 'listarTodosHorarios' %}" class="btn btn-primary">Ver lista completa</a>
+{% else %}
+    <p>No tienes horarios para hoy.</p>
+{% endif %}
+{% endblock %}

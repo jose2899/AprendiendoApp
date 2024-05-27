@@ -28,7 +28,7 @@ urlpatterns = [
     path('', include('app.usuarios.psicologo.urls')),
     path('', include('app.planificaciones.urls')),
     path('', include('app.bitacora.urls')),
-    #path('', include('app.horarios.urls')),
+    path('', include('app.horarios.urls')),
     path('', include('app.terapiass.urls')),
     path('', include('app.modulo.urls')),
     #path('', include('app.controlRoles')),
