@@ -1,36 +1,73 @@
 {% extends 'layout.html' %}
 {% load static %}
+
 {% block content %}
-<h2>Horarios de hoy</h2>
-{% if horarios_info %}
-    <table>
-        <thead>
-            <tr>
-                <th>Hora de Inicio</th>
-                <th>Día de la Semana</th>
-                <th>Fecha de Inicio</th>
-                <th>Estudiante</th>
-                <th>Representante</th>
-                <th>Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for item in horarios_info %}
-                <tr>
-                    <td>{{ item.hora_inicio }}</td>
-                    <td>{{ item.dia_semana }}</td>
-                    <td>{{ item.fecha_inicio }}</td>
-                    <td>{{ item.estudiante.nombre }}</td>
-                    <td>{{ item.representante.nombre }}</td>
-                    <td>
-                        <a href="{}">Registrar Asistencia</a>
-                    </td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-    <a href="{% url 'listarTodosHorarios' %}" class="btn btn-primary">Ver lista completa</a>
-{% else %}
-    <p>No tienes horarios para hoy.</p>
-{% endif %}
+<section class="section">
+  <div class="container mt-5">
+    <div class="row justify-content-center">
+      <div class="col-12 col-md-10 col-lg">
+        <div class="card card-primary">
+          <div class="card-header bg-fdb515">
+            <h4 class="text-white">Horarios de hoy</h4>
+          </div>
+          <div class="card-body">
+            {% if horarios_info %}
+              <div class="table-responsive">
+                <table class="table table-striped">
+                  <thead>
+                    <tr>
+                      <th>Hora de Inicio</th>
+                      <th>Día de la Semana</th>
+                      <th>Fecha inicio terapia</th>
+                      <th>Estudiante</th>
+                      <th>Representante</th>
+                      <th>Acciones</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for item in horarios_info %}
+                      <tr>
+                        <td>{{ item.hora_inicio }}</td>
+                        <td>{{ item.dia_semana }} ({{ item.horario.fecha_dia }})</td>
+                        <td>{{ item.fecha_inicio }}</td>
+                        <td>{{ item.estudiante }}</td>
+                        <td>{{ item.representante }}</td>
+                        <td>
+                          <a href="{% url 'registrarAsistencia' item.horario.id %}" class="btn btn-primary btn-sm">Registrar Asistencia</a>
+                        </td>
+                      </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+              <div class="mt-4 text-center">
+                <a href="{% url 'listarTodosHorarios' %}" class="btn btn-primary">Ver lista completa</a>
+              </div>
+            {% else %}
+              <p>No tienes horarios para hoy.</p>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* Estilos personalizados */
+  .card {
+    margin-top: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+  }
+  .bg-fdb515 {
+    background-color: #FDB515 !important;
+  }
+  .text-white {
+    color: #16161d !important;
+  }
+  .table-responsive {
+    margin-top: 20px;
+  }
+</style>
 {% endblock %}

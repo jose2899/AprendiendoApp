@@ -30,7 +30,7 @@ def create_groups_and_permissions(sender, **kwargs):
     )
 
     # Asignar permisos a los administradores, pero no a los psicólogos
-    psicologo_group.permissions.add()
+    psicologo_group.permissions.add(permiso_create_psicologo)
     
     # Asignar todos los permisos al grupo Administradores
     admin_group.permissions.add(permiso_create_adminis)

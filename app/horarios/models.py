@@ -7,4 +7,4 @@ class Asistencia(models.Model):
     asistencia = models.BooleanField(default=False)  # Campo para registrar la asistencia
     fecha = models.DateField()
     def __str__(self):
-        return f"Asistencia de {self.horario.paquete.estudiante} en {self.horario}"
+        return f"Asistencias de {self.horario.paquete.estudiante} en {self.horario}"

@@ -1,194 +1,186 @@
 {% extends 'layout.html' %}
-
+{% load static %}
 {% block content %}
 <section class="section">
-  <div class="section-body">
-    <div class="row">
-      <div class="col-md-12">
-        <div class="card">
-          <div class="card-header">
-            <h4>Módulo Predictivo</h4>
-          </div>
-          <div class="card-body">
-            <div class="row">
-              <div class="col-md-3">
-                <ul id="fases"> <!-- Alineación a la izquierda -->
-                  <li id="fase1" class="fase btn btn-primary btn-lg completo" onclick="mostrarDetalles('fase1')">Fase 1: Selección</li>
-                  <li id="fase2" class="fase btn btn-primary btn-lg" onclick="mostrarDetalles('fase2')" disabled>Fase 2: Transformación</li>
-                  <li id="fase3" class="fase btn btn-primary btn-lg" onclick="mostrarDetalles('fase3')" disabled>Fase 3: Carga</li>
-                  <li id="fase4" class="fase btn btn-primary btn-lg" onclick="mostrarDetalles('fase4')" disabled>Fase 4: Predicción</li>
-                </ul>
-              </div>
-              <div class="col-md-9">
-                <div class="card">
-                  <div class="card-header" id="faseTitulo">
-                    <h4>Detalles de la Fase 1</h4>
-                  </div>
-                    
-                      <div class="card-body" id="detalles_fase1">
-                        <!-- Detalles de la fase 1 -->
-                        <h5>Selección de estudiante a predecir</h5>
-                        <p>Seleccionar un estudiante de la lista.</p>
-                        <div class="list-group" id="lista_estudiantes">
-                          {% for planificacion in estudiantes_tdah %}
-                            <a href="#" class="list-group-item list-group-item-action" onclick="seleccionarEstudiante('{{ planificacion.estudiante.pk }}')"> <!-- Corregido aquí -->
-                              {{ planificacion.estudiante.nombre_completo }}
-                            </a>
-                          {% endfor %}
-                        </div>
-                        <button id="btnSiguienteFase1" class="btn btn-success" onclick="avanzarFase(1)" disabled data-id-estudiante="{{ estudiante.id }}">Siguiente Fase</button>
-                      </div>
-                       <!-- Detalles de la fase 2 -->
-                      <div class="card-body" id="detalles_fase2" style="display: none;">
-                        <div class="card-body">
-                            <div class="card-body">
-                              <p class="card-text">Estudiante: {{ estudiante.nombre }} {{ estudiante.apellido }}</p>
-                              <p class="card-text">Edad: {{ estudiante.edad }}</p>
-                            </div>
-                            <div class="mb-3 d-flex flex-row">
-                              <button class="btn btn-info mr-2" onclick="toggleDetallesEstudiante()">Detalles</button>
-                              <form id="transformarForm" method="post" action="">
-                                {% csrf_token %}
-                                <input type="hidden" name="estudiante_id" value="{{ estudiante.id }}">
-                                <button class="btn btn-primary mr-2" type="button" onclick="transformarDatos();">Transformar Datos</button>
-                              </form>
-                              <button id="btnSiguienteFase2" class="btn btn-success" onclick="avanzarFase(2)" disabled data-id-estudiante="{{ estudiante.id }}">Siguiente Fase</button>
-                            </div>
-                            
-                            <!-- Detalles del estudiante (fase 2) -->
-                            <div id="detalles_estudiante" style="display: none;">
-                              <h5></h5>
-                              <div class="table-responsive">
-                                  <table class="table table-bordered">
-                                      <thead>
-                                          <tr>
-                                              <th class="text-center">Sexo</th>
-                                              <th class="text-center">Edad</th>
-                                              <th class="text-center">Observación de Conducta</th>
-                                              <th class="text-center">Temas Trabajados</th>
-                                              <th class="text-center">Avance</th>
-                                              <th class="text-center">Asistencias</th>
-                                              <!-- Agrega otros campos según sea necesario -->
-                                          </tr>
-                                      </thead>
-                                      <tbody id="detalles_estudiante_body">
-                                        {% for bitacora in bitacoras %}
-                                          <tr>
-                                              <td class="text-center">{{ estudiante.genero }}</td>
-                                              <td class="text-center">{{ estudiante.edad }}</td>
-                                              <td class="text-center">{{ bitacora.observacion_conducta }}</td>
-                                              <td class="text-center">{{ bitacora.temas_trabajados }}</td>
-                                              <td class="text-center">{{ bitacora.avance }}</td>
-                                              <td class="text-center">{{ bitacora.asistencias }}</td>
-                                              <!-- Aquí debes acceder a los otros campos del estudiante según sea necesario -->
-                                          </tr>
-                                        {% endfor %}
-                                      </tbody>
-                                  </table>
-                              </div>
-                              <button class="btn btn-danger" id="btnOcultarDetallesEstudiante" style="display: none;" onclick="toggleDetallesEstudiante()">Ocultar</button>
-                            </div>
-                        </div>
-                       
-                      </div>
+  <div class="container mt-4">
+    <div class="section-body">
+      <div class="row justify-content-center">
+        <div class="col-md-12 col-md-10">
+          <div class="card card-primary">
+            <div class="card-header bg-fdb515">
+              <h4 class="text-white">Módulo Predictivo</h4>
+            </div>
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-3">
+                  <ul id="fases"> <!-- Alineación a la izquierda -->
+                    <li id="fase1" class="fase btn btn-primary btn-lg completo">Fase 1: Selección</li>
+                    <li id="fase2" class="fase btn btn-primary btn-lg" disabled>Fase 2: Ver bitacora</li>
+                    <li id="fase3" class="fase btn btn-primary btn-lg" disabled>Fase 3: Carga</li>
+                    <li id="fase4" class="fase btn btn-primary btn-lg" disabled>Fase 4: Predicción</li>
+                  </ul>
+                </div>
+                <div class="col-md-9">
+                  <div class="card">
+                    <div class="card-header" id="faseTitulo">
+                      <h4>Detalles de la Fase 1</h4>
+                    </div>
                       
-                      <div class="card-body" id="detalles_fase3" style="display: none;">
-                        <!-- Detalles de la fase 3 -->
-                        <!-- Agrega los detalles de la fase 3 aquí -->
-                        <h5>Fase 3: Carga del Modelo</h5>
-                        <p>Detalles de la carga del modelo.</p>
-                        <!-- Agregar el formulario para cargar el modelo -->
-                        <form id="cargarModeloForm" method="post" enctype="multipart/form-data">
-                          {% csrf_token %}
-                          <div class="form-group">
-                              <label for="modelo_pkl">Seleccionar archivo del modelo (.pkl)</label>
-                              <input type="file" class="form-control-file" id="modelo_pkl" name="modelo_pkl" accept=".pkl" onchange="cargarModelo()">
+                        <div class="card-body" id="detalles_fase1">
+                          <!-- Detalles de la fase 1 -->
+                          <h5>Selección de estudiante a predecir</h5>
+                          <p>Seleccionar un estudiante de la lista.</p>
+                          <div class="list-group" id="lista_estudiantes">
+                            {% for planificacion in estudiantes_tdah %}
+                              <a href="#" class="list-group-item list-group-item-action" onclick="seleccionarEstudiante('{{ planificacion.estudiante.pk }}')"> <!-- Corregido aquí -->
+                                {{ planificacion.estudiante.nombre_completo }}
+                              </a>
+                            {% endfor %}
                           </div>
-                          <button id="btnCargarModelo" class="btn btn-primary" type="submit">Cargar Modelo</button>
-                        </form>
-                        <button id="btnSiguienteFase3" class="btn btn-success" onclick="avanzarFase(3)" data-id-estudiante="{{ estudiante.id }}">Siguiente Fase</button>
-                      </div>
-                      
-                      <div class="card-body" id="detalles_fase4" style="display: none;">
-                        <!-- Detalles de la fase 4 -->
-                        <!-- Agrega los detalles de la fase 4 aquí -->
-                        <h5>Fase 4: Realizar Predicción</h5>
-                        <p>Detalles de la predicción.</p>
-                        <button class="btn btn-primary" onclick="realizarPrediccion()" >Realizar Predicción</button>
-                        <button class="btn btn-info" onclick="redirigirDetallePrediccion()">Reporte</button>
-                        <!-- Sección para mostrar el resultado de la predicción -->
-                        <div id="resultado_prediccion" style="display: none;">
-                          <h4 class="mb-3 text-center">Resultado de la Predicción</h4>
-                          <p class="h2 text-primary text-center">¡Análisis Completado!</p>
-                          <p class="lead mt-3 text-center">Según el modelo, el niño tiene un <span id="resultado" style="color: red; font-size: 20px;">{{ prediccion }}</span> avance en la lectoescritura</p>
-                          <p class="lead mt-3 text-center">Recomendamos fortalezer en los siguientes temas:</p>
-                          <ul id="temas_relevantes">
-                            <div class="card">
-                              <div class="card-body">
-                                  <div class="row">
-                                    {% for tema in temas_relevantes %}
-                                      {% comment %} Asignar un rango de importancia (1 a 5) {% endcomment %}
-                                      {% with forloop.counter as rango %}
-                                      <div class="col-md-4 mb-3">
-                                        <div class="card {% if rango == 1 %}bg-danger{% elif rango == 2 %}bg-danger{% elif rango == 3 %}bg-warning{% elif rango == 4 %}bg-warning{% else %}bg-success{% endif %} text-white">
-                                            <div class="card-body text-center">
-                                                <p class="lead mt-3 h4">{{ tema }}</p>
-                                                <p class="lead mt-3 h5">Importancia: {{ rango }}</p>
-                                            </div>
+                          <button id="btnSiguienteFase1" class="btn btn-success" onclick="avanzarFase(1)" disabled data-id-estudiante="{{ estudiante.id }}">Siguiente Fase</button>
+                        </div>
+                        <!-- Detalles de la fase 2 -->
+                        <div class="card-body" id="detalles_fase2" style="display: none;">
+                          <div>
+                            <h6 class="card-text">Estudiante: {{ estudiante.nombre }} {{ estudiante.apellido }}</h6>
+                          </div>
+                          <h5>Fase 2: Visualizar los datos del estudiante</h5>
+                          <div></div>
+                              <div class="mb-3 d-flex flex-row">
+                                <button class="btn btn-info mr-2" onclick="toggleDetallesEstudiante()">Detalles</button>
+                                <form id="transformarForm" method="post" action="">
+                                  {% csrf_token %}
+                                  <input type="hidden" name="estudiante_id" value="{{ estudiante.id }}">
+                                </form>
+                                <button id="btnSiguienteFase2" class="btn btn-success" onclick="avanzarFaseYTransformar(2)"  disabled data-id-estudiante="{{ estudiante.id }}">Siguiente Fase</button>
+                              </div>
+                              
+                              <!-- Detalles del estudiante (fase 2) -->
+                              <div id="detalles_estudiante" style="display: none;">
+                                <h5></h5>
+                                <div class="table-responsive">
+                                    <table class="table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th class="text-center">Sexo</th>
+                                                <th class="text-center">Edad</th>
+                                                <th class="text-center">Observación de Conducta</th>
+                                                <th class="text-center">Temas Trabajados</th>
+                                                <th class="text-center">Avance</th>
+                                                <th class="text-center">Asistencias</th>
+                                                <!-- Agrega otros campos según sea necesario -->
+                                            </tr>
+                                        </thead>
+                                        <tbody id="detalles_estudiante_body">
+                                          {% for bitacora in bitacoras %}
+                                            <tr>
+                                                <td class="text-center">{{ estudiante.genero }}</td>
+                                                <td class="text-center">{{ estudiante.edad }}</td>
+                                                <td class="text-center">{{ bitacora.observacion_conducta }}</td>
+                                                <td class="text-center">{{ bitacora.temas_trabajados }}</td>
+                                                <td class="text-center">{{ bitacora.avance }}</td>
+                                                <td class="text-center">{{ bitacora.asistencias }}</td>
+                                                <!-- Aquí debes acceder a los otros campos del estudiante según sea necesario -->
+                                            </tr>
+                                          {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <button class="btn btn-danger" id="btnOcultarDetallesEstudiante" style="display: none;" onclick="toggleDetallesEstudiante()">Ocultar</button>
+                              </div>
+                    
+                        
+                        </div>
+                        
+                        <div class="card-body" id="detalles_fase3" style="display: none;">
+                          <!-- Detalles de la fase 3 -->
+                          <!-- Agrega los detalles de la fase 3 aquí -->
+                          <div>
+                            <h6 class="card-text">Estudiante: {{ estudiante.nombre }} {{ estudiante.apellido }}</h6>
+                          </div>
+                          <h5>Fase 3: Carga del Modelo</h5>
+                          <!-- Agregar el formulario para cargar el modelo -->
+                        
+                            <form id="cargarModeloForm" method="post" enctype="multipart/form-data">
+                              {% csrf_token %}
+                              <div class="form-group">
+                                  <label for="modelo_pkl">Seleccionar archivo del modelo (.pkl)</label>
+                                  <input type="file" class="form-control-file mr-2" id="modelo_pkl" name="modelo_pkl" accept=".pkl" onchange="cargarModelo()">
+                              </div>
+                              <button id="btnCargarModelo" class="btn btn-primary mb-4" type="submit">Cargar Modelo</button>
+                            </form>
+                            
+                            <button id="btnSiguienteFase3" class="btn btn-success" onclick="avanzarFase(3)" data-id-estudiante="{{ estudiante.id }}">Utilizar el modelo predeterminado</button>
+                          
+                        </div>
+                        
+                        <div class="card-body" id="detalles_fase4" style="display: none;">
+                          <div>
+                            <h6 class="card-text">Estudiante: {{ estudiante.nombre }} {{ estudiante.apellido }}</h6>
+                          </div>
+                          <h5>Fase 4: Realizar Predicción</h5>
+                          <p>Detalles de la predicción.</p>
+                          <button class="btn btn-primary" onclick="realizarPrediccion()" >Realizar Predicción</button>
+                          <button class="btn btn-info" onclick="redirigirDetallePrediccion()">Reporte</button>
+                          <!-- Sección para mostrar el resultado de la predicción -->
+                          <div id="resultado_prediccion" style="display: none;">
+                            <div></div>
+                            <h4 class="mb-3 text-center">Resultado de la Predicción</h4>
+                            <p class="h2 text-primary text-center">¡Análisis Completado!</p>
+                            <p class="lead mt-3 text-center">Según el modelo, el niño tiene un <span id="resultado" style="color: red; font-size: 20px;">{{ prediccion }}</span> avance en la lectoescritura</p>
+                            <p class="lead mt-3 text-center">Se recomienda fortalezer en los siguientes temas:</p>
+                            <ul id="temas_relevantes">
+                              <div class="card">
+                                <div class="card-body">
+                                    <div class="row">
+                                      {% for tema in temas_relevantes %}
+                                        {% comment %} Asignar un rango de importancia (1 a 5) {% endcomment %}
+                                        {% with forloop.counter as rango %}
+                                        <div class="col-md-4 mb-3">
+                                          <div class="card {% if rango == 1 %}bg-danger{% elif rango == 2 %}bg-danger{% elif rango == 3 %}bg-warning{% elif rango == 4 %}bg-warning{% else %}bg-success{% endif %} text-white">
+                                              <div class="card-body text-center">
+                                                  <p class="lead mt-3 h4">{{ tema }}</p>
+                                                  <p class="lead mt-3 h5">Importancia: {{ rango }}</p>
+                                              </div>
+                                          </div>
                                         </div>
-                                      </div>
-                                      {% endwith %}
-                                    {% endfor %}
+                                        {% endwith %}
+                                      {% endfor %}
+                                    </div>
                                   </div>
                                 </div>
-                              </div>
-                          </ul>
-                        </div>
-                        <div id="mensaje_error" style="display: none;">
-                          {{ mensaje_error }}
-                        </div>
-                        <!-- Agrega los campos y botones necesarios para la fase 4 -->
-                        <a id="btnSiguienteFase4" class="btn btn-success" href="/progreso_fases/" data-id-estudiante="{{ estudiante.id }}">Finalizar</a>
+                            </ul>
+                          </div>
+                          <div id="mensaje_error" style="display: none;">
+                            {{ mensaje_error }}
+                          </div>
+                          <!-- Agrega los campos y botones necesarios para la fase 4 -->
+                          <a id="btnSiguienteFase4" class="btn btn-success" href="/progreso_fases/" data-id-estudiante="{{ estudiante.id }}">Finalizar</a>
 
-                      </div>
+                        </div>
 
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
+          
       </div>
-        
+
+    
+      {% if mensaje_confirmacion %}
+      <div class="alert alert-success" role="alert">
+        {{ mensaje_confirmacion }}
+      </div>
+      {% endif %}
+      {% if mensaje_error %}
+      <div class="alert alert-success" role="alert" id="mensaje_error">
+        {{ mensaje_error }}
+      </div>
+      {% endif %}
+
     </div>
-
-   
-
-    {% if transformacion_exitosa %}
-    <script>
-      var mensajeTransformacion = document.getElementById('mensajeTransformacion');
-      var mensajeContenido = document.getElementById('mensajeContenido');
-      mensajeContenido.innerText = "La transformación se realizó correctamente.";
-      mensajeTransformacion.style.display = 'block';
-
-      setTimeout(function() {
-        mensajeTransformacion.style.display = 'none';
-      }, 5000); // Ocultar el mensaje después de 5 segundos
-      // Habilitar el botón de siguiente fase solo si la transformación fue exitosa
-
-    </script>
-    {% endif %}
-
-    {% if mensaje_confirmacion %}
-    <div class="alert alert-success" role="alert">
-      {{ mensaje_confirmacion }}
-    </div>
-    {% endif %}
-    {% if mensaje_error %}
-    <div class="alert alert-success" role="alert" id="mensaje_error">
-      {{ mensaje_error }}
-    </div>
-    {% endif %}
-
   </div>
 </section>
 
@@ -227,6 +219,18 @@
     left: 90%; /* Centra inicialmente el mensaje */
     transform: translateX(-50%);
   }
+   /* Agrega estilos personalizados aquí */
+   .card {
+        margin-top: 20px;
+        border-radius: 10px;
+        box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+    }
+    .bg-fdb515 {
+        background-color: #FDB515 !important; /* Agrega !important para asegurar que el color se aplique */
+    }
+    .text-white {
+    color: #16161d !important;
+    }
 </style>
 
 
@@ -250,9 +254,8 @@
   function completarFase(numFase) {
     var fase = document.getElementById('fase' + numFase);
     fase.classList.add('completo');
+    localStorage.setItem('fase' + numFase + '_completo', 'true');
   }
-
- 
 
   // Función para mostrar los detalles de una fase
   function mostrarDetalles(idFase) {
@@ -266,22 +269,23 @@
     document.getElementById('detalles_' + idFase).style.display = 'block';
 
     // Completar la fase solo si no está completada
-    var faseCompleta = localStorage.getItem('fase' + idFase + '_completa');
+    var faseCompleta = localStorage.getItem('fase' + idFase + '_completo');
     if (faseCompleta === 'true') {
         completarFase(idFase);
     }
-
     // Mostrar u ocultar botones según la fase
-    if (idFase === 'fase2') {
+    if (idFase === 'fase') {
       document.getElementById('btnDetallesEstudiante').style.display = 'inline-block';
       document.getElementById('btnSiguienteFase2').style.display = 'inline-block';
+      
     } else {
       document.getElementById('btnDetallesEstudiante').style.display = 'none';
       document.getElementById('btnSiguienteFase2').style.display = 'none';
     }
+    
 
     // Cambiar el título de la fase
-    document.getElementById('faseTitulo').innerHTML = "<h4>Detalles de la Fase " + idFase + "</h4>";
+    document.getElementById('faseTitulo').innerHTML = "<h2>Detalles de la Fase " + idFase + "</h2>";
   }
 
   // Función para avanzar a la siguiente fase si la actual está completada
@@ -294,10 +298,10 @@
     localStorage.setItem('faseActual', numFase);
     // Cambiar el color de la fase actual
     // Actualizar el estado de completitud de la fase actual en el almacenamiento local
-    localStorage.setItem('fase' + numFase + '_completa', 'true');
+    localStorage.setItem('fase' + numFase + '_completo', 'true');
     // Verificar si todas las fases anteriores están completadas
-
-
+  
+   
     var url = '';
     switch (numFase+1) {
       case 2:
@@ -321,13 +325,13 @@
 
     // Cambiar el título de la fase
     window.location.href = url;
+
   }
 
   // Función para mostrar u ocultar los detalles del estudiante
   function toggleDetallesEstudiante() {
     var detallesEstudiante = document.getElementById('detalles_estudiante');
     var btnOcultar = document.getElementById('btnOcultarDetallesEstudiante');
-
     if (detallesEstudiante.style.display === 'none') {
       detallesEstudiante.style.display = 'block';
       btnOcultar.style.display = 'inline-block';
@@ -336,51 +340,35 @@
       btnOcultar.style.display = 'none';
     }
   }
+
+
   
-  function transformarDatos(event) {
-    var idEstudiante = document.querySelector('input[name="estudiante_id"]').value;
-    // Realizar otras operaciones necesarias
-    
-    // Envío del formulario
-    var transformarForm = document.getElementById('transformarForm');
-    transformarForm.submit();
-
-    // Mostrar mensaje en HTML
-    var mensajeTransformacion = document.getElementById('mensajeTransformacion');
-    var mensajeContenido = document.getElementById('mensajeContenido');
-    mensajeContenido.innerText = "La transformación se realizó correctamente.";
-    mensajeTransformacion.style.display = 'block';
-    
-    // Almacenar el estado de la transformación en el almacenamiento local
-    localStorage.setItem('transformacion_exitosa', 'true');
-    
-    // Habilitar el botón de siguiente fase solo si la transformación fue exitosa
-    var btnSiguienteFase2 = document.getElementById('btnSiguienteFase2');
-    btnSiguienteFase2.disabled = false;
-    
-    // Almacenar el estado del botón en el almacenamiento local antes de que la página se recargue
-    window.onbeforeunload = function() {
-        localStorage.setItem('btnSiguienteFase2_estado', btnSiguienteFase2.disabled ? 'disabled' : 'enabled');
-    };
-    
-    // Ocultar el mensaje después de 5 segundos
-    setTimeout(function() {
-      mensajeTransformacion.style.display = 'none';
-    }, 5000); // 5000 milisegundos = 5 segundos
+  function avanzarFaseYTransformar(numFase) {
+    // Realizar la solicitud AJAX para transformar los datos
+    var idEstudiante = document.getElementById('btnSiguienteFase2').getAttribute('data-id-estudiante');
+    var url = '{% url 'transformar_datosF' estudiante_id=0 %}'.replace('0', idEstudiante);
+    fetch(url,{
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': '{{ csrf_token }}'
+        },
+        body: JSON.stringify({}),
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.transformacion_exitosa) {
+            // Si la transformación fue exitosa, avanzar a la siguiente fase
+            avanzarFase(numFase);
+        } else {
+            // Manejar caso de transformación no exitosa si es necesario
+        }
+    })
+    .catch(error => {
+        console.error('Error en la solicitud AJAX:', error);
+    });
   }
 
-
-
-
-  function actualizarEstadoBoton() {
-    var btnSiguienteFase2 = document.getElementById('btnSiguienteFase2');
-    var transformacion_exitosa = "{{ transformacion_exitosa }}";
-    if (transformacion_exitosa === "True") {
-      btnSiguienteFase2.disabled = false;
-    } else {
-      btnSiguienteFase2.disabled = true;
-    }
-  }
 
     // Función para manejar la carga del modelo
   function cargarModelo() {
@@ -431,34 +419,39 @@
     });
   }
 
+  function siguienteFase2Click() {
+    // Transformar los datos antes de avanzar a la siguiente fase
+    transformarDatos();
+    // Luego, avanzar a la fase 2
+    avanzarFase(2);
+  }
+
 
   function redirigirDetallePrediccion() {
         var idEstudiante = document.getElementById('btnSiguienteFase4').getAttribute('data-id-estudiante');
         window.location.href = '/exportar_prediccion/' + idEstudiante + '/';
   }
 
+
   window.onload = function() {
     
     var faseGuardada = localStorage.getItem('faseActual');
+
     var btnSiguienteFase2 = document.getElementById('btnSiguienteFase2');
     var estadoAlmacenado = localStorage.getItem('btnSiguienteFase2_estado');
-
     // Si el estado almacenado está deshabilitado, deshabilitar el botón de siguiente fase 2, de lo contrario, habilitarlo
     btnSiguienteFase2.disabled = estadoAlmacenado === 'disabled';
-
     
     // Obtener el estado de completitud de las fases anteriores y cambiar los colores en consecuencia
     for (var i = 1; i <= faseGuardada; i++) {
-        var faseCompleta = localStorage.getItem('fase' + i + '_completa');
-        if (faseCompleta === 'true') {
-            completarFase(i);
-            completarFase(2);
-        }
-    }
+      var faseCompleta = localStorage.getItem('fase' + i + '_completo');
+      completarFase(i+1);
+        
+    } 
+    
 
     // Reiniciar el estado de completarFase solo si la URL actual corresponde a la página específica
     if (window.location.href.includes("/progreso_fases/")) {
-        completarFase(1)
         localStorage.clear(); // Reiniciar todos los datos almacenados en el localStorage
     }
     
@@ -466,6 +459,8 @@
     if (window.location.href.includes("/transformar_datos/")) {
         faseGuardada = 2;
         document.getElementById('faseTitulo').innerHTML = "<h4>Detalles de la Fase " + (2) + "</h4>";
+        completarFase(2);
+        
     } else if (window.location.href.includes("/cargar_modelo/")) {
         faseGuardada = 3;
         document.getElementById('faseTitulo').innerHTML = "<h4>Detalles de la Fase " + (3) + "</h4>";

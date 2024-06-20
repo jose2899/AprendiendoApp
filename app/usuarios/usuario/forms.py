@@ -40,7 +40,8 @@ class RepresentanteForm(forms.ModelForm):
 class EstudianteForm(forms.ModelForm):
     class Meta:
         model = Estudiante
-        fields = ['nombre','apellido','genero','cedula','fecha_nacimiento','edad','año_educacion','institucion_educativa','fecha','motivo', 'representante']
+        fields = ['nombre','apellido','genero','cedula','fecha_nacimiento','edad',
+                  'año_educacion','institucion_educativa','fecha','motivo', 'representante']
         
         labels = {
             'nombre': 'Ingrese sus nombres',
