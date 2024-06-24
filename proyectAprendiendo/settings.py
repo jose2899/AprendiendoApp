@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 from pathlib import Path
 import os
 
+
 from django.urls import reverse_lazy
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -23,10 +24,16 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-oda3$3deg5c78kk5@o8c=fk0vnp$i-&j+seu3i99#0$@i$rkgu'
+#SECRET_KEY = 'django-insecure-oda3$3deg5c78kk5@o8c=fk0vnp$i-&j+seu3i99#0$@i$rkgu'
+
+#para el despliegue
+# Secret key and debug settings based on environment variables
+SECRET_KEY = os.environ.get('SECRET_KEY')
+DEBUG = 'RENDER' not in os.environ
+# -------------
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+#DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
