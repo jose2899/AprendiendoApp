@@ -103,14 +103,26 @@ WSGI_APPLICATION = 'proyectAprendiendo.wsgi.application'
 #    }
 #}
 
+#DATABASES = {
+#    'default': {
+#        'ENGINE': 'django.db.backends.postgresql',
+#        'HOST': 'localhost',
+#        'PORT': 5432,
+#        'NAME': 'moduloBD',
+#        'USER': 'postgres',
+#        'PASSWORD': 'andres1',
+#    }
+#}
+#despliegue 
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'HOST': 'localhost',
+        'HOST': 'dpg-cpsekn08fa8c7395on60-a.oregon-postgres.render.com/modulodb',
         'PORT': 5432,
-        'NAME': 'moduloBD',
-        'USER': 'postgres',
-        'PASSWORD': 'andres1',
+        'NAME': 'modulodb',
+        'USER': 'admin',
+        'PASSWORD': 'oVBM2EFGw1qAj6D7QxxVEXBhAioLkqcr',
     }
 }
 
