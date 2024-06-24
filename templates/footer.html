@@ -1,38 +1,76 @@
 {% load static %}
-<footer class="main-footer">
-    <div class="container py-5" style="background-color: #6777ef">
-        <div class="row">
-          <div class="col-md-4">
-            <h3 style="color: #2d2e36">Novedades</h3>
-          
-            <p class="text-justify" style="font-size: 18px; color: #ffffff;">
-              Centro aprendiendo juntos
-            </p>
-          </div>
-          <div class="col-md-4">
-            <h3 style="color: #2d2e36">Información</h3>
-            <p style="font-size: 18px; color: #ffffff;"><b>Oficina central: </b>Loja</p>
-            <p style="font-size: 18px; color: #ffffff;"><b>Calle: </b>Terminal</p>
-            <p style="font-size: 18px; color: #ffffff;"><b>Teléfono: </b>(07)2104351</p>
-            <p style="font-size: 18px; color: #ffffff;"><b>WhatsApp: </b>0985090815</p>
-            <p style="font-size: 18px; color: #ffffff;"><b>Email:</b> <a href="mailto:funcaje@hotmail.com">aprendiendo@hotmail.com</a></p>
-
-          </div>
-          <div class="col-md-4">
-            <h3 style="color: #2d2e36">Síguenos</h3>
-            <ul class="list-inline">
-              <li class="list-inline-item"><a href="#"><i class="fab fa-facebook" style="font-size: 40px; color: #ffffff"></i></a></li>
-              <li class="list-inline-item"><a href="#"><i class="fab fa-twitter fa-3x" style="font-size: 40px; color: #ffffff"></i></a></li>
-              <li class="list-inline-item"><a href="#"><i class="fab fa-instagram fa-3x" style="font-size: 40px; color: #ffffff"></i></a></li>
-              <li class="list-inline-item"><a href="#"><i class="fab fa-youtube fa-3x" style="font-size: 40px; color: #ffffff"></i></a></li>
-            </ul>
-
-            <ul class="list-inline">
-              <li class="list-inline-item"><img src="https://ml2zm955gmh6.i.optimole.com/w:auto/h:auto/q:mauto/f:best/https://aprendiendojuntos.ec/wp-content/uploads/2023/03/logo-amr.png" style="width: 210px; height: 140px;"></li>
-            </ul>
-          </div>
-          
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Footer Ejemplo</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+    <footer class="main-footer">
+        <div class="container py-5" style="background-color: #6777ef">
+            <div class="row">
+                <div class="col-md-4">
+                    <h3 style="color: #2d2e36">Ubicación</h3>
+                    <p style="font-size: 18px; color: #ffffff;">
+                        Ciudad Universitaria<br>
+                        Guillermo Falconí - Loja - Ecuador
+                    </p>
+                </div>
+                <div class="col-md-4">
+                    <h3 style="color: #2d2e36">Contacto</h3>
+                    <p style="font-size: 18px; color: #ffffff;">
+                        <b>Teléfono:</b> 07 2593550 (Opción 1 - Modalidad Presencial)<br>
+                        <b>Teléfono:</b> 07 2593550 (Opción 2 - Modalidad Distancia)<br>
+                    </p>
+                </div>
+                <div class="col-md-4">
+                  <ul class="list-inline">
+                    <li class="list-inline-item"><img src="{% static 'imagenes/logoUNL.png'%}" style="width: 310px; height: 150px;"></li>
+                  </ul>
+                </div>
+            </div>
         </div>
-    </div>
+    </footer>
 
-</footer>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 0 20px;
+        }
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+        }
+        .col-md-4 {
+            flex: 1;
+            padding: 15px;
+        }
+        @media (max-width: 768px) {
+            .col-md-4 {
+                flex: 100%;
+            }
+        }
+        .list-unstyled {
+            padding: 0;
+            list-style-type: none;
+        }
+        .list-inline {
+            padding: 0;
+            list-style-type: none;
+            display: flex;
+        }
+        .list-inline-item {
+            margin-right: 10px;
+        }
+        .list-inline-item a {
+            text-decoration: none;
+        }
+    </style>
+</body>
+</html>

@@ -36,20 +36,20 @@ class RepresentanteForm(forms.ModelForm):
         super(RepresentanteForm, self).__init__(*args, **kwargs)
         self.fields['otra_terapia'].required = False
         self.fields['observacion'].required = False
+        self.fields['telefono'].required = False
 
 class EstudianteForm(forms.ModelForm):
     class Meta:
         model = Estudiante
-        fields = ['nombre','apellido','genero','cedula','fecha_nacimiento','edad',
+        fields = ['nombre','apellido','genero','cedula','fecha_nacimiento',
                   'año_educacion','institucion_educativa','fecha','motivo', 'representante']
         
         labels = {
             'nombre': 'Ingrese sus nombres',
             'apellido': 'Ingrese sus Apellidos',
-            'genero':'Ingrese su Genero',
+            'genero':'Ingrese su genero',
             'cedula': 'Ingrese su Cédula',
             'fecha_nacimiento': 'Ingrese su Fecha de Nacimiento',
-            'edad': 'Ingrese su edad',
             'año_educacion': 'Ingrese su Año de Educación',
             'institucion_educativa': 'Ingrese su Institución Educativa',
             'fecha': 'Fecha',
@@ -59,10 +59,9 @@ class EstudianteForm(forms.ModelForm):
         widgets = {
             'nombre': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Ingrese sus Nombres'}),
             'apellido': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Ingrese sus Apellidos'}),
-            'genero':forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Ingrese su Genero'}),
+            'genero': forms.Select(attrs={'class': 'form-control'}),
             'cedula': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Ingrese su Cédula'}),
             'fecha_nacimiento': forms.DateInput(attrs={'class': 'form-control','type': 'date'}),
-            'edad': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Ingrese su edad '}),
             'año_educacion': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Año de Educación '}),
             'institucion_educativa': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Institución Educativa'}),
             'fecha': forms.DateInput(attrs={'class': 'form-control','type': 'date'}),

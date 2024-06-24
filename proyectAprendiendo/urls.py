@@ -37,4 +37,3 @@ urlpatterns = [
 
     path('login/', include('app.autenticacion.login.urls'))
 ]
-

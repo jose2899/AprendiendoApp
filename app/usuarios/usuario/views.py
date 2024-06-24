@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import permission_required
 from django.utils.decorators import method_decorator
 from app.controlRoles.utils import permission_required_custom
+from datetime import date
 #vistas
 from django.views.generic import CreateView, ListView, DetailView, UpdateView, DeleteView
 #imports Django
@@ -40,7 +41,12 @@ class CrearEstudianteView(CreateView):
         # Obtén el representante seleccionado del formulario
         representante_id = self.request.POST.get('representante')
         representante = Representante.objects.get(pk=representante_id)
-        
+        # Calcular la edad basada en la fecha de nacimiento
+        fecha_nacimiento = form.cleaned_data['fecha_nacimiento']
+        today = date.today()
+        edad = today.year - fecha_nacimiento.year - ((today.month, today.day) < (fecha_nacimiento.month, fecha_nacimiento.day))
+        # Asignar la edad al formulario antes de guardarlo
+        form.instance.edad = edad
         # Crea una instancia de Estudiante y asigna el representante seleccionado
         estudiante = form.save(commit=False)
         estudiante.representante = representante
@@ -86,6 +92,17 @@ class EditarEstudianteView(UpdateView):
     form_class = EstudianteForm
     template_name = 'usuarios/editarEstudiante.html'
     success_url = reverse_lazy('listar_estudiantes')
+    def form_valid(self, form):
+        # Calcular la edad basada en la fecha de nacimiento actualizada
+        fecha_nacimiento = form.cleaned_data['fecha_nacimiento']
+        today = date.today()
+        edad = today.year - fecha_nacimiento.year - ((today.month, today.day) < (fecha_nacimiento.month, fecha_nacimiento.day))
+        
+        # Asignar la edad actualizada al objeto Estudiante antes de guardarlo
+        form.instance.edad = edad
+        
+        # Llamar al método form_valid() de la clase base para guardar el formulario
+        return super().form_valid(form)
 
 @method_decorator(permission_required_custom('adminis.can_create_adminis'), name='dispatch')
 class EliminarEstudianteView(DeleteView):

@@ -42,11 +42,20 @@ class Representante(models.Model):
             ("can_create_representante", "Can create Representante"),
         ]
 
+GENERO_CHOICES = (
+    ('F', 'Femenino'),
+    ('M', 'Masculino')
+)
+
 class Estudiante(models.Model):
     representante = models.ForeignKey(Representante, on_delete=models.CASCADE)
     nombre = models.CharField(max_length=100)
     apellido = models.CharField(max_length=100)
-    genero = models.CharField(max_length=100)
+    genero = models.CharField(
+        max_length=1,
+        choices=GENERO_CHOICES,
+        default='F'
+    )
     cedula = models.CharField(max_length=10)
     fecha_nacimiento = models.DateField()
     edad = models.PositiveIntegerField()

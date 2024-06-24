@@ -128,28 +128,10 @@
                             <h4 class="mb-3 text-center">Resultado de la Predicción</h4>
                             <p class="h2 text-primary text-center">¡Análisis Completado!</p>
                             <p class="lead mt-3 text-center">Según el modelo, el niño tiene un <span id="resultado" style="color: red; font-size: 20px;">{{ prediccion }}</span> avance en la lectoescritura</p>
-                            <p class="lead mt-3 text-center">Se recomienda fortalezer en los siguientes temas:</p>
                             <ul id="temas_relevantes">
-                              <div class="card">
-                                <div class="card-body">
-                                    <div class="row">
-                                      {% for tema in temas_relevantes %}
-                                        {% comment %} Asignar un rango de importancia (1 a 5) {% endcomment %}
-                                        {% with forloop.counter as rango %}
-                                        <div class="col-md-4 mb-3">
-                                          <div class="card {% if rango == 1 %}bg-danger{% elif rango == 2 %}bg-danger{% elif rango == 3 %}bg-warning{% elif rango == 4 %}bg-warning{% else %}bg-success{% endif %} text-white">
-                                              <div class="card-body text-center">
-                                                  <p class="lead mt-3 h4">{{ tema }}</p>
-                                                  <p class="lead mt-3 h5">Importancia: {{ rango }}</p>
-                                              </div>
-                                          </div>
-                                        </div>
-                                        {% endwith %}
-                                      {% endfor %}
-                                    </div>
-                                  </div>
-                                </div>
+                              
                             </ul>
+
                           </div>
                           <div id="mensaje_error" style="display: none;">
                             {{ mensaje_error }}
@@ -230,6 +212,15 @@
     }
     .text-white {
     color: #16161d !important;
+    }
+    .tema-relevante {
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    text-align: center; /* Centrar el texto */
+    font-size: 18px; /* Aumentar el tamaño de la fuente */
     }
 </style>
 
@@ -406,7 +397,8 @@
         // Mostrar los temas relevantes basados en importancia
         var temasRelevantesHTML = '';
         data.temas_relevantes.forEach(tema => {
-            temasRelevantesHTML += '<li>' + tema + '</li>';
+            var texto = tema.length > 1 ? 'Mejorar en ' + tema : 'Mejorar la letra ' + tema;
+            temasRelevantesHTML += '<div class="tema-relevante">' + texto + '</div>';
         });
         document.getElementById('temas_relevantes').innerHTML = temasRelevantesHTML;
 

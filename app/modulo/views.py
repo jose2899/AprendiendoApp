@@ -118,11 +118,9 @@ def realizar_prediccion(request, estudiante_id):
         temas_trabajados = {tema: datos_transformados.get(tema, 0) for tema in temas}
         temas_relevantes = [tema for tema in temas_relevantesE if temas_trabajados[tema] == 0]
 
-        print("Temas que faltan por mejorar para el estudiante:")
         for tema in temas_relevantes:
             importancia = temas_importancia[tema]
             print(f"{tema}: {importancia}")
-        print('temas_relevantes', temas_relevantes)
         
         data = {
             'prediccion': prediccion.tolist(),  # Convertir a lista para serializar
@@ -162,7 +160,7 @@ def exportar_prediccion_pdf(request, estudiante_id):
                             'n', 'd', 'b', 't', 'g']
         temas_importancia = dict(zip(temas, importancias_temas))
         temas_ordenados = sorted(temas_importancia.keys(), key=lambda x: temas_importancia[x], reverse=True)
-        N_temas_importantes = 5
+        N_temas_importantes = 8
         temas_relevantesE = temas_ordenados[:N_temas_importantes]
         temas_trabajados = {tema: datos_transformados.get(tema, 0) for tema in temas}
         temas_relevantes = [tema for tema in temas_relevantesE if temas_trabajados[tema] == 0]

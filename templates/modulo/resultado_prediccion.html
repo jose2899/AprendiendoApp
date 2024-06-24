@@ -78,7 +78,7 @@
 <body>
     <div class="container">
         <div class="image-container">
-            <img src="https://ml2zm955gmh6.i.optimole.com/w:auto/h:auto/q:mauto/f:best/https://aprendiendojuntos.ec/wp-content/uploads/2023/03/logo-amr.png" alt="Logo">
+            <img src="https://koha.unl.edu.ec/images/logo_negro.png" alt="Logo">
         </div>
         <div class="header">
             <h1>Reporte</h1>
@@ -104,20 +104,15 @@
                 </tr>
                 {% for tema in temas_relevantes %}
                 <tr>
-                    <td>{{ tema }}</td>
+                    <td>
+                        {% if tema|length > 1 %}
+                            Mejorar en {{ tema }}
+                        {% else %}
+                            Mejorar en la letra {{ tema }}
+                        {% endif %}
+                    </td>
                 </tr>
                 {% endfor %}
-            </table>
-        </div>
-
-        <div class="section">
-            <table>
-                <tr>
-                    <th>Precisión de Prueba</th>
-                </tr>
-                <tr>
-                    <td><span class="highlight">{{ precision_prueba }}</span></td>
-                </tr>
             </table>
         </div>
 
