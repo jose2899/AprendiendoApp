@@ -24,18 +24,18 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-oda3$3deg5c78kk5@o8c=fk0vnp$i-&j+seu3i99#0$@i$rkgu'
+#SECRET_KEY = 'django-insecure-oda3$3deg5c78kk5@o8c=fk0vnp$i-&j+seu3i99#0$@i$rkgu'
 
 #para el despliegue
 # Secret key and debug settings based on environment variables
-#SECRET_KEY = os.environ.get('SECRET_KEY')
-#DEBUG = 'RENDER' not in os.environ
+SECRET_KEY = os.environ.get('SECRET_KEY')
+DEBUG = 'RENDER' not in os.environ
 # -------------
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+#DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['*', 'https://modulopredictivo.onrender.com']
 
 
 # Application definition
@@ -104,29 +104,29 @@ WSGI_APPLICATION = 'proyectAprendiendo.wsgi.application'
 #    }
 #}
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'HOST': 'localhost',
-        'PORT': 5432,
-        'NAME': 'moduloBD',
-        'USER': 'postgres',
-        'PASSWORD': 'andres1',
-    }
-}
-
-#despliegue 
-
 #DATABASES = {
 #    'default': {
 #        'ENGINE': 'django.db.backends.postgresql',
-#        'HOST': 'dpg-cpsekn08fa8c7395on60-a.oregon-postgres.render.com/modulodb',
+#        'HOST': 'localhost',
 #        'PORT': 5432,
-#        'NAME': 'modulodb',
-#        'USER': 'admin',
-#        'PASSWORD': 'oVBM2EFGw1qAj6D7QxxVEXBhAioLkqcr',
+#        'NAME': 'moduloBD',
+#        'USER': 'postgres',
+#        'PASSWORD': 'andres1',
 #    }
 #}
+
+#despliegue 
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'HOST': 'dpg-cpsekn08fa8c7395on60-a.oregon-postgres.render.com/modulodb',
+        'PORT': 5432,
+        'NAME': 'modulodb',
+        'USER': 'admin',
+        'PASSWORD': 'oVBM2EFGw1qAj6D7QxxVEXBhAioLkqcr',
+    }
+}
 
 
 # Password validation
