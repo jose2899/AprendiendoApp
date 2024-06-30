@@ -120,7 +120,7 @@ WSGI_APPLICATION = 'proyectAprendiendo.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'HOST': 'dpg-cpsekn08fa8c7395on60-a.oregon-postgres.render.com/modulodb',
+        'HOST': 'dpg-cpsekn08fa8c7395on60-a',
         'PORT': 5432,
         'NAME': 'modulodb',
         'USER': 'admin',
