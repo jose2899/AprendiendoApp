@@ -131,6 +131,9 @@
                             <ul id="temas_relevantes">
                               
                             </ul>
+                            <div id="mensaje_recomendacion" style="display: none; text-align: center; margin-top: 20px;">
+                              <!-- Mensaje de recomendación aquí -->
+                            </div>
 
                           </div>
                           <div id="mensaje_error" style="display: none;">
@@ -393,18 +396,22 @@
     .then(data => {
         // Mostrar el resultado de la predicción
         document.getElementById('resultado').innerText = data.prediccion;
-        
-        // Mostrar los temas relevantes basados en importancia
         var temasRelevantesHTML = '';
         data.temas_relevantes.forEach(tema => {
             var texto = tema.length > 1 ? 'Mejorar en ' + tema : 'Mejorar la letra ' + tema;
             temasRelevantesHTML += '<div class="tema-relevante">' + texto + '</div>';
         });
         document.getElementById('temas_relevantes').innerHTML = temasRelevantesHTML;
-
-        // Mostrar la sección de resultado de predicción
         document.getElementById('resultado_prediccion').style.display = 'block';
-        completarFase(3);
+
+        // Mostrar mensaje basado en la predicción
+        var mensajeRecomendacion = document.getElementById('mensaje_recomendacion');
+        if (data.prediccion == 'Alto') {
+            mensajeRecomendacion.innerHTML = '¡Felicidades! El estudiante ha alcanzado un avance alto. No se necesitan más temas. Para un avance equilibrado, considera trabajar en los siguientes temas y sesiones.';
+        } else {
+            mensajeRecomendacion.innerHTML = 'Se recomienda seguir trabajando en los anteriores temas hasta alcanzar un mínimo de 4 sesiones en cada uno.';
+        }
+        mensajeRecomendacion.style.display = 'block';
     })
     .catch(error => {
         console.error('Error al realizar la predicción:', error);

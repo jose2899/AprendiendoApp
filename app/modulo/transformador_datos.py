@@ -1,6 +1,23 @@
 
 import numpy as np
 import pandas as pd
+umbrales_maximos = {
+    'm': 10,
+    'vocales': 5,    
+    'fonemas': 3,
+    'fonologia': 3,
+    'escritura': 5,
+    'p': 10,
+    'lectura': 15,
+    'dictado': 16,
+    's': 8,
+    'l': 7,
+    'n': 5,
+    'd': 7,
+    'b': 3,
+    't': 5,
+    'g': 2,
+}
 
 # Cargar datos iniciales de conductas_dataset
 conductas_dataset = [66, 11, 63, 68, 96, 12, 26, 13, 58, 26, 11, 13, 18, 22, 74, 27, 33, 34, 108, 19, 10,
@@ -29,47 +46,67 @@ def transformar_datos(estudiante, bitacoras):
                       for bitacora in bitacoras])
 
 
-    # Calcular la conducta
-    total_excelente = sum([bitacora.observacion_conducta.count('excelente') for bitacora in bitacoras])
-    total_buena = sum([bitacora.observacion_conducta.count('buena') for bitacora in bitacoras])
-    total_regular = sum([bitacora.observacion_conducta.count('regular') for bitacora in bitacoras])
-
-    conducta_ponderada = (total_excelente * 1.5) + (total_buena * 1) + (total_regular * 0.5)
     
-    # Calcular los temas trabajados
-    temas = ['m', 'vocales', 'fonemas', 'fonologia', 'escritura', 'p', 'lectura', 'dictado', 's', 'l', 'n', 
-             'd', 'b', 't', 'g']
-    temas_trabajados = {tema: 0 for tema in temas}
-    
-    # Iterar sobre cada bitácora en el conjunto
+    temas_trabajados = {tema: 0 for tema in umbrales_maximos}
+    bitacoras_contadas = {tema: [] for tema in umbrales_maximos}
     numero_temas = 0
+
     for bitacora in bitacoras:
-        # Separar los temas trabajados en una lista de letras
         temas_formulario = bitacora.temas_trabajados.replace(' ', '').lower().split(',')
 
-        # Incrementar el contador solo para los temas que están en la lista 'temas'
         for tema in temas_formulario:
             tema = tema.strip()
-            if tema in temas:
+            if tema in temas_trabajados and temas_trabajados[tema] < umbrales_maximos[tema]:
                 temas_trabajados[tema] += 1
+                bitacoras_contadas[tema].append(bitacora)
                 numero_temas +=1
 
+
+    # Calcular la conducta
+    # Calcular la conducta ponderada
+    conducta_ponderada = 0
+    for tema, maximo in umbrales_maximos.items():
+        bitacoras_dentro_umbral = bitacoras_contadas[tema][:maximo]
+        total_excelente = sum(
+            bitacora.observacion_conducta.count('excelente') for bitacora in bitacoras_dentro_umbral
+        )
+        print("total excelente", total_excelente)
+        total_buena = sum(
+            bitacora.observacion_conducta.count('buena') for bitacora in bitacoras_dentro_umbral
+        )
+        print("total buena", total_buena)
+        total_regular = sum(
+            bitacora.observacion_conducta.count('regular') for bitacora in bitacoras_dentro_umbral
+        )
+        print("total regular", total_regular)
+        conducta_ponderada += (total_excelente * 1.5) + (total_buena * 1) + (total_regular * 0.5)
+
+    print("la conducta ponderada es", conducta_ponderada)
    # Imprimir resultados
     for tema, recuento in temas_trabajados.items():
         print(f'{tema}: {recuento}')
     
    
+    avance_ponderado = 0
+    for tema, maximo in umbrales_maximos.items():
+        bitacoras_dentro_umbral = bitacoras_contadas[tema][:maximo]
+        total_mejorando = sum(
+            bitacora.avance.count('mejorando') for bitacora in bitacoras_dentro_umbral
+        )
+        total_regular = sum(
+            bitacora.avance.count('regular') for bitacora in bitacoras_dentro_umbral
+        )
+        total_retroceso = sum(
+            bitacora.avance.count('retroceso') for bitacora in bitacoras_dentro_umbral
+        )
+        avance_ponderado += (total_mejorando * 1.5) + (total_regular * 1) + (total_retroceso * 0.5)
 
-    # Calcular el avance
-    avance_mejorando = sum([bitacora.avance.count('mejorando') for bitacora in bitacoras])
-    avance_regular = sum([bitacora.avance.count('regular') for bitacora in bitacoras])
-    avance_retroceso = sum([bitacora.avance.count('retroceso') for bitacora in bitacoras])
-
-    avance_ponderado = (avance_mejorando * 1.5) + (avance_regular * 1) + (avance_retroceso * 0.5)
+    print("el avance ponderado es", avance_ponderado)
 
      # calcular avance lecto
     num_avance_lecto = 0
     num_avance_lecto = (conducta_ponderada + avance_ponderado + numero_temas + totalTerapias) - inasistencias
+    print("numero del avance de lecto", num_avance_lecto)
     
     lecto_dataset.append(num_avance_lecto)
     avances_dataset.append(avance_ponderado)
@@ -86,6 +123,7 @@ def transformar_datos(estudiante, bitacoras):
     conducta_total = pd.cut(df['Total'], bins=[float('-inf'), q1, q2, float('inf')], labels=['Bajo', 'Medio', 
                                                                                              'Alto']).values[-1]
     print("la condicta es", conducta_total)
+    
 
 
     # Clasificar en categorías según cuartiles para avance
@@ -95,6 +133,7 @@ def transformar_datos(estudiante, bitacoras):
     q3_avance = df_avance['Total'].quantile(0.75)
     avance_total = pd.cut(df_avance['Total'], bins=[float('-inf'), q1_avance, q2_avance, float('inf')],
                           labels=['Bajo', 'Medio', 'Alto']).values[-1]
+    print("el avance es", avance_total)
 
 
     # Clasificar en categorías según cuartiles para avanceLecto
@@ -105,7 +144,7 @@ def transformar_datos(estudiante, bitacoras):
     avance_total_lecto = pd.cut(df_avance_lecto['Total'], bins=[float('-inf'), q1_avance_lecto, q2_avance_lecto, float('inf')],
                           labels=['Bajo', 'Medio', 'Alto']).values[-1]
     
-    print("el avance essss:", avance_total_lecto)
+    print("el avance de la lecto essss:", avance_total_lecto)
 
     # Mapear las categorías a valores numéricos para avance
     mapeo_categorias_avance = {'Bajo': 1, 'Medio': 2, 'Alto': 3}

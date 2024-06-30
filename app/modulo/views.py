@@ -11,11 +11,15 @@ from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_sc
 from app.modulo.forms import ModeloForm
 from sklearn.metrics import classification_report
 from wkhtmltopdf.views import PDFTemplateResponse
+import os
+import joblib
 
 import joblib
 import pandas as pd
 
-modelo_predeterminado = joblib.load('C:/Users/ANDRES RIOS/tesisModelo/modelo_optimizado_rf.pkl')
+modelo_path = os.path.join(os.path.dirname(__file__), 'modelos/modelo_optimizado_rf.pkl')
+# Cargar el modelo
+modelo_predeterminado = joblib.load(modelo_path)
 
 
 def seleccionar_estudiante(request):
@@ -38,7 +42,6 @@ def transformar_datosF(request, estudiante_id):
         
         # Llamar a transformar_datos con los argumentos adecuados
         datos_transformados = transformar_datos(estudiante, bitacoras)
-        # Agregar la información de la predicción al contexto
         transformacion_exitosa = True
         # Almacenar los datos transformados en la sesión
         request.session['datos_transformados'] = datos_transformados
@@ -47,7 +50,6 @@ def transformar_datosF(request, estudiante_id):
         context['mensaje_confirmacion'] = mensaje_confirmacion
         response_data = {
             'transformacion_exitosa': transformacion_exitosa,
-            # Puedes incluir más datos en la respuesta si los necesitas
             }
         return JsonResponse(response_data)
     context['transformacion_exitosa'] = transformacion_exitosa
@@ -88,7 +90,25 @@ def cargar_modelo(request, estudiante_id):
         return render(request, 'modulo/fases_proceso.html', {'form': form, 'estudiante': estudiante, 
                                                              'mensaje_confirmacion': mensaje_confirmacion})
     
-
+umbrales = {
+    'fonemas': {'min': 0, 'max': 3},
+    'fonologia': {'min': 0, 'max': 3},
+    'm': {'min': 1.5, 'max': 10},
+    't':{'min': 0, 'max': 5},
+    'd':{'min': 0, 'max': 7},
+    'l':{'min': 0.50, 'max': 7},
+    'n':{'min': 0, 'max': 5},
+    'b':{'min': 0, 'max': 3},
+    'g':{'min': 0, 'max': 2},
+    'p':{'min': 1, 'max': 10},
+    's':{'min': 0, 'max': 8},
+    'dictado':{'min': 0.50, 'max': 16},
+    'escritura': {'min': 0, 'max': 5},
+    'lectura': {'min': 1.5, 'max': 15},
+    'vocales': {'min': 1.5, 'max': 5},
+}
+temas = ['m', 'vocales', 'fonemas', 'fonologia', 'escritura', 'p', 'lectura', 'dictado', 's', 'l', 
+                     'n', 'd', 'b', 't', 'g']
 def realizar_prediccion(request, estudiante_id):
     estudiante = get_object_or_404(Estudiante, pk=estudiante_id)
     planificaciones = Planificacion.objects.filter(estudiante=estudiante)
@@ -104,29 +124,56 @@ def realizar_prediccion(request, estudiante_id):
         datos_transformados = request.session.get('datos_transformados')
         modelo_path = request.session.get('modelo_path')
         modelo_optimizado = joblib.load(modelo_path)
+        
         X_prueba = pd.DataFrame([datos_transformados]).drop('avanceLectoescritura', axis=1)
         y_prueba = pd.DataFrame([datos_transformados]).get('avanceLectoescritura')
+
         # Realizar la predicción
         prediccion = modelo_optimizado.predict(X_prueba)
         importancias_temas = modelo_optimizado.feature_importances_
-        temas = ['m', 'vocales', 'fonemas', 'fonologia', 'escritura', 'p', 'lectura', 'dictado', 's', 'l', 
-                            'n', 'd', 'b', 't', 'g']
+        # Manejar la predicción que es una lista con un solo elemento
+        avance_predicho = prediccion[0]  # Obtener el nivel de avance predicho
+
+         # Asignar el nivel de avance en formato de texto
+        nivel_avance = 'alto' if avance_predicho == 'Alto' else 'medio' if avance_predicho == 'Medio' else 'bajo'
+        
+        # Calcular la importancia de cada tema
         temas_importancia = dict(zip(temas, importancias_temas))
         temas_ordenados = sorted(temas_importancia.keys(), key=lambda x: temas_importancia[x], reverse=True)
-        N_temas_importantes = 5
-        temas_relevantesE = temas_ordenados[:N_temas_importantes]
-        temas_trabajados = {tema: datos_transformados.get(tema, 0) for tema in temas}
-        temas_relevantes = [tema for tema in temas_relevantesE if temas_trabajados[tema] == 0]
 
-        for tema in temas_relevantes:
-            importancia = temas_importancia[tema]
-            print(f"{tema}: {importancia}")
-        
+        # Seleccionar los temas más importantes a recomendar
+        N_temas_importantes = 5
+        temas_relevantes = temas_ordenados[:N_temas_importantes]
+
+        # Controlar el avance de los temas según los umbrales
+        temas_trabajados = {tema: min(datos_transformados.get(tema, 0), umbrales[tema]['max']) for tema in temas}
+
+        # Determinar los temas a recomendar
+        temas_a_recomendar = []
+        if avance_predicho == 'Alto':
+            for tema in temas_relevantes:
+                if temas_trabajados[tema] < umbrales[tema]['max']:
+                    temas_a_recomendar.append(tema)
+        else:
+            for tema in temas_relevantes:
+                if temas_trabajados[tema] < umbrales[tema]['max']:
+                    temas_a_recomendar.append(tema)
+            if len(temas_a_recomendar) < N_temas_importantes:
+                temas_con_umb_minimo = [tema for tema in temas if umbrales[tema]['max'] >= 1]
+                adicionales_necesarios = N_temas_importantes - len(temas_a_recomendar)
+                temas_adicionales = [tema for tema in temas_con_umb_minimo if tema not in temas_a_recomendar]
+                temas_adicionales_seleccionados = temas_adicionales[:adicionales_necesarios]
+                for tema in temas_adicionales_seleccionados:
+                    if temas_trabajados[tema] < umbrales[tema]['max']:
+                        temas_a_recomendar.append(tema)
+
         data = {
             'prediccion': prediccion.tolist(),  # Convertir a lista para serializar
-            'temas_relevantes': temas_relevantes,
+            'temas_relevantes': temas_a_recomendar,
         }
+        print("la prediccion essss", prediccion)
         return JsonResponse(data)
+        
 
     return render(request, 'modulo/fases_proceso.html', context)
 
@@ -150,6 +197,8 @@ def exportar_prediccion_pdf(request, estudiante_id):
         y_prueba = pd.DataFrame([datos_transformados]).get('avanceLectoescritura')
         # Realizar la predicción
         prediccion = modelo_optimizado.predict(X_prueba)
+        avance_predicho = prediccion[0]  # Obtener el nivel de avance predicho
+
         precision_prueba = accuracy_score([y_prueba], [prediccion])
         # Calcular el reporte de clasificación
         reporte_clasificacion = classification_report([y_prueba], [prediccion], zero_division=1)
@@ -160,17 +209,34 @@ def exportar_prediccion_pdf(request, estudiante_id):
                             'n', 'd', 'b', 't', 'g']
         temas_importancia = dict(zip(temas, importancias_temas))
         temas_ordenados = sorted(temas_importancia.keys(), key=lambda x: temas_importancia[x], reverse=True)
-        N_temas_importantes = 8
-        temas_relevantesE = temas_ordenados[:N_temas_importantes]
-        temas_trabajados = {tema: datos_transformados.get(tema, 0) for tema in temas}
-        temas_relevantes = [tema for tema in temas_relevantesE if temas_trabajados[tema] == 0]
-        for tema in temas_relevantes:
-            importancia = temas_importancia[tema]
-            print(f"{tema}: {importancia}")        
+        N_temas_importantes = 5
+        temas_relevantes = temas_ordenados[:N_temas_importantes]
+
+        # Controlar el avance de los temas según los umbrales
+        temas_trabajados = {tema: min(datos_transformados.get(tema, 0), umbrales[tema]['max']) for tema in temas}
+
+        # Determinar los temas a recomendar
+        temas_a_recomendar = []
+        if avance_predicho == 'Alto':
+            for tema in temas_relevantes:
+                if temas_trabajados[tema] < umbrales[tema]['max']:
+                    temas_a_recomendar.append(tema)
+        else:
+            for tema in temas_relevantes:
+                if temas_trabajados[tema] < umbrales[tema]['max']:
+                    temas_a_recomendar.append(tema)
+            if len(temas_a_recomendar) < N_temas_importantes:
+                temas_con_umb_minimo = [tema for tema in temas if umbrales[tema]['max'] >= 1]
+                adicionales_necesarios = N_temas_importantes - len(temas_a_recomendar)
+                temas_adicionales = [tema for tema in temas_con_umb_minimo if tema not in temas_a_recomendar]
+                temas_adicionales_seleccionados = temas_adicionales[:adicionales_necesarios]
+                for tema in temas_adicionales_seleccionados:
+                    if temas_trabajados[tema] < umbrales[tema]['max']:
+                        temas_a_recomendar.append(tema)
         context['prediccion'] = prediccion.tolist()
         context['estudiante'] = estudiante
-        context['temas_relevantes'] = temas_relevantes
-        context['precision_prueba'] = precision_prueba
+        context['temas_relevantes'] = temas_a_recomendar
+        #context['precision_prueba'] = precision_prueba
         context['reporte_clasificacion'] = reporte_clasificacion
         context['matriz_confusion'] = matriz.tolist()
         return PDFTemplateResponse(request=request,

@@ -47,7 +47,7 @@ class EstudianteForm(forms.ModelForm):
         labels = {
             'nombre': 'Ingrese sus nombres',
             'apellido': 'Ingrese sus Apellidos',
-            'genero':'Ingrese su genero',
+            'genero':'Ingrese su género',
             'cedula': 'Ingrese su Cédula',
             'fecha_nacimiento': 'Ingrese su Fecha de Nacimiento',
             'año_educacion': 'Ingrese su Año de Educación',
