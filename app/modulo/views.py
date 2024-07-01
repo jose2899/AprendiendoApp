@@ -17,9 +17,9 @@ import joblib
 import joblib
 import pandas as pd
 
-modelo_path = os.path.join(os.path.dirname(__file__), 'modelos/modelo_optimizado_rf.pkl')
+modelo_predeterminado_path = os.path.join(os.path.dirname(__file__), 'modelos/modelo_optimizado_rf.pkl')
 # Cargar el modelo
-modelo_predeterminado = joblib.load(modelo_path)
+
 
 
 def seleccionar_estudiante(request):
@@ -66,12 +66,12 @@ def cargar_modelo(request, estudiante_id):
         if form.is_valid():
             # Si el formulario es válido, guardar el archivo del modelo
             modelo_pkl = request.FILES['modelo_pkl']
-            nombre_archivo = modelo_pkl.name  # Obtener el nombre del archivo subido por el usuario
-            with open(nombre_archivo, 'wb') as f:
+            modelo_path = os.path.join('modelos', modelo_pkl.name) # Obtener el nombre del archivo subido por el usuario
+            with open(modelo_path, 'wb') as f:
                 for chunk in modelo_pkl.chunks():
                     f.write(chunk)
             # Guardar la ruta del archivo del modelo en la sesión
-            request.session['modelo_predeterminado'] = nombre_archivo
+            request.session['modelo_path'] = modelo_path
             mensaje_confirmacion = "El modelo se ha cargado correctamente."
             # Redirigir a alguna página de confirmación o a la siguiente fase
             return render(request, 'modulo/fases_proceso.html', {'mensaje_confirmacion': mensaje_confirmacion, 
@@ -84,9 +84,9 @@ def cargar_modelo(request, estudiante_id):
     else:
         # Si no, mostrar el formulario para cargar el modelo
         form = ModeloForm()
+        request.session['modelo_path'] = modelo_predeterminado_path
         mensaje_confirmacion = "El modelo predeterminado se ha cargado correctamente."
-        modelo_predeterminado_path = modelo_predeterminado
-        request.session['modelo_predeterminado'] = modelo_predeterminado_path
+        request.session['modelo_path'] = modelo_predeterminado_path
         return render(request, 'modulo/fases_proceso.html', {'form': form, 'estudiante': estudiante, 
                                                              'mensaje_confirmacion': mensaje_confirmacion})
     
@@ -118,7 +118,7 @@ def realizar_prediccion(request, estudiante_id):
         if request.method != 'POST':
             # Obtener los datos transformados de la sesión
             datos_transformados = request.session.get('datos_transformados')
-            modelo_path = request.session.get('modelo_predeterminado')
+            modelo_path = request.session.get('modelo_path')
             if not datos_transformados or not modelo_path:
                 return JsonResponse({'error': 'Datos de sesión no encontrados'}, status=400)
 
