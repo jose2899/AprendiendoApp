@@ -85,8 +85,7 @@ def cargar_modelo(request, estudiante_id):
         # Si no, mostrar el formulario para cargar el modelo
         form = ModeloForm()
         mensaje_confirmacion = "El modelo predeterminado se ha cargado correctamente."
-        modelo_predeterminado_path = 'C:/Users/ANDRES RIOS/tesisModelo/modelo_optimizado_rf.pkl'
-        request.session['modelo_path'] = modelo_predeterminado_path
+        request.session['modelo_path'] = modelo_predeterminado
         return render(request, 'modulo/fases_proceso.html', {'form': form, 'estudiante': estudiante, 
                                                              'mensaje_confirmacion': mensaje_confirmacion})
     
