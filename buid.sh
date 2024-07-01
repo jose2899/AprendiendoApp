@@ -2,11 +2,10 @@
 # Exit on error
 set -o errexit
 
-# Upgrade pip and setuptools
-pip install --upgrade pip setuptools
-
 # Install dependencies from requirements.txt
 pip install -r requirements.txt
+python manage.py collectstatic --no-input
 
 # Apply database migrations
 python manage.py migrate
+
