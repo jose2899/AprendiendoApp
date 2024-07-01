@@ -119,7 +119,7 @@ def realizar_prediccion(request, estudiante_id):
             'bitacoras': bitacoras,
         }
 
-    if request.method != 'POST':
+    if request.method == 'POST':
         # Obtener los datos transformados de la sesión
         datos_transformados = request.session.get('datos_transformados')
         modelo_path = request.session.get('modelo_path')
@@ -176,13 +176,11 @@ def realizar_prediccion(request, estudiante_id):
                 for tema in temas_adicionales_seleccionados:
                     if temas_trabajados[tema] < umbrales[tema]['max']:
                         temas_a_recomendar.append(tema)
-
         data = {
             'prediccion': prediccion.tolist(),  # Convertir a lista para serializar
             'temas_relevantes': temas_a_recomendar,
         }
         return JsonResponse(data)
-    
     return render(request, 'modulo/fases_proceso.html', context)
 
 def exportar_prediccion_pdf(request, estudiante_id):
