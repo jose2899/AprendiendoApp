@@ -117,7 +117,8 @@ WSGI_APPLICATION = 'proyectAprendiendo.wsgi.application'
 #}
 
 #despliegue 
-
+# dpg-cpsekn08fa8c7395on60-a.oregon-postgres.render.com externa
+# 'HOST': 'dpg-cpsekn08fa8c7395on60-a interna
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
@@ -186,6 +187,10 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'jose.rios@unl.edu.ec'  
 EMAIL_HOST_PASSWORD = '0980089922'  
+
+#seguridad
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field

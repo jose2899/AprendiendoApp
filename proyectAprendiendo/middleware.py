@@ -16,7 +16,7 @@ class LoginRequiredMiddleware:
         path = request.path_info
 
         # Lista de rutas que no requieren autenticación
-        exempt_urls = [settings.LOGIN_URL, '/login/']
+        exempt_urls = [settings.LOGIN_URL, '/login/', '/admin/', '/realizar_prediccion/']
 
         # Verifica si la URL está en la lista de excepciones
         if any(re.match(url, path) for url in exempt_urls):
