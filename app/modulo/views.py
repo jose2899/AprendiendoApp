@@ -194,7 +194,7 @@ def exportar_prediccion_pdf(request, estudiante_id):
             'bitacoras': bitacoras,
         }
 
-    if request.method == 'POST':
+    if request.method == 'GET':
         # Obtener los datos transformados de la sesión
         datos_transformados = request.session.get('datos_transformados')
             
