@@ -62,3 +62,4 @@ urllib3==2.2.2
 virtualenv==20.17.0
 webencodings==0.5.1
 whitenoise==6.2.0
+xhtml2pdf==0.2.16
