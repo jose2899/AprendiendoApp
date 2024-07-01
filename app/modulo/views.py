@@ -183,9 +183,9 @@ def realizar_prediccion(request, estudiante_id):
                     if temas_trabajados[tema] < umbrales[tema]['max']:
                         temas_a_recomendar.append(tema)
                 if len(temas_a_recomendar) < N_temas_importantes:
-                    temas_con_umb_minimo = [tema for tema in temas si umbrales[tema]['max'] >= 1]
+                    temas_con_umb_minimo = [tema for tema in temas if umbrales[tema]['max'] >= 1]
                     adicionales_necesarios = N_temas_importantes - len(temas_a_recomendar)
-                    temas_adicionales = [tema para tema en temas_con_umb_minimo si tema no en temas_a_recomendar]
+                    temas_adicionales = [tema for tema in temas_con_umb_minimo if tema not in temas_a_recomendar]
                     temas_adicionales_seleccionados = temas_adicionales[:adicionales_necesarios]
                     for tema in temas_adicionales_seleccionados:
                         if temas_trabajados[tema] < umbrales[tema]['max']:
