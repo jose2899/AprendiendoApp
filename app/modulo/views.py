@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
-from django.http import JsonResponse, HttpResponse
+from django.http import JsonResponse
 from app.usuarios.usuario.models import Estudiante
 from app.terapiass.models import Diagnostico
 from app.planificaciones.models import Planificacion
@@ -13,10 +13,9 @@ from sklearn.metrics import classification_report
 from wkhtmltopdf.views import PDFTemplateResponse
 import os
 import joblib
+
+import joblib
 import pandas as pd
-from django.template.loader import get_template
-from xhtml2pdf import pisa
-from io import BytesIO
 
 modelo_predeterminado_path = os.path.join(os.path.dirname(__file__), 'modelos/modelo_optimizado_rf.pkl')
 # Cargar el modelo
@@ -195,7 +194,7 @@ def exportar_prediccion_pdf(request, estudiante_id):
             'bitacoras': bitacoras,
         }
 
-    if request.method == 'GET':
+    if request.method == 'POST':
         # Obtener los datos transformados de la sesión
         datos_transformados = request.session.get('datos_transformados')
             
@@ -247,16 +246,9 @@ def exportar_prediccion_pdf(request, estudiante_id):
         #context['precision_prueba'] = precision_prueba
         context['reporte_clasificacion'] = reporte_clasificacion
         context['matriz_confusion'] = matriz.tolist()
-        
-        template_path='modulo/resultado_prediccion.html',
-        template = get_template(template_path)
-        html = template.render(context)
-        result = BytesIO()
-        pdf = pisa.pisaDocument(BytesIO(html.encode("UTF-8")), result)
-        
-        # Devolver el PDF generado como respuesta HTTP
-        if not pdf.err:
-            return HttpResponse(result.getvalue(), content_type='application/pdf')
-        return HttpResponse('Error al generar el PDF.', status=500)
+        return PDFTemplateResponse(request=request,
+                               template='modulo/resultado_prediccion.html',
+                               filename=f'detalle_prediccion_{estudiante_id}.pdf',
+                               context=context)
 
     return render(request, 'modulo/fases_proceso.html', context)
