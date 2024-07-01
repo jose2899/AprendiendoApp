@@ -427,8 +427,9 @@
 
 
   function redirigirDetallePrediccion() {
-        var idEstudiante = document.getElementById('btnSiguienteFase4').getAttribute('data-id-estudiante');
-        window.location.href = '/exportar_prediccion/' + idEstudiante + '/';
+    var idEstudiante = document.getElementById('btnSiguienteFase4').getAttribute('data-id-estudiante');
+    var url = '/exportar_prediccion/' + encodeURIComponent(idEstudiante) + '/';
+    window.location.href = url;
   }
 
 
