@@ -71,7 +71,7 @@ def cargar_modelo(request, estudiante_id):
                 for chunk in modelo_pkl.chunks():
                     f.write(chunk)
             # Guardar la ruta del archivo del modelo en la sesión
-            request.session['modelo_path'] = nombre_archivo
+            request.session['modelo_predeterminado'] = nombre_archivo
             mensaje_confirmacion = "El modelo se ha cargado correctamente."
             # Redirigir a alguna página de confirmación o a la siguiente fase
             return render(request, 'modulo/fases_proceso.html', {'mensaje_confirmacion': mensaje_confirmacion, 
@@ -85,7 +85,8 @@ def cargar_modelo(request, estudiante_id):
         # Si no, mostrar el formulario para cargar el modelo
         form = ModeloForm()
         mensaje_confirmacion = "El modelo predeterminado se ha cargado correctamente."
-        request.session['modelo_path'] = modelo_predeterminado
+        modelo_predeterminado_path = modelo_predeterminado
+        request.session['modelo_predeterminado'] = modelo_predeterminado_path
         return render(request, 'modulo/fases_proceso.html', {'form': form, 'estudiante': estudiante, 
                                                              'mensaje_confirmacion': mensaje_confirmacion})
     
@@ -117,7 +118,7 @@ def realizar_prediccion(request, estudiante_id):
         if request.method != 'POST':
             # Obtener los datos transformados de la sesión
             datos_transformados = request.session.get('datos_transformados')
-            modelo_path = request.session.get('modelo_path')
+            modelo_path = request.session.get('modelo_predeterminado')
             if not datos_transformados or not modelo_path:
                 return JsonResponse({'error': 'Datos de sesión no encontrados'}, status=400)
 
