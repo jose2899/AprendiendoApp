@@ -115,7 +115,7 @@ def realizar_prediccion(request, estudiante_id):
         planificaciones = Planificacion.objects.filter(estudiante=estudiante)
         bitacoras = NuevaBitacora.objects.filter(bitacora__estudiante=estudiante)
 
-        if request.method == 'POST':
+        if request.method != 'POST':
             # Obtener los datos transformados de la sesión
             datos_transformados = request.session.get('datos_transformados')
             modelo_path = request.session.get('modelo_path')
