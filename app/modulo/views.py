@@ -120,13 +120,25 @@ def realizar_prediccion(request, estudiante_id):
             datos_transformados = request.session.get('datos_transformados')
             modelo_path = request.session.get('modelo_path')
             if not datos_transformados or not modelo_path:
-                return JsonResponse({'error': 'Datos de sesión no encontrados'}, status=400)
+                context = {
+                    'error': 'Datos de sesión no encontrados',
+                    'estudiante': estudiante,
+                    'planificaciones': planificaciones,
+                    'bitacoras': bitacoras,
+                }
+                return render(request, 'modulo/fases_proceso.html', context)
 
             # Cargar el modelo
             try:
                 modelo_optimizado = joblib.load(modelo_path)
             except Exception as e:
-                return JsonResponse({'error': f'Error al cargar el modelo: {str(e)}'}, status=500)
+                context = {
+                    'error': f'Error al cargar el modelo: {str(e)}',
+                    'estudiante': estudiante,
+                    'planificaciones': planificaciones,
+                    'bitacoras': bitacoras,
+                }
+                return render(request, 'modulo/fases_proceso.html', context)
 
             X_prueba = pd.DataFrame([datos_transformados]).drop('avanceLectoescritura', axis=1, errors='ignore')
             y_prueba = pd.DataFrame([datos_transformados]).get('avanceLectoescritura')
@@ -136,7 +148,13 @@ def realizar_prediccion(request, estudiante_id):
                 prediccion = modelo_optimizado.predict(X_prueba)
                 importancias_temas = modelo_optimizado.feature_importances_
             except Exception as e:
-                return JsonResponse({'error': f'Error en la predicción: {str(e)}'}, status=500)
+                context = {
+                    'error': f'Error en la predicción: {str(e)}',
+                    'estudiante': estudiante,
+                    'planificaciones': planificaciones,
+                    'bitacoras': bitacoras,
+                }
+                return render(request, 'modulo/fases_proceso.html', context)
 
             avance_predicho = prediccion[0]  # Obtener el nivel de avance predicho
 
@@ -165,26 +183,42 @@ def realizar_prediccion(request, estudiante_id):
                     if temas_trabajados[tema] < umbrales[tema]['max']:
                         temas_a_recomendar.append(tema)
                 if len(temas_a_recomendar) < N_temas_importantes:
-                    temas_con_umb_minimo = [tema for tema in temas if umbrales[tema]['max'] >= 1]
+                    temas_con_umb_minimo = [tema for tema in temas si umbrales[tema]['max'] >= 1]
                     adicionales_necesarios = N_temas_importantes - len(temas_a_recomendar)
-                    temas_adicionales = [tema for tema in temas_con_umb_minimo if tema not in temas_a_recomendar]
+                    temas_adicionales = [tema para tema en temas_con_umb_minimo si tema no en temas_a_recomendar]
                     temas_adicionales_seleccionados = temas_adicionales[:adicionales_necesarios]
                     for tema in temas_adicionales_seleccionados:
                         if temas_trabajados[tema] < umbrales[tema]['max']:
                             temas_a_recomendar.append(tema)
 
-            data = {
-                'prediccion': prediccion.tolist(),  # Convertir a lista para serializar
+            # Crear el contexto con los datos para pasar a la plantilla
+            context = {
+                'estudiante': estudiante,
+                'planificaciones': planificaciones,
+                'bitacoras': bitacoras,
+                'prediccion': avance_predicho,
                 'temas_relevantes': temas_a_recomendar,
             }
-            return JsonResponse(data)
+            
+            # Retornar la plantilla HTML con el contexto
+            return render(request, 'modulo/fases_proceso.html', context)
         else:
-            return JsonResponse({'error': 'Método no permitido'}, status=405)
+            context = {
+                'error': 'Método no permitido',
+                'estudiante': estudiante,
+                'planificaciones': planificaciones,
+                'bitacoras': bitacoras,
+            }
+            return render(request, 'modulo/fases_proceso.html', context)
     except Exception as e:
-        return JsonResponse({'error': str(e)}, status=500)
+        context = {
+            'error': str(e),
+            'estudiante': estudiante,
+            'planificaciones': planificaciones,
+            'bitacoras': bitacoras,
+        }
+        return render(request, 'modulo/fases_proceso.html', context)
     
-    return render(request, 'modulo/fases_proceso.html', context)
-
 def exportar_prediccion_pdf(request, estudiante_id):
     estudiante = get_object_or_404(Estudiante, pk=estudiante_id)
     planificaciones = Planificacion.objects.filter(estudiante=estudiante)
