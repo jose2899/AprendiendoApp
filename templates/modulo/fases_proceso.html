@@ -121,7 +121,7 @@
                           <h5>Fase 4: Realizar Predicción</h5>
                           <p>Detalles de la predicción.</p>
                           <button class="btn btn-primary" onclick="realizarPrediccion()" >Realizar Predicción</button>
-                          <button class="btn btn-info" onclick="redirigirDetallePrediccion()">Reporte</button>
+                          <button class="btn btn-info" onclick="generarReporte()">Reporte</button>
                           <!-- Sección para mostrar el resultado de la predicción -->
                           <div id="resultado_prediccion" style="display: none;">
                             <div></div>
@@ -424,13 +424,48 @@
     // Luego, avanzar a la fase 2
     avanzarFase(2);
   }
+  function getCSRFToken() {
+    // Django proporciona el token CSRF en una cookie llamada csrftoken.
+    // Aquí obtenemos el token de la cookie para usarlo en la solicitud POST.
+    const csrfCookie = document.cookie.split(';').find(c => c.trim().startsWith('csrftoken='));
+    return csrfCookie ? csrfCookie.split('=')[1] : '';
+}
 
 
-  function redirigirDetallePrediccion() {
-    var idEstudiante = document.getElementById('btnSiguienteFase4').getAttribute('data-id-estudiante');
-    window.location.href = '/exportar_prediccion/' + idEstudiante + '/';
-  }
+function generarReporte() {
+    const idEstudiante = document.getElementById('btnSiguienteFase4').getAttribute('data-id-estudiante');
+    const csrfToken = getCSRFToken();
+    const url = `/exportar_prediccion/${idEstudiante}/`;
 
+    fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': csrfToken
+        },
+        body: JSON.stringify({})
+    })
+    .then(response => {
+        if (response.ok) {
+            return response.blob();
+        } else {
+            throw new Error('Error en la generación del PDF');
+        }
+    })
+    .then(blob => {
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `detalle_prediccion_${idEstudiante}.pdf`;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        window.URL.revokeObjectURL(url);
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+}
 
   window.onload = function() {
     
