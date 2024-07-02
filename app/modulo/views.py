@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from app.usuarios.usuario.models import Estudiante
 from app.terapiass.models import Diagnostico
 from app.planificaciones.models import Planificacion
@@ -194,7 +194,7 @@ def exportar_prediccion_pdf(request, estudiante_id):
             'bitacoras': bitacoras,
         }
 
-    if request.method == 'GET':
+    if request.method == 'POST':
         # Obtener los datos transformados de la sesión
         datos_transformados = request.session.get('datos_transformados')
             
@@ -246,9 +246,10 @@ def exportar_prediccion_pdf(request, estudiante_id):
         #context['precision_prueba'] = precision_prueba
         context['reporte_clasificacion'] = reporte_clasificacion
         context['matriz_confusion'] = matriz.tolist()
-        return PDFTemplateResponse(request=request,
+        response = PDFTemplateResponse(request=request,
                                template='modulo/resultado_prediccion.html',
                                filename=f'detalle_prediccion_{estudiante_id}.pdf',
                                context=context)
+        return response
 
-    return render(request, 'modulo/fases_proceso.html', context)
+    return HttpResponse(status=405)
