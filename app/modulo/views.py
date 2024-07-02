@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
+from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse, HttpResponse
 from app.usuarios.usuario.models import Estudiante
 from app.terapiass.models import Diagnostico
@@ -12,8 +13,10 @@ from app.modulo.forms import ModeloForm
 from sklearn.metrics import classification_report
 from wkhtmltopdf.views import PDFTemplateResponse
 import os
+from weasyprint import HTML
+from django.template.loader import render_to_string
 import joblib
-
+import traceback
 import joblib
 import pandas as pd
 
@@ -183,73 +186,75 @@ def realizar_prediccion(request, estudiante_id):
         return JsonResponse(data)
     return render(request, 'modulo/fases_proceso.html', context)
 
-
+@csrf_exempt
 def exportar_prediccion_pdf(request, estudiante_id):
-    estudiante = get_object_or_404(Estudiante, pk=estudiante_id)
-    planificaciones = Planificacion.objects.filter(estudiante=estudiante)
-    bitacoras = NuevaBitacora.objects.filter(bitacora__estudiante=estudiante)
-    context = {
+    try:
+        estudiante = get_object_or_404(Estudiante, pk=estudiante_id)
+        planificaciones = Planificacion.objects.filter(estudiante=estudiante)
+        bitacoras = NuevaBitacora.objects.filter(bitacora__estudiante=estudiante)
+        context = {
             'estudiante': estudiante,
             'planificaciones': planificaciones,
             'bitacoras': bitacoras,
         }
 
-    if request.method == 'POST':
-        # Obtener los datos transformados de la sesión
-        datos_transformados = request.session.get('datos_transformados')
+        if request.method == 'POST':
+            datos_transformados = request.session.get('datos_transformados')
+            if not datos_transformados:
+                return JsonResponse({'error': 'No se encontraron datos transformados en la sesión'}, status=400)
             
-        modelo_path = request.session.get('modelo_path')
-        modelo_optimizado = joblib.load(modelo_path)
-        X_prueba = pd.DataFrame([datos_transformados]).drop('avanceLectoescritura', axis=1)
-        y_prueba = pd.DataFrame([datos_transformados]).get('avanceLectoescritura')
-        # Realizar la predicción
-        prediccion = modelo_optimizado.predict(X_prueba)
-        avance_predicho = prediccion[0]  # Obtener el nivel de avance predicho
+            modelo_path = request.session.get('modelo_path')
+            if not modelo_path:
+                return JsonResponse({'error': 'No se encontró la ruta del modelo en la sesión'}, status=400)
 
-        precision_prueba = accuracy_score([y_prueba], [prediccion])
-        # Calcular el reporte de clasificación
-        reporte_clasificacion = classification_report([y_prueba], [prediccion], zero_division=1)
-        # Imprimir el informe de clasificación en la consola
-        matriz = confusion_matrix(y_prueba, prediccion)
-        importancias_temas = modelo_optimizado.feature_importances_
-        temas = ['m', 'vocales', 'fonemas', 'fonologia', 'escritura', 'p', 'lectura', 'dictado', 's', 'l', 
-                            'n', 'd', 'b', 't', 'g']
-        temas_importancia = dict(zip(temas, importancias_temas))
-        temas_ordenados = sorted(temas_importancia.keys(), key=lambda x: temas_importancia[x], reverse=True)
-        N_temas_importantes = 5
-        temas_relevantes = temas_ordenados[:N_temas_importantes]
+            modelo_optimizado = joblib.load(modelo_path)
+            X_prueba = pd.DataFrame([datos_transformados]).drop('avanceLectoescritura', axis=1)
+            y_prueba = pd.DataFrame([datos_transformados]).get('avanceLectoescritura')
+            prediccion = modelo_optimizado.predict(X_prueba)
+            avance_predicho = prediccion[0]
+            precision_prueba = accuracy_score([y_prueba], [prediccion])
+            reporte_clasificacion = classification_report([y_prueba], [prediccion], zero_division=1)
+            matriz = confusion_matrix(y_prueba, prediccion)
+            importancias_temas = modelo_optimizado.feature_importances_
+            temas = ['m', 'vocales', 'fonemas', 'fonologia', 'escritura', 'p', 'lectura', 'dictado', 's', 'l', 'n', 'd', 'b', 't', 'g']
+            temas_importancia = dict(zip(temas, importancias_temas))
+            temas_ordenados = sorted(temas_importancia.keys(), key=lambda x: temas_importancia[x], reverse=True)
+            N_temas_importantes = 5
+            temas_relevantes = temas_ordenados[:N_temas_importantes]
+            temas_trabajados = {tema: min(datos_transformados.get(tema, 0), umbrales[tema]['max']) for tema in temas}
+            temas_a_recomendar = []
 
-        # Controlar el avance de los temas según los umbrales
-        temas_trabajados = {tema: min(datos_transformados.get(tema, 0), umbrales[tema]['max']) for tema in temas}
-
-        # Determinar los temas a recomendar
-        temas_a_recomendar = []
-        if avance_predicho == 'Alto':
-            for tema in temas_relevantes:
-                if temas_trabajados[tema] < umbrales[tema]['max']:
-                    temas_a_recomendar.append(tema)
-        else:
-            for tema in temas_relevantes:
-                if temas_trabajados[tema] < umbrales[tema]['max']:
-                    temas_a_recomendar.append(tema)
-            if len(temas_a_recomendar) < N_temas_importantes:
-                temas_con_umb_minimo = [tema for tema in temas if umbrales[tema]['max'] >= 1]
-                adicionales_necesarios = N_temas_importantes - len(temas_a_recomendar)
-                temas_adicionales = [tema for tema in temas_con_umb_minimo if tema not in temas_a_recomendar]
-                temas_adicionales_seleccionados = temas_adicionales[:adicionales_necesarios]
-                for tema in temas_adicionales_seleccionados:
+            if avance_predicho == 'Alto':
+                for tema in temas_relevantes:
                     if temas_trabajados[tema] < umbrales[tema]['max']:
                         temas_a_recomendar.append(tema)
-        context['prediccion'] = prediccion.tolist()
-        context['estudiante'] = estudiante
-        context['temas_relevantes'] = temas_a_recomendar
-        #context['precision_prueba'] = precision_prueba
-        context['reporte_clasificacion'] = reporte_clasificacion
-        context['matriz_confusion'] = matriz.tolist()
-        response = PDFTemplateResponse(request=request,
-                               template='modulo/resultado_prediccion.html',
-                               filename=f'detalle_prediccion_{estudiante_id}.pdf',
-                               context=context)
-        return response
+            else:
+                for tema in temas_relevantes:
+                    if temas_trabajados[tema] < umbrales[tema]['max']:
+                        temas_a_recomendar.append(tema)
+                if len(temas_a_recomendar) < N_temas_importantes:
+                    temas_con_umb_minimo = [tema for tema in temas if umbrales[tema]['max'] >= 1]
+                    adicionales_necesarios = N_temas_importantes - len(temas_a_recomendar)
+                    temas_adicionales = [tema for tema in temas_con_umb_minimo if tema not in temas_a_recomendar]
+                    temas_adicionales_seleccionados = temas_adicionales[:adicionales_necesarios]
+                    for tema in temas_adicionales_seleccionados:
+                        if temas_trabajados[tema] < umbrales[tema]['max']:
+                            temas_a_recomendar.append(tema)
 
-    return HttpResponse(status=405)
+            context['prediccion'] = prediccion.tolist()
+            context['temas_relevantes'] = temas_a_recomendar
+            context['reporte_clasificacion'] = reporte_clasificacion
+            context['matriz_confusion'] = matriz.tolist()
+
+            html_string = render_to_string('modulo/resultado_prediccion.html', context)
+            pdf_file = HTML(string=html_string).write_pdf()
+
+            response = HttpResponse(pdf_file, content_type='application/pdf')
+            response['Content-Disposition'] = f'attachment; filename="detalle_prediccion_{estudiante_id}.pdf"'
+            return response
+
+        return JsonResponse({'error': 'Método no permitido'}, status=405)
+
+    except Exception as e:
+        print(traceback.format_exc())  # Esto imprimirá el error completo en los logs
+        return JsonResponse({'error': 'Ocurrió un error interno en el servidor.'}, status=500)
