@@ -428,15 +428,7 @@
 
   function redirigirDetallePrediccion() {
     var idEstudiante = document.getElementById('btnSiguienteFase4').getAttribute('data-id-estudiante');
-    var url = '/exportar_prediccion/' + idEstudiante + '/';
-
-    // Crear un elemento <a> temporal para descargar el archivo
-    var link = document.createElement('a');
-    link.href = url;
-    link.download = 'detalle_prediccion_' + idEstudiante + '.pdf';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    window.location.href = '/exportar_prediccion/' + idEstudiante + '/';
   }
 
 
