@@ -113,6 +113,7 @@ MESSAGE_TAGS = {
 #    }
 #}
 
+"""
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
@@ -123,20 +124,22 @@ DATABASES = {
         'PASSWORD': 'andres1',
     }
 }
+"""
 
 #despliegue 
 # dpg-cpsekn08fa8c7395on60-a.oregon-postgres.render.com externa
 # 'HOST': 'dpg-cpsekn08fa8c7395on60-a interna
-#DATABASES = {
-#    'default': {
-#        'ENGINE': 'django.db.backends.postgresql',
-#        'HOST': 'dpg-cpsekn08fa8c7395on60-a',
-#        'PORT': 5432,
-#        'NAME': 'modulodb',
-#        'USER': 'admin',
-#        'PASSWORD': 'oVBM2EFGw1qAj6D7QxxVEXBhAioLkqcr',
-#    }
-#}
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'HOST': 'dpg-cpsekn08fa8c7395on60-a',
+        'PORT': 5432,
+        'NAME': 'modulodb',
+        'USER': 'admin',
+        'PASSWORD': 'oVBM2EFGw1qAj6D7QxxVEXBhAioLkqcr',
+    }
+}
 
 
 # Password validation

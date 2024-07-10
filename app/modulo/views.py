@@ -15,10 +15,10 @@ from wkhtmltopdf.views import PDFTemplateResponse
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 import os
-from weasyprint import HTML
+#from weasyprint import HTML
 from django.template.loader import render_to_string
 import joblib
-import traceback
+#import traceback
 import joblib
 import pandas as pd
 
@@ -205,7 +205,7 @@ def realizar_prediccion(request, estudiante_id):
         return JsonResponse(data)
     return render(request, 'modulo/fases_proceso.html', context)
 
-"""
+
 def exportar_prediccion_pdf(request, estudiante_id):
     estudiante = get_object_or_404(Estudiante, pk=estudiante_id)
     planificaciones = Planificacion.objects.filter(estudiante=estudiante)
@@ -255,11 +255,11 @@ def exportar_prediccion_pdf(request, estudiante_id):
                                context=context)
 
     return render(request, 'modulo/fases_proceso.html', context)
-"""
+
 
 
 #despliegue
-
+"""
 @csrf_exempt
 def exportar_prediccion_pdf(request, estudiante_id):
     try:
@@ -354,3 +354,4 @@ def exportar_prediccion_pdf(request, estudiante_id):
         print(traceback.format_exc())  # Esto imprimirá el error completo en los logs
         return JsonResponse({'error': 'Ocurrió un error interno en el servidor.'}, status=500)
 
+"""
