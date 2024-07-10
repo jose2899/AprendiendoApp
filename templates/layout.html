@@ -4,7 +4,7 @@
   {% load static %}
   <meta charset="UTF-8">
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
-  <title>aprendiendo</title>
+  <title>UNL</title>
 
   <!-- General CSS Files -->
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
@@ -85,6 +85,7 @@
             <div class="d-sm-none d-lg-inline-block">{{ request.user.email }}</div></a>
             <div class="dropdown-menu dropdown-menu-right">
               <div class="dropdown-title">Logeado {{ request.user.last_login }}</div>
+              <!--
               <a href="features-profile.html" class="dropdown-item has-icon">
                 <i class="far fa-user"></i> Perfil
               </a>
@@ -94,10 +95,12 @@
               <a href="features-settings.html" class="dropdown-item has-icon">
                 <i class="fas fa-cog"></i> Configuración
               </a>
+              -->
               <div class="dropdown-divider"></div>
               <a href="{% url 'logout' %}" class="dropdown-item has-icon text-danger">
                 <i class="fas fa-sign-out-alt"></i> Salir
               </a>
+              
             </div>
           </li>
         </ul>
