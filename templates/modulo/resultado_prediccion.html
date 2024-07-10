@@ -89,13 +89,13 @@
         <div class="section">
             <table>
                 <tr>
-                    <th>Predicción</th>
+                    <th style="background-color: #f0f0f0; color: black; padding: 10px;">Predicción</th>
                 </tr>
                 <tr>
-                    <td><span class="highlight">{{ prediccion }}</span></td>
+                    <td><span>{{ prediccion }}</span></td>
                 </tr>
                 <tr>
-                    <td><span class="highlight">{{ precision_prueba }}</span></td>
+                    <td><span>{{ precision_prueba }}</span></td>
                 </tr>
             </table>
         </div>
@@ -103,19 +103,23 @@
         <div class="section">
             <table>
                 <tr>
-                    <th>Temas recomendados</th>
+                    <th style="background-color: #f0f0f0; color: black; padding: 10px;">Temas recomendados</th>
                 </tr>
                 {% for tema in temas_relevantes %}
                 <tr>
                     <td>
                         {% if tema|length > 1 %}
-                            Mejorar en {{ tema }}
+                            Mejorar en {{ tema }} se recomienda {{sesionesFaltantes}} sesiones.
                         {% else %}
-                            Mejorar en la letra {{ tema }}
+                            Mejorar en la letra {{ tema }} se recomienda {{sesionesFaltantes}} sesiones.
                         {% endif %}
                     </td>
                 </tr>
                 {% endfor %}
+                <tr>
+                    <th style="background-color: #f0f0f0; color: black; padding: 10px;">Se sugiere continuar trabajando en los temas anteriores hasta completar un máximo de 
+                        {{promedioSesiones}} sesiones con el niño. Después de estas sesiones, se recomienda utilizar nuevamente el módulo para conocer el progreso.</th>
+                </tr>
             </table>
         </div>
 

@@ -301,6 +301,7 @@ def exportar_prediccion_pdf(request, estudiante_id):
             # Controlar el avance de los temas según los umbrales
             temas_trabajados = {tema: min(datos_transformados.get(tema, 0), umbrales[tema]['max']) for tema in temas}
             precision_prueba = accuracy_score([y_prueba], [prediccion])
+            reporte_clasificacion = classification_report([y_prueba], [prediccion], zero_division=1)
 
             # Determinar los temas a recomendar
             sesiones_faltantes = {}
@@ -340,6 +341,7 @@ def exportar_prediccion_pdf(request, estudiante_id):
             context['sesiones_faltantes'] = sesiones_faltantes
             context['promedio_sesiones_restantes'] = promedio_sesiones_restantes
             context['precision_prueba'] = precision_prueba
+            context['reporte_clasificacion'] = reporte_clasificacion
 
             html_string = render_to_string('modulo/resultado_prediccion.html', context)
             pdf_file = HTML(string=html_string).write_pdf()
