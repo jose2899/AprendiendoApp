@@ -3,11 +3,11 @@
 {% block content %}
 <section class="section">
     <div class="section-body">
-        <div class="row">
-            <div class="col-12">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
                 <div class="card">
-                    <div class="card-header">
-                        <h4>Bitácoras Registradas <i class="fas fa-user"></i></h4>
+                    <div class="card-header bg-fdb515">
+                        <h4 class="text">Bitácoras Registradas <i class="fa fa-table" aria-hidden="true"></i></h4>
                     </div>
                     <div class="card-body">
                         {% if bitacoras %}
@@ -16,8 +16,8 @@
                                     <thead>
                                         <tr>
                                             <th>Estudiante</th>
-                                            <th>Planificacion</th>
-                                            <th>Diagnostico</th>
+                                            <th>Planificación</th>
+                                            <th>Diagnóstico</th>
                                             <th>Acción</th>
                                         </tr>
                                     </thead>
@@ -28,11 +28,9 @@
                                                 <td>{{ bitacora.planificacion }}</td>
                                                 <td>{{ bitacora.diagnostico }}</td>
                                                 <td>
-                                                    <div class="btn-group" role="group">
-                                                        <a href="{% url 'ver_bitacora' pk=bitacora.pk %}" class="btn btn-primary"><i class="fa fa-eye"></i></a>
-                                                        <a href="{% url 'editar_bitacora' pk=bitacora.pk %}" class="btn btn-warning"><i class="fas fa-edit"></i></a>
-                                                        <a href="{% url 'eliminar_bitacora' pk=bitacora.pk %}" class="btn btn-danger"><i class="fas fa-trash"></i></a>
-                                                    </div>
+                                                    <a href="{% url 'ver_bitacora' pk=bitacora.pk %}" class="btn btn-primary"><i class="fa fa-eye"></i></a>
+                                                    <a href="{% url 'editar_bitacora' pk=bitacora.pk %}" class="btn btn-warning"><i class="fas fa-edit"></i></a>
+                                                    <a href="{% url 'eliminar_bitacora' pk=bitacora.pk %}" class="btn btn-danger"><i class="fas fa-trash"></i></a>
                                                 </td>
                                             </tr>
                                         {% endfor %}
@@ -43,14 +41,64 @@
                             <p>No hay bitácoras registradas.</p>
                         {% endif %}
                     </div>
-                </div>
-                <div class="pagination">
-                    <div class="card-footer text-right">
-                        <!-- Código de paginación aquí -->
+                    <div class="pagination">
+                        <div class="card-footer text-right">
+                            <nav class="d-inline-block">
+                                <ul class="pagination mb-0">
+                                    {% if is_paginated %}
+                                        {% if page_obj.has_previous %}
+                                            <li class="page-item">
+                                                <a class="page-link" href="?page=1"><i class="fas fa-chevron-left"></i></a>
+                                            </li>
+                                            {% comment %} <li class="page-item">
+                                                <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Anterior</a>
+                                            </li> {% endcomment %}
+                                        {% endif %}
+                                
+                                        {% for num in page_obj.paginator.page_range %}
+                                            {% if page_obj.number == num %}
+                                            <li class="page-item active">
+                                                <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                                            </li>
+                                            {% else %}
+                                            <li class="page-item">
+                                                <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                                            </li>
+                                            {% endif %}
+                                        {% endfor %}
+                                    
+                                        {% if page_obj.has_next %}
+                                            {% comment %} <li class="page-item">
+                                                <a class="page-link" href="?page={{ page_obj.next_page_number }}">Siguiente</a>
+                                            </li> {% endcomment %}
+                                            <li class="page-item">
+                                                <a class="page-link" href="?page={{ paginator.num_pages }}"><i class="fas fa-chevron-right"></i></a>
+                                            </li>
+                                        {% endif %}
+                                    {% endif %}
+                                </ul>
+                            </nav>
+                        </div>
                     </div>
                 </div>
+
             </div>
         </div>
     </div>
 </section>
+<style>
+    /* Agrega estilos personalizados aquí */
+    .card {
+        margin-top: 20px;
+        border-radius: 10px;
+        box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+    }
+    .bg-fdb515 {
+        background-color: #FDB515 !important; /* Agrega !important para asegurar que el color se aplique */
+    }
+    
+    .text {
+        color: #16161d !important; /* Cambia el color del texto a negro */
+    }
+</style>
 {% endblock content %}

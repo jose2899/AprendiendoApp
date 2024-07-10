@@ -1,6 +1,5 @@
 {% extends 'layout.html' %}
 {% load static %}
-
 {% block content %}
         <section class="section">
           <div style="height: 50px;"></div>
@@ -82,7 +81,6 @@
                       <div class="statistic-details mt-sm-4">
                           <div class="statistic-details-item">
                             {% for mes in estudian_por_mes %}
-                              <span class="text-muted">{{ mes.mes|date:"F" }}</span>
                               <div class="detail-value">{{ mes.total }}</div>
                               <div class="detail-name">Niños registrados</div>
                             {% endfor %}
@@ -102,8 +100,6 @@
                       <ul class="list-unstyled list-unstyled-border">
                           {% for estudi in ultimos_estudi %}
                           <li class="media">
-                              <!-- Aquí puedes mostrar la información del niño -->
-                              <!-- Por ejemplo, la imagen del niño, el nombre, etc. -->
                               <div class="media-body">
                                   <div class="float-right">{{ estudi.fecha }}</div>
                                   <div class="media-title">{{ estudi.nombre }} {{ estudi.apellido }}</div>
@@ -144,25 +140,21 @@
                       <h4>Piscólogos</h4>
                   </div>
                   <div class="card-body">
-                      <div class="row pb-2">
-                          {% for psicologo in primeros_psicologos %}
-                          <div class="col-6 col-sm-3 col-lg-3 mb-4 mb-md-0">
-                              <div class="avatar-item mb-0">
-                                  <img alt="image" src="" class="img-fluid" data-toggle="tooltip" title="{{ psicologo.nombre }}">
-                                  <div class="avatar-badge" data-toggle="tooltip"><i class="fas fa-user"></i></div>
-                              </div>
-                          </div>
-                          {% endfor %}
-                      </div>
+                      <ul class="list-unstyled list-unstyled-border">
+                        {% for psicologos in primeros_psicologos %}
+                        <li class="media">
+                            <!-- Aquí puedes mostrar la información del niño -->
+                            <!-- Por ejemplo, la imagen del niño, el nombre, etc. -->
+                            <div class="media-body">
+                              <div class="media-title">{{ psicologos }} <i class="fas fa-user"></i></div>
+                            </div>
+                        </li>
+                        {% endfor %}
+                    </ul>
                   </div>
               </div>
             </div>
-          
-          
-          
-
-          </div>
-          
+          </div>  
         </section>
 
       

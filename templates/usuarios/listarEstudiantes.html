@@ -2,13 +2,12 @@
 {% load static %}
 {% block content %}
 <section class="section">
-    <div class="section-body">
-        <div class="row">
-            <div class="col-12">
+        <div class="row justify-content-center">
+            <div class="col-10">
                 <div class="card">
-                    <div class="card-header">
-                        <h4>Estudiantes Registrados <i class="fas fa-user"></i></h4>
-                    </div>
+                    <div class="card-header bg-fdb515">
+                        <h4 class="text-white" >Estudiantes Registrados <i class="fa fa-table" aria-hidden="true"></i></h4>
+                      </div>
                     <div class="card-body">
                         <div class="table-responsive">
                             <table class="table table-striped" id="sortable-table">
@@ -17,7 +16,7 @@
                                         <th>Representante</th>
                                         <th>Nombre</th>
                                         <th>Apellido</th>
-                                        <th>Cedula</th>
+                                        <th>Cédula</th>
                                         <th>Acción</th>
                                     </tr>
                                 </thead>
@@ -81,7 +80,19 @@
                 </div>
             </div>
         </div>
-    </div>
 </section>
-
+<style>
+    /* Agrega estilos personalizados aquí */
+    .card {
+        margin-top: 20px;
+        border-radius: 10px;
+        box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+    }
+    .bg-fdb515 {
+        background-color: #FDB515 !important; /* Agrega !important para asegurar que el color se aplique */
+    }
+    .text-white {
+        color: #16161d !important; /* Cambia el color del texto a negro */
+    }
+  </style>
 {% endblock content %}

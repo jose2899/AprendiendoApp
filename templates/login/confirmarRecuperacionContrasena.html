@@ -1,0 +1,83 @@
+{% extends 'login/login_base.html' %}
+
+{% block content %}
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-header">
+            <h1 class="text-center" style="color: #007bff; font-size: 34px; margin-bottom: 20px;">Confirmar restablecimiento de contraseña</h1>
+          </div>
+          <div class="card-body">
+            <p class="text-center" style="font-size: 18px;">Por favor, introduce tu nueva contraseña a continuación:</p>
+            <form method="post">
+              {% csrf_token %}
+              <div class="form-group">
+                {{ form.new_password1.label_tag }} <!-- Etiqueta personalizada -->
+                {{ form.new_password1 }} <!-- Campo de nueva contraseña -->
+                {% for error in form.new_password1.errors %}
+                  <p class="text-danger">{{ error }}</p> <!-- Mostrar mensaje de error -->
+                {% endfor %}
+              </div>
+              <div class="form-group">
+                {{ form.new_password2.label_tag }} <!-- Etiqueta personalizada -->
+                {{ form.new_password2 }} <!-- Campo para confirmar nueva contraseña -->
+              </div>
+
+              <div class="text-center">
+                <button type="submit" class="btn btn-primary">Guardar contraseña</button>
+              </div>
+            </form>
+            {% if messages %}
+              <div class="alert alert-info mt-3">
+                {% for message in messages %}
+                  <p>{{ message }}</p>
+                {% endfor %}
+              </div>
+            {% endif %}
+          
+
+            <h3 class="text-center" style="margin-top: 20px;">Requisitos de la contraseña:</h3>
+            <ul class="list-unstyled">
+              <li>Tu contraseña no puede ser demasiado similar a tu información personal.</li>
+              <li>Tu contraseña debe contener al menos 8 caracteres.</li>
+              <li>Tu contraseña no puede ser una contraseña comúnmente utilizada.</li>
+              <li>Tu contraseña no puede ser completamente numérica.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    .card {
+      margin-top: 20px;
+    }
+
+    .card-header h1 {
+      margin-bottom: 20px;
+    }
+
+    .card-body {
+      padding: 30px;
+    }
+
+    .text-center {
+      text-align: center;
+    }
+
+    .btn-primary {
+      background-color: #007bff;
+      color: #fff;
+    }
+
+    .btn-primary:hover {
+      background-color: #0056b3;
+    }
+
+    .text-danger {
+      color: red;
+    }
+  </style>
+{% endblock %}

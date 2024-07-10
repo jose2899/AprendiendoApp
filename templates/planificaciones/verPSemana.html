@@ -3,21 +3,21 @@
 {% block content %}
 <section class="section">
     <div class="section-body">
-        <div class="row">
-            <div class="col-12">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
                 <div class="card">
-                    <div class="card-header">
-                        <h4>Detalles de la planificacion semanal<i class="fas fa-user"></i></h4>
+                    <div class="card-header bg-fdb515">
+                        <h4 class="text">Detalles de la planificación semanal <i class="fa fa-eye"></i></h4>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
                             <table class="table table-striped" >
                                 <tr>
-                                    <th>Planificacion:</th>
+                                    <th>Planificación:</th>
                                     <td>{{ semana.planificacion }}</td>
                                 </tr>
                                 <tr>
-                                    <th>Numero de semana:</th>
+                                    <th>Número de semana:</th>
                                     <td>{{ semana.numero_semana }}</td>
                                 </tr>
                                 <tr>
@@ -25,16 +25,16 @@
                                     <td>{{ semana.tiempo_previsto }}</td>
                                 </tr>
                                 <tr>
-                                    <th>objetivo:</th>
+                                    <th>Objetivo:</th>
                                     <td>{{ semana.objetivo }}</td>
                                 </tr>
                             </table>
                             <table class="table table-striped" id="sortable-table">
                                 <thead>
                                     <tr>
-                                        <th>actividad de lenguaje</th>
-                                        <th>actividad Cognitiva</th>
-                                        <th>actividad sensorial</th>
+                                        <th>Actividad de lenguaje</th>
+                                        <th>Actividad Cognitiva</th>
+                                        <th>Actividad sensorial</th>
                                         
                                     </tr>
                                 </thead>
@@ -62,17 +62,27 @@
                             </table>
                         </div>
                     </div>
-                    <div class="card-footer">
+                    <div class="card-footer text-right">
                         <a href="{% url 'listar_p_semana' pk=semana.pk %}" class="btn btn-primary"><i class="fas fa-arrow-left"></i> Volver</a>
                     </div>
-                    <a href="#" class="btn btn-secondary mt-3">Ver Semanas</a>
-
                 </div>
             </div>
         </div>
     </div>
 </section>
-
-
-
+<style>
+    /* Agrega estilos personalizados aquí */
+    .card {
+        margin-top: 20px;
+        border-radius: 10px;
+        box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+    }
+    .bg-fdb515 {
+        background-color: #FDB515 !important; /* Agrega !important para asegurar que el color se aplique */
+    }
+    
+    .text {
+        color: #16161d !important; /* Cambia el color del texto a negro */
+    }
+</style>
 {% endblock content %}

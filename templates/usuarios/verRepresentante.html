@@ -4,43 +4,43 @@
 <section class="section">
     <div class="section-body">
         <div class="row justify-content-center">
-            <div class="col-lg-10"> <!-- Cambié a col-lg-10 para hacer la plantilla más ancha -->
+            <div class="col-lg-10"> 
                 <div class="card">
-                    <div class="card-header bg-fdb515 text-white">
-                        <h4 class="text-white">Detalles del Representante <i class="fas fa-user"></i></h4> 
+                    <div class="card-header bg-fdb515">
+                        <h4 class="text">Detalles del Representante <i class="fa fa-eye"></i></h4> 
                     </div>
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-6">
-                                <table class="table table-bordered">
+                                <table class="table table-bordered table-responsive">
                                     <tr>
-                                        <th class="text-right">Nombre:</th>
+                                        <th>Nombre:</th>
                                         <td>{{ object.nombre }}</td>
                                     </tr>
                                     <tr>
-                                        <th class="text-right">Apellido:</th>
+                                        <th>Apellido:</th>
                                         <td>{{ object.apellido }}</td>
                                     </tr>
                                     <tr>
-                                        <th class="text-right">Teléfono:</th>
+                                        <th>Teléfono:</th>
                                         <td>{{ object.telefono }}</td>
                                     </tr>
                                     <tr>
-                                        <th class="text-right">Celular:</th>
+                                        <th>Celular:</th>
                                         <td>{{ object.celular }}</td>
                                     </tr>
                                     <tr>
-                                        <th class="text-right">Email:</th>
+                                        <th>Email:</th>
                                         <td>{{ object.email }}</td>
                                     </tr>
                                     <tr>
-                                        <th class="text-right">Cédula:</th>
+                                        <th>Cédula:</th>
                                         <td>{{ object.cedula }}</td>
                                     </tr>
                                 </table>
                             </div>
                             <div class="col-md-6">
-                                <table class="table table-bordered">
+                                <table class="table table-bordered table-responsive">
                                     <tr>
                                         <th class="text-right">Servicio:</th>
                                         <td>{{ object.servicios }}</td>
@@ -89,8 +89,10 @@
     td {
         padding-left: 10px;
     }
+    
+    .text {
+        color: #16161d !important; /* Cambia el color del texto a negro */
+    }
 </style>
-
-
 
 {% endblock content %}

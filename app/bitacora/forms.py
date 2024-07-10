@@ -8,6 +8,10 @@ class BitacoraForm(forms.ModelForm):
     class Meta:
         model = Bitacora
         fields = ['estudiante', 'planificacion', 'diagnostico']
+        labels = {
+            'planificacion':'Planificación',
+            'diagnostico':'Diagnóstico',
+        }
         widgets = {
             'estudiante':forms.Select(attrs={'class': 'form-control'}),
             'planificacion':forms.Select(attrs={'class': 'form-control'}),
@@ -43,7 +47,7 @@ class NuevaBitacoraForm(forms.ModelForm):
             'avance': 'Avance',
             'firma_terapeuta': 'Firma Terapeuta',
             'revisado_por': 'Revisado Por',
-            'asistencias': 'asistencias'
+            'asistencias': 'Asistencias'
         }
         widgets = {
             'fecha': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),

@@ -1,3 +1,4 @@
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth import logout
 from django.core.mail import send_mail
@@ -22,6 +23,8 @@ from django.utils.http import urlsafe_base64_decode
 #Vistas
 from django.contrib.auth.views import  LoginView
 from django.views.generic import RedirectView
+from .forms import CustomSetPasswordForm
+from django.views import View
 
 #Imports
 from proyectAprendiendo.settings import LOGIN_REDIRECT_URL, LOGOUT_REDIRECT_URL
@@ -49,14 +52,43 @@ class LogoutFormView(RedirectView):
         return super().dispatch(request, *args, **kwargs)
     
     
-class CustomPasswordResetView(PasswordResetView):
-    template_name = 'login/password_reset.html'
-    email_template_name = 'login/password_reset_email.html'
-    success_url = reverse_lazy('password_reset')  
+class RecuperarContrasenaView(PasswordResetView):
+    template_name = 'login/recuperarContrasena.html'
+    email_template_name = 'login/recuperarContrasenaEmail.html'
+    success_url = reverse_lazy('recuperar_contrasena')  
     success_message = "El correo electrónico para restablecer la contraseña ha sido enviado."
 
     def form_valid(self, form):
-        response = super().form_valid(form)
-        messages.success(self.request, self.success_message)
-        return response
+        email = form.cleaned_data.get('email')
+        if not User.objects.filter(email=email).exists():
+            messages.error(self.request,("El correo electrónico proporcionado no existe."))
+            return redirect('recuperar_contrasena')
+        else:
+            messages.success(self.request,("El correo se envio con exito."))
+            return super().form_valid(form)
     
+class ConfirmarRecuperacionContrasenaView(PasswordResetConfirmView):
+    template_name = 'login/confirmarRecuperacionContrasena.html'
+    form_class = CustomSetPasswordForm
+    success_url = reverse_lazy('recuperar_contrasena_completa')
+
+    def form_valid(self, form):
+        messages.success(self.request, "La contraseña ha sido restablecida exitosamente.")
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        errors = form.errors.as_data()
+        if 'new_password1' in errors:
+            messages.error(self.request, "La contraseña debe cumplir con los requisitos establecidos.")
+        else:
+            for field, error_messages in errors.items():
+                for error in error_messages:
+                    messages.error(self.request, error.message)
+        return super().form_invalid(form)
+    
+
+class RecuperacionContrasenaCompletaView(View):
+    template_name = 'login/recuperacionContrasenaCompleta.html'
+
+    def get(self, request, *args, **kwargs):
+        return render(request, self.template_name)

@@ -1,0 +1,11 @@
+{% autoescape off %}
+Hola,
+
+Has solicitado restablecer tu contraseña. Por favor, sigue el siguiente enlace para restablecerla:
+
+{{ protocol }}://{{ domain }}{% url 'confirmar_recuperacion_contrasena' uidb64=uid token=token %}
+
+Si no solicitaste esto, simplemente ignora este correo.
+
+Gracias.
+{% endautoescape %}

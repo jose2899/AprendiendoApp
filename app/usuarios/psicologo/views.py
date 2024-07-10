@@ -2,6 +2,9 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import permission_required
 from django.utils.decorators import method_decorator
 from app.controlRoles.utils import permission_required_custom
+from django.contrib import messages
+from django.core.exceptions import ValidationError
+
 #vistas
 from django.views.generic import CreateView, ListView, DetailView, UpdateView, DeleteView
 
@@ -16,26 +19,33 @@ from app.usuarios.psicologo.models import Psicologo
 from app.usuarios.psicologo.forms import PsicologoForm
 
 # Create your views here.
-@method_decorator(permission_required('adminis.can_create_adminis'), name='dispatch')
+#@method_decorator(permission_required('adminis.can_create_adminis'), name='dispatch')
 class CrearPsicologoView(CreateView):
     model = Psicologo
     form_class = PsicologoForm
     template_name = 'usuarios/crearPsicologo.html'  
-    success_url = reverse_lazy('index')
+    success_url = reverse_lazy('crear_psicologo')
 
     def form_valid(self, form):
-        # Crear un usuario
-        user = User.objects.create_user(username=form.cleaned_data['username'], password=form.cleaned_data['password'], email=form.cleaned_data['email'])
+            # Crear un usuario
+            user = User.objects.create_user(username=form.cleaned_data['username'], password=form.cleaned_data['password'], email=form.cleaned_data['email'])
 
-        # Asignar el usuario al grupo Psicólogos
-        psicologo_group = Group.objects.get(name='Psicologos')
-        user.groups.add(psicologo_group)
+            # Asignar el usuario al grupo Psicólogos
+            psicologo_group = Group.objects.get(name='Psicologos')
+            user.groups.add(psicologo_group)
 
-        # Guardar el psicólogo y relacionarlo con el usuario
-        self.object = form.save(commit=False)
-        self.object.user = user
-        self.object.save()
-        return super().form_valid(form)
+            # Guardar el psicólogo y relacionarlo con el usuario
+            self.object = form.save(commit=False)
+            self.object.user = user
+            self.object.save()
+            messages.success(self.request, 'Psicólogo creado correctamente.')
+            #return super().form_valid(form)
+            return redirect('login')
+    
+    def form_invalid(self, form):
+        # Mensaje genérico cuando el formulario es inválido
+        messages.error(self.request, f'No se pudo crear al psicólogo.')
+        return super().form_invalid(form)
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -66,4 +76,4 @@ class VerPsicologoView(DetailView):
 class EliminarPsicologoView(DeleteView):
     model = Psicologo
     template_name = 'usuarios/eliminarPsicologo.html' 
-    success_url = reverse_lazy('listar_psicologo')    
+    success_url = reverse_lazy('listar_psicologos')    

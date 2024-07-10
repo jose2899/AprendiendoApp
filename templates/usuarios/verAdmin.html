@@ -3,54 +3,59 @@
 {% block content %}
 <section class="section">
     <div class="section-body">
-        <div class="row">
-            <div class="col-12">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
                 <div class="card">
-                    <div class="card-header">
-                        <h4>Detalles del Usuario <i class="fas fa-user"></i></h4>
+                    <div class="card-header bg-fdb515">
+                        <h4 class="text">Detalles del Usuario <i class="fa fa-eye"></i></h4>
                     </div>
                     <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table table-striped">
-                                <tr>
-                                    <th>Usuario:</th>
-                                    <td>{{ objects.user }}</td>
-                                </tr>
-                                <tr>
-                                    <th>Nombre:</th>
-                                    <td>{{ objects.nombre }}</td>
-                                </tr>
-                                <tr>
-                                    <th>Apellido:</th>
-                                    <td>{{ objects.apellido }}</td>
-                                </tr>
-                                <tr>
-                                    <th>Email:</th>
-                                    <td>{{ objects.email }}</td>
-                                </tr>
-                                <tr>
-                                    <th>Foto:</th>
-                                    {% if user.foto %}
-                                        <td>
-                                            <img alt="image" src="{{ user.foto.url }}" class="rounded-circle" width="35" data-toggle="tooltip" title="{{ user.nombre }}">
-                                        </td>
-                                    {% else %}
-                                    <td><div class="badge badge-danger">No foto</div></td>
-                                    {% endif %}
-                                </tr>
-                                <tr>
-                                    <th>Celular:</th>
-                                    <td>{{ objects.celular }}</td>
-                                </tr>
-                                <tr>
-                                    <th>Direccion:</th>
-                                    <td>{{ objects.direccion }}</td>
-                                </tr>
-
-                            </table>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <table class="table table-bordered">
+                                    <tr>
+                                        <th>Usuario:</th>
+                                        <td>{{ objects.user }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Nombre:</th>
+                                        <td>{{ objects.nombre }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Apellido:</th>
+                                        <td>{{ objects.apellido }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Email:</th>
+                                        <td>{{ objects.email }}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="col-md-6">
+                                <table class="table table-bordered">
+                                    <tr>
+                                        <th>Foto:</th>
+                                        {% if user.foto %}
+                                            <td>
+                                                <img alt="image" src="{{ user.foto.url }}" class="rounded-circle" width="35" data-toggle="tooltip" title="{{ user.nombre }}">
+                                            </td>
+                                        {% else %}
+                                        <td><div class="badge badge-danger">No foto</div></td>
+                                        {% endif %}
+                                    </tr>
+                                    <tr>
+                                        <th>Celular:</th>
+                                        <td>{{ objects.celular }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Dirección:</th>
+                                        <td>{{ objects.direccion }}</td>
+                                    </tr>
+                                </table>
+                            </div>
                         </div>
                     </div>
-                    <div class="card-footer">
+                    <div class="card-footer text-right">
                         <a href="{% url 'listar_admin' %}" class="btn btn-primary"><i class="fas fa-arrow-left"></i> Volver</a>
                     </div>
                 </div>
@@ -63,18 +68,24 @@
     /* Agrega estilos personalizados aquí */
     .card {
         margin-top: 20px;
+        border-radius: 10px;
+        box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
     }
-    table {
-        width: 100%;
+    .bg-fdb515 {
+        background-color: #FDB515 !important; /* Agrega !important para asegurar que el color se aplique */
     }
     th {
-        width: 50%;
+        width: 40%;
         text-align: right;
         vertical-align: top;
+        background-color: #f2f2f2;
     }
     td {
-        width: 70%;
         padding-left: 10px;
+    }
+    
+    .text {
+        color: #16161d !important; /* Cambia el color del texto a negro */
     }
 </style>
 

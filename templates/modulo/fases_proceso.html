@@ -6,7 +6,7 @@
     <div class="section-body">
       <div class="row justify-content-center">
         <div class="col-md-12 col-md-10">
-          <div class="card card-primary">
+          <div class="card">
             <div class="card-header bg-fdb515">
               <h4 class="text-white">Módulo Predictivo</h4>
             </div>
@@ -30,6 +30,9 @@
                           <!-- Detalles de la fase 1 -->
                           <h5>Selección de estudiante a predecir</h5>
                           <p>Seleccionar un estudiante de la lista.</p>
+                          <!-- Campo de búsqueda -->
+                          <input type="text" id="searchInput" placeholder="Buscar estudiante..." class="form-control mb-3" onkeyup="filtrarEstudiantes()">
+
                           <div class="list-group" id="lista_estudiantes">
                             {% for planificacion in estudiantes_tdah %}
                               <a href="#" class="list-group-item list-group-item-action" onclick="seleccionarEstudiante('{{ planificacion.estudiante.pk }}')"> <!-- Corregido aquí -->
@@ -100,7 +103,8 @@
                           </div>
                           <h5>Fase 3: Carga del Modelo</h5>
                           <!-- Agregar el formulario para cargar el modelo -->
-                        
+                            <!-- Mostrar el formulario de carga de modelo solo si el usuario es superusuario -->
+                          {% if request.user.is_superuser %}
                             <form id="cargarModeloForm" method="post" enctype="multipart/form-data">
                               {% csrf_token %}
                               <div class="form-group">
@@ -109,7 +113,9 @@
                               </div>
                               <button id="btnCargarModelo" class="btn btn-primary mb-4" type="submit">Cargar Modelo</button>
                             </form>
-                            
+                          {% else %}
+                            <p>No tienes permisos para cargar un modelo.</p>
+                          {% endif %}
                             <button id="btnSiguienteFase3" class="btn btn-success" onclick="avanzarFase(3)" data-id-estudiante="{{ estudiante.id }}">Utilizar el modelo predeterminado</button>
                           
                         </div>
@@ -127,9 +133,8 @@
                             <div></div>
                             <h4 class="mb-3 text-center">Resultado de la Predicción</h4>
                             <p class="h2 text-primary text-center">¡Análisis Completado!</p>
-                            <p class="lead mt-3 text-center">Según el modelo, el niño tiene un <span id="resultado" style="color: red; font-size: 20px;">{{ prediccion }}</span> avance en la lectoescritura</p>
+                            <p class="lead mt-3 text-center">Según el modelo, el niño ha alcanzado un progreso <span id="resultado" style="color: red; font-size: 20px;">{{ prediccion }}</span> en el avance de la lectoescritura</p>
                             <ul id="temas_relevantes">
-                              
                             </ul>
                             <div id="mensaje_recomendacion" style="display: none; text-align: center; margin-top: 20px;">
                               <!-- Mensaje de recomendación aquí -->
@@ -152,19 +157,6 @@
         </div>
           
       </div>
-
-    
-      {% if mensaje_confirmacion %}
-      <div class="alert alert-success" role="alert">
-        {{ mensaje_confirmacion }}
-      </div>
-      {% endif %}
-      {% if mensaje_error %}
-      <div class="alert alert-success" role="alert" id="mensaje_error">
-        {{ mensaje_error }}
-      </div>
-      {% endif %}
-
     </div>
   </div>
 </section>
@@ -196,13 +188,6 @@
   .list-group-item.seleccionado {
     background-color: #3498db; /* Color de fondo del elemento seleccionado */
     color: #fff; /* Color del texto del elemento seleccionado */
-  }
-
-  #mensajeTransformacion {
-    position: fixed;
-    bottom: 140px;
-    left: 90%; /* Centra inicialmente el mensaje */
-    transform: translateX(-50%);
   }
    /* Agrega estilos personalizados aquí */
    .card {
@@ -397,8 +382,14 @@
         // Mostrar el resultado de la predicción
         document.getElementById('resultado').innerText = data.prediccion;
         var temasRelevantesHTML = '';
+        if (data.prediccion != 'Alto'){
+          temasRelevantesHTML = 'Se recomienda fortalecer en los siguientes temas:';
+        }
         data.temas_relevantes.forEach(tema => {
-            var texto = tema.length > 1 ? 'Mejorar en ' + tema : 'Mejorar la letra ' + tema;
+            var sesionesFaltantes = data.sesiones_faltantes[tema];
+            var texto = tema.length > 1 
+              ? `Mejorar en ${tema}: se recomienda ${sesionesFaltantes} sesiones` 
+              : `Mejorar la letra ${tema}: se recomienda ${sesionesFaltantes} sesiones`;
             temasRelevantesHTML += '<div class="tema-relevante">' + texto + '</div>';
         });
         document.getElementById('temas_relevantes').innerHTML = temasRelevantesHTML;
@@ -406,10 +397,12 @@
 
         // Mostrar mensaje basado en la predicción
         var mensajeRecomendacion = document.getElementById('mensaje_recomendacion');
+        var promedioSesiones = data.promedio_sesiones_restantes;
         if (data.prediccion == 'Alto') {
-            mensajeRecomendacion.innerHTML = '¡Felicidades! El estudiante ha alcanzado un avance alto. No se necesitan más temas. Para un avance equilibrado, considera trabajar en los siguientes temas y sesiones.';
+            mensajeRecomendacion.innerHTML = '¡Felicidades! El estudiante ha alcanzado un progreso Alto. No se necesitan más temas.';
         } else {
-            mensajeRecomendacion.innerHTML = 'Se recomienda seguir trabajando en los anteriores temas hasta alcanzar un mínimo de 4 sesiones en cada uno.';
+            mensajeRecomendacion.innerHTML = 'Se sugiere continuar trabajando en los temas anteriores hasta completar un máximo de ' 
+            + promedioSesiones + ' sesiones con el niño. Después de estas sesiones, se recomienda utilizar nuevamente el módulo para conocer el progreso.';
         }
         mensajeRecomendacion.style.display = 'block';
     })
@@ -465,6 +458,23 @@ function generarReporte() {
     .catch(error => {
         console.error('Error:', error);
     });
+}
+
+function filtrarEstudiantes() {
+    var input, filter, listaEstudiantes, a, i, txtValue;
+    input = document.getElementById('searchInput');
+    filter = input.value.toLowerCase();
+    listaEstudiantes = document.getElementById('lista_estudiantes');
+    a = listaEstudiantes.getElementsByTagName('a');
+
+    for (i = 0; i < a.length; i++) {
+        txtValue = a[i].textContent || a[i].innerText;
+        if (txtValue.toLowerCase().indexOf(filter) > -1) {
+            a[i].style.display = "";
+        } else {
+            a[i].style.display = "none";
+        }
+    }
 }
 
   window.onload = function() {

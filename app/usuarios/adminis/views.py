@@ -2,6 +2,8 @@ from django.contrib.auth.decorators import permission_required
 from django.utils.decorators import method_decorator
 from app.controlRoles.utils import permission_required_custom
 from django.contrib.auth.models import User, Group
+from django.contrib import messages
+from django.shortcuts import redirect
 
 #vistas
 from django.views.generic import CreateView, ListView, UpdateView, DeleteView, DetailView
@@ -22,7 +24,7 @@ class CrearAdminisView(CreateView):
     model = Adminis
     form_class = AdminisForm
     template_name = 'usuarios/crearAdmin.html'
-    success_url = reverse_lazy('index')
+    success_url = reverse_lazy('crear_admin')
 
     def form_valid(self, form):
         # Crear un usuario
@@ -31,13 +33,19 @@ class CrearAdminisView(CreateView):
         # Asignar el usuario al grupo Administradores
         admin_group = Group.objects.get(name='Administradores')
         user.groups.add(admin_group)
-        
+            
         # Guardar el admin y relacionarlo con el usuario
         self.object = form.save(commit=False)
         self.object.user = user
         self.object.save()
+        messages.success(self.request, 'Administrador creado correctamente.')
         return super().form_valid(form)
-
+    
+    def form_invalid(self, form):
+        # Mensaje genérico cuando el formulario es inválido
+        messages.error(self.request, f'No se pudo crear al Administrador.')
+        return super().form_invalid(form)
+        
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['usuario_forms'] = AdminisForm()

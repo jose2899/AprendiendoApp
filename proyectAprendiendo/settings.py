@@ -29,11 +29,11 @@ SECRET_KEY = 'django-insecure-oda3$3deg5c78kk5@o8c=fk0vnp$i-&j+seu3i99#0$@i$rkgu
 #para el despliegue
 # Secret key and debug settings based on environment variables
 #SECRET_KEY = os.environ.get('SECRET_KEY')
-DEBUG = 'RENDER' not in os.environ
+#DEBUG = 'RENDER' not in os.environ
 # -------------
 
 # SECURITY WARNING: don't run with debug turned on in production!
-#DEBUG = True
+DEBUG = True
 
 ALLOWED_HOSTS = ['*', 'https://modulopredictivo.onrender.com']
 
@@ -93,7 +93,15 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'proyectAprendiendo.wsgi.application'
-
+# Configuración de los mensajes
+from django.contrib.messages import constants as messages
+MESSAGE_TAGS = {
+    messages.DEBUG: 'debug',
+    messages.INFO: 'info',
+    messages.SUCCESS: 'success',
+    messages.WARNING: 'warning',
+    messages.ERROR: 'error',
+}
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
@@ -105,30 +113,30 @@ WSGI_APPLICATION = 'proyectAprendiendo.wsgi.application'
 #    }
 #}
 
-#DATABASES = {
-#    'default': {
-#        'ENGINE': 'django.db.backends.postgresql',
-#        'HOST': 'localhost',
-#        'PORT': 5432,
-#        'NAME': 'moduloBD',
-#        'USER': 'postgres',
-#        'PASSWORD': 'andres1',
-#    }
-#}
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'HOST': 'localhost',
+        'PORT': 5432,
+        'NAME': 'moduloBD',
+        'USER': 'postgres',
+        'PASSWORD': 'andres1',
+    }
+}
 
 #despliegue 
 # dpg-cpsekn08fa8c7395on60-a.oregon-postgres.render.com externa
 # 'HOST': 'dpg-cpsekn08fa8c7395on60-a interna
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'HOST': 'dpg-cpsekn08fa8c7395on60-a',
-        'PORT': 5432,
-        'NAME': 'modulodb',
-        'USER': 'admin',
-        'PASSWORD': 'oVBM2EFGw1qAj6D7QxxVEXBhAioLkqcr',
-    }
-}
+#DATABASES = {
+#    'default': {
+#        'ENGINE': 'django.db.backends.postgresql',
+#        'HOST': 'dpg-cpsekn08fa8c7395on60-a',
+#        'PORT': 5432,
+#        'NAME': 'modulodb',
+#        'USER': 'admin',
+#        'PASSWORD': 'oVBM2EFGw1qAj6D7QxxVEXBhAioLkqcr',
+#    }
+#}
 
 
 # Password validation

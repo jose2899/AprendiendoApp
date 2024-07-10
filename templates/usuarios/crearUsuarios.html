@@ -5,16 +5,17 @@
   <div class="container mt-5">
     <div class="row">
       <div class="col-12 col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-8 offset-lg-2 col-xl-8 offset-xl-2">
-        <div class="card card-primary">
-          <div class="card-header"><h4>Registar nuevo Representante</h4></div>
+        <div class="card">
+          <div class="card-header bg-fdb515">
+            <h4 class="text-white">Registrar Representante <i class="fas fa-user" aria-hidden="true"></i></h4>
+          </div>
           <div class="card-body">
             <form method="POST" enctype="multipart/form-data" autocomplete='off'>
               {% csrf_token %}
               <div class="row">
                 <div class="form-group col-6">
                   {{ form.nombre.label }}
-                  {{ form.nombre}}
-                
+                  {{ form.nombre}}                
                 </div>
                 <div class="form-group col-6">
                   {{ form.apellido.label }}
@@ -27,6 +28,11 @@
                 <div class="form-group col-6">
                   {{ form.celular.label }}
                   {{ form.celular }}
+                  {% if form.celular.errors %}
+                    <div class="alert alert-danger error-message">
+                      {{ form.celular.errors }}
+                    </div>
+                  {% endif %}
                 </div>
                 <div class="form-group col-6">
                   {{ form.email.label }}
@@ -35,6 +41,11 @@
                 <div class="form-group col-6">
                   {{ form.cedula.label }}
                   {{ form.cedula }}
+                  {% if form.cedula.errors %}
+                      <div class="alert alert-danger">
+                          {{ form.cedula.errors }}
+                      </div>
+                  {% endif %}
                 </div>
               </div>
 
@@ -62,7 +73,7 @@
               
               <div class="form-group">
                 <div class="text-center mt-4 mb-3">
-                  <button type="submit" class="btn btn-primary btn-lg btn-block">
+                  <button type="submit" class="btn btn-primary btn-lg">
                     Registrar Representante
                   </button>
                 </div>
@@ -74,6 +85,20 @@
     </div>
   </div>
 </section>
+<style>
+  /* Agrega estilos personalizados aquí */
+  .card {
+      margin-top: 20px;
+      border-radius: 10px;
+      box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+  }
+  .bg-fdb515 {
+      background-color: #FDB515 !important; /* Agrega !important para asegurar que el color se aplique */
+  }
+  .text-white {
+      color: #16161d !important; /* Cambia el color del texto a negro */
+  }
+</style>
 {% endblock content %}
 
 

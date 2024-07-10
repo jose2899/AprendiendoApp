@@ -1,21 +1,95 @@
 {% extends 'layout.html' %}
 {% load static %}
 {% block content %}
-  <div class="container">
-    <div class="row justify-content-center mt-4">
-      <div class="col-md-8">
-        <div class="card">
-          <div class="card-header">
-            <h4>Editar Planificacion semanal<i class="fas fa-user"></i></h4>
+<section class="section">
+  <div class="section-body">
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <div class="card shadow">
+          <div class="card-header bg-fdb515">
+            <h4 class="text">Editar Planificacion semanal <i class="fas fa-edit"></i></h4>
 
           </div>
           <div class="card-body">
             <form method="post">
               {% csrf_token %}
-              {{ form.as_p }}
+              <div class="row">
+                <div class="col-md-6 mb-2">
+                    <div class="card">
+                        <div class="card-body">
+                            <label class="card-text text-md-right">Planificación:</label>
+                            {{ form.planificacion }}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-2">
+                  <div class="card">
+                      <div class="card-body">
+                          <label class="card-text text-md-right">Número de semana:</label>
+                          {{ form.numero_semana }}
+                      </div>
+                  </div>
+                </div>
+                <div class="col-md-6 mb-2">
+                  <div class="card">
+                      <div class="card-body">
+                          <label class="card-text text-md-right">Tiempo previsto:</label>
+                          {{ form.tiempo_previsto }}
+                      </div>
+                  </div>
+                </div>
+                <div class="col-md-6 mb-2">
+                  <div class="card">
+                      <div class="card-body">
+                          <label class="card-text text-md-right">Objetivo:</label>
+                          {{ form.objetivo }}
+                      </div>
+                  </div>
+                </div>
+                <div class="col-md-6 mb-2">
+                  <div class="card">
+                      <div class="card-body">
+                          <label class="card-text text-md-right">Actividad de lenguaje:</label>
+                          {{ form.actividad_lenguaje }}
+                      </div>
+                  </div>
+                </div>
+                <div class="col-md-6 mb-2">
+                  <div class="card">
+                      <div class="card-body">
+                          <label class="card-text text-md-right">Actividad cognitiva:</label>
+                          {{ form.actividad_cognitiva }}
+                      </div>
+                  </div>
+                </div>
+                <div class="col-md-6 mb-2">
+                  <div class="card">
+                      <div class="card-body">
+                          <label class="card-text text-md-right">Actividad sensorial:</label>
+                          {{ form.actividad_sensorial }}
+                      </div>
+                  </div>
+                </div>
+                <div class="col-md-6 mb-2">
+                  <div class="card">
+                      <div class="card-body">
+                          <label class="card-text text-md-right">Actividades internalizadas:</label>
+                          {{ form.actividades_internalizadas }}
+                      </div>
+                  </div>
+                </div>
+                <div class="col-md-6 mb-2">
+                  <div class="card">
+                      <div class="card-body">
+                          <label class="card-text text-md-right">Actividades a reforzar:</label>
+                          {{ form.actividades_reforzar }}
+                      </div>
+                  </div>
+                </div>
+              </div>
               <div class="text-center mt-3">
                 <button type="submit" class="btn btn-primary">Guardar</button>
-                <a href="{% url 'listar_p_semana' pk=semana.pk %}" class="btn btn-secondary ml-2">Volver a la lista de planificaciones</a>
+                <a href="{% url 'listar_p_semana' pk=semana.pk %}" class="btn btn-secondary ml-2">Volver</a>
               </div>
             </form>
           </div>
@@ -23,6 +97,29 @@
       </div>
     </div>
   </div>
-
+</section>
+<style>
+  /* Agrega estilos personalizados aquí */
+  .card {
+      margin-top: 20px;
+      border-radius: 10px;
+      box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+  }
+  .bg-fdb515 {
+      background-color: #FDB515 !important; /* Agrega !important para asegurar que el color se aplique */
+  }
+  th {
+      width: 40%;
+      text-align: right;
+      vertical-align: top;
+      background-color: #f2f2f2;
+  }
+  td {
+      padding-left: 10px;
+  }
+  .text {
+      color: #16161d !important; /* Cambia el color del texto a negro */
+  }
+</style>
 {% endblock content %}
 

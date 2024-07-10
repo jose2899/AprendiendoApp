@@ -2980,3 +2980,16 @@ body:not(.sidebar-mini) .sidebar-style-2 .sidebar-menu li.active ul.dropdown-men
   100% {
     -webkit-transform: scale(1.2, 1.2);
     opacity: 0.0; } }
+.error-message {
+    font-size: 12px; /* Tamaño de la fuente más pequeño */
+    padding: 5px; /* Reduce el padding */
+    margin-top: 5px; /* Espacio superior más pequeño */
+    margin-bottom: 5px; /* Espacio inferior más pequeño */
+    border: 1px solid #dc3545; /* Añade un borde para destacar el error */
+    background-color: #f8d7da; /* Fondo de color para diferenciar los mensajes de error */
+    color: #721c24; /* Color del texto */
+    border-radius: 5px; /* Bordes redondeados */
+    max-width: 300px; /* Limita el ancho máximo del mensaje */
+    word-wrap: break-word; /* Asegura que el texto se ajuste dentro del contenedor */
+}
+

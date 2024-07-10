@@ -6,6 +6,8 @@ from django.urls import reverse_lazy
 from app.planificaciones.models import Planificacion, PlanificacionSemana
 from app.usuarios.usuario.models import Estudiante
 from app.terapiass.models import Diagnostico
+from django.contrib import messages
+
 
 #forms
 from app.planificaciones.forms import PlanificacionForm, PlanificacionSemanaForm
@@ -16,27 +18,30 @@ class PlanificacionCreateView(CreateView):
     form_class = PlanificacionForm
     template_name = 'planificaciones/planificacion.html' 
     
-    success_url = reverse_lazy('index')
+    success_url = reverse_lazy('crear_planificacion')
 
     def form_valid(self, form):
-        # Obtén el representante seleccionado del formulario
-        estudiante_id = self.request.POST.get('estudiante')
-        estudiante = Estudiante.objects.get(pk=estudiante_id)
+        try:
+            # Obtén el representante seleccionado del formulario
+            estudiante_id = self.request.POST.get('estudiante')
+            estudiante = Estudiante.objects.get(pk=estudiante_id)
 
-        # Obtén el diagnostico seleccionado del formulario
-        diagnostico_id = self.request.POST.get('diagnostico')
-        diagnostico = Diagnostico.objects.get(pk=diagnostico_id)
-        
-        # Crea una instancia de Planificacion y asigna el estudiante y el diagnóstico seleccionados
-        planificacion = form.save(commit=False)
-        planificacion.estudiante = estudiante
-        planificacion.diagnostico = diagnostico
-        planificacion.save()
-
-        return redirect('index')  
+            # Obtén el diagnostico seleccionado del formulario
+            diagnostico_id = self.request.POST.get('diagnostico')
+            diagnostico = Diagnostico.objects.get(pk=diagnostico_id)
+            
+            # Crea una instancia de Planificacion y asigna el estudiante y el diagnóstico seleccionados
+            planificacion = form.save(commit=False)
+            planificacion.estudiante = estudiante
+            planificacion.diagnostico = diagnostico
+            planificacion.save()
+            messages.success(self.request, 'Planificación creada correctamente.')
+            return super().form_valid(form)
+        except Exception as e:
+            messages.error(self.request, f'No se pudo crear la planificación: {e}')
+            return redirect('crear_planificacion')  
 
     
-
 class PlanificacionListView(ListView):
     model = Planificacion
     template_name = 'planificaciones/listarPlanificacion.html'
@@ -52,7 +57,7 @@ class PlanificacionUpdateView(UpdateView):
 class PlanificacionDeleteView(DeleteView):
     model = Planificacion
     template_name = 'planificaciones/borrarPlanificacion.html'
-    success_url = reverse_lazy('lista_planificaciones')
+    success_url = reverse_lazy('listar_planificacion')
 
 class VerPlanificacionView(DetailView):
     model = Planificacion
@@ -67,16 +72,28 @@ class PlanificacionSemanaCreateView(CreateView):
     template_name = 'planificaciones/planificacionSemana.html'
     context_object_name = 'semana'    
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        planificacion_id = self.kwargs.get('planificacion_id')
+        context['planificacion_id'] = planificacion_id
+        return context
+    
     def form_valid(self, form):
-        # Obtén el representante seleccionado del formulario
-        planificacion_id = self.request.POST.get('planificacion')
-        planificacion = Planificacion.objects.get(pk=planificacion_id)
-        
-        # Crea una instancia de Estudiante y asigna el representante seleccionado
-        planificacionSemana = form.save(commit=False)
-        planificacionSemana.planificacion = planificacion
-        planificacionSemana.save()
-        return redirect('index')
+        try:
+            # Obtén el representante seleccionado del formulario
+            planificacion_id = self.request.POST.get('planificacion')
+            planificacion = Planificacion.objects.get(pk=planificacion_id)
+            
+            # Crea una instancia de Estudiante y asigna el representante seleccionado
+            planificacionSemana = form.save(commit=False)
+            planificacionSemana.planificacion = planificacion
+            planificacionSemana.save()
+            #Redirige a la lista de planificaciones semanales
+            messages.success(self.request, 'Planificación semanal creada correctamente.')
+            return redirect('listar_p_semana', pk=planificacion_id)
+        except Exception as e:
+            messages.error(self.request, f'No se pudo crear la planificación semanal: {e}')
+            return redirect('listar_p_semana', pk=planificacion_id)
 
     
 # Vista para editar una semana existente
@@ -115,7 +132,6 @@ class PlanificacionSemanaDetailView(DetailView):
 
         # Buscamos la planificación semanal correspondiente
         semana = get_object_or_404(PlanificacionSemana, planificacion__id=planificacion_id, numero_semana=numero_semana)
-
         return semana
     
 
@@ -147,8 +163,6 @@ class PlanificacionSemanaListView(ListView):
         context['estudiante'] = estudiante
         return context
     
-    
-    
 
 class PlanificacionSemanaDeleteView(DeleteView):
     model = PlanificacionSemana
@@ -164,8 +178,6 @@ class PlanificacionSemanaDeleteView(DeleteView):
         # Obtenemos el número de semana y el id de la planificación de la URL
         numero_semana = self.kwargs.get('pk1')
         planificacion_id = self.kwargs.get('pk')
-
         # Buscamos la planificación semanal correspondiente
         semana = get_object_or_404(PlanificacionSemana, planificacion__id=planificacion_id, numero_semana=numero_semana)
-
         return semana

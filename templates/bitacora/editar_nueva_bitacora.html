@@ -1,0 +1,107 @@
+{% extends 'layout.html' %}
+{% load static %}
+{% block content %}
+<section class="section">
+  <div class="section-body">
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <div class="card shadow">
+          <div class="card-header bg-fdb515">
+            <h4 class="text">Editar Bitacora Diaria <i class="fas fa-edit"></i></h4>
+          </div>
+          <div class="card-body">
+            <form method="post">
+              {% csrf_token %}
+              <div class="row">
+                <div class="col-md-6 mb-2">
+                    <div class="card">
+                        <div class="card-body">
+                            <label class="card-text text-md-right">Fecha:</label>
+                            {{ form.fecha }}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-2">
+                  <div class="card">
+                      <div class="card-body">
+                          <label class="card-text text-md-right">Observación de la conducta:</label>
+                          {{ form.observacion_conducta }}
+                      </div>
+                  </div>
+                </div>
+                <div class="col-md-6 mb-2">
+                  <div class="card">
+                      <div class="card-body">
+                          <label class="card-text text-md-right">Temas trabajados:</label>
+                          {{ form.temas_trabajados }}
+                      </div>
+                  </div>
+                </div>
+                <div class="col-md-6 mb-2">
+                  <div class="card">
+                      <div class="card-body">
+                          <label class="card-text text-md-right">Avance:</label>
+                          {{ form.avance }}
+                      </div>
+                  </div>
+                </div>
+                <div class="col-md-6 mb-2">
+                  <div class="card">
+                      <div class="card-body">
+                          <label class="card-text text-md-right">Firma de la terapeuta:</label>
+                          {{ form.firma_terapeuta }}
+                      </div>
+                  </div>
+                </div>
+                <div class="col-md-6 mb-2">
+                  <div class="card">
+                      <div class="card-body">
+                          <label class="card-text text-md-right">Revisado por:</label>
+                          {{ form.revisado_por }}
+                      </div>
+                  </div>
+                </div>
+                <div class="col-md-6 mb-2">
+                  <div class="card">
+                      <div class="card-body">
+                          <label class="card-text text-md-right">Asistencia:</label>
+                          {{ form.asistencias }}
+                      </div>
+                  </div>
+                </div>
+              </div>
+              <div class="text-center mt-3">
+                <button type="submit" class="btn btn-primary">Guardar</button>
+                <a href="{% url 'ver_bitacora' pk=bitacora.id %}" class="btn btn-secondary ml-2">Volver</a>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<style>
+  /* Agrega estilos personalizados aquí */
+  .card {
+      margin-top: 20px;
+      border-radius: 10px;
+      box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+  }
+  .bg-fdb515 {
+      background-color: #FDB515 !important; /* Agrega !important para asegurar que el color se aplique */
+  }
+  th {
+      width: 40%;
+      text-align: right;
+      vertical-align: top;
+      background-color: #f2f2f2;
+  }
+  td {
+      padding-left: 10px;
+  }
+  .text {
+      color: #16161d !important; /* Cambia el color del texto a negro */
+  }
+</style>
+{% endblock content %}

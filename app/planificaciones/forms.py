@@ -8,6 +8,7 @@ class PlanificacionForm(forms.ModelForm):
         model = Planificacion
         fields = ['estudiante', 'diagnostico', 'edad_biologica', 'edad_cognitiva_lenguaje_verbal', 'edad_cognitiva_lenguaje_comprensivo']
         labels = {
+            'diagnostico':'Diagnóstico',
             'edad_biologica': 'Edad Biológica',
             'edad_cognitiva_lenguaje_verbal': 'Edad Cognitiva - Lenguaje Verbal',
             'edad_cognitiva_lenguaje_comprensivo': 'Edad Cognitiva - Lenguaje Comprensivo',
@@ -37,7 +38,8 @@ class PlanificacionSemanaForm(forms.ModelForm):
         model = PlanificacionSemana
         fields = ['planificacion','numero_semana', 'tiempo_previsto', 'objetivo', 'actividad_lenguaje', 'actividad_cognitiva', 'actividad_sensorial', 'actividades_internalizadas', 'actividades_reforzar']
         labels = {
-            'numero_semana': 'Numero Semana',
+            'planificacion':'Planificación',
+            'numero_semana': 'Número Semana',
             'tiempo_previsto': 'Tiempo Previsto',
             'objetivo': 'Objetivo',
             'actividad_lenguaje': 'Actividad lenguaje',

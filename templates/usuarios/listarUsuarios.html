@@ -3,11 +3,11 @@
 {% block content %}
 <section class="section">
     <div class="section-body">
-        <div class="row">
-            <div class="col-12">
+        <div class="row justify-content-center">
+            <div class="col-10">
                 <div class="card">
-                    <div class="card-header bg-fdb515 text-white">
-                        <h4 class="text-white">Representantes Registrados <i class="fas fa-user"></i></h4>
+                    <div class="card-header bg-fdb515">
+                        <h4 class="text-white">Representantes Registrados <i class="fa fa-table" aria-hidden="true"></i></h4>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
@@ -84,7 +84,6 @@
     </div>
 </section>
 
-
 <style>
     /* Agrega estilos personalizados aquí */
     .card {
@@ -95,15 +94,9 @@
     .bg-fdb515 {
         background-color: #FDB515 !important; /* Agrega !important para asegurar que el color se aplique */
     }
-    th {
- 
-        text-align: right;
-        vertical-align: top;
-        background-color: #f2f2f2;
+    .text-white {
+        color: #16161d !important; /* Cambia el color del texto a negro */
     }
-    td {
-        padding-left: 10px;
-    }
-</style>
+  </style>
 
 {% endblock content %}

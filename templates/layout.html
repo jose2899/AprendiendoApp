@@ -9,6 +9,7 @@
   <!-- General CSS Files -->
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
   <!--Calendario-->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.9.0/main.min.css">
 
@@ -18,6 +19,7 @@
   <!-- Template CSS -->
   <link rel="stylesheet" href="{% static 'stisla/css/style.css' %}">
   <link rel="stylesheet" href="{% static 'stisla/css/components.css' %}">
+  
   
 
 </head>
@@ -131,6 +133,8 @@
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.nicescroll/3.7.6/jquery.nicescroll.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+  
   
   <!--Calendario-->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.9.0/main.min.js"></script>
@@ -143,6 +147,22 @@
 
   <!--Stisla-->
   <script src="{% static 'stisla/js/stisla.js' %}"></script>
+  <!--Mensajes-->
+  <script src="{% static 'stisla/js/toastify-messages.js' %}"></script>
+  <script type="application/json" id="toastify-messages-data">
+    {% if messages %}
+      [
+        {% for message in messages %}
+          {
+            "text": "{{ message|escapejs }}",
+            "tags": "{{ message.tags }}"
+          }{% if not forloop.last %},{% endif %}
+        {% endfor %}
+      ]
+    {% else %}
+      []
+    {% endif %}
+  </script>
   
 
   <!-- JS Libraies -->

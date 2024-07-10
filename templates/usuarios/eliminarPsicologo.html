@@ -10,7 +10,7 @@
             <h2 class="mb-0">Confirmar Eliminación</h2>
           </div>
           <div class="card-body">
-            <p>¿Estás seguro de que deseas eliminar al psicologo "{{ representante.nombre }}"?</p>
+            <p>¿Estás seguro de que deseas eliminar al psicologo "{{ psicologo }}"?</p>
             <form method="post">
               {% csrf_token %}
               <button type="submit" class="btn btn-danger">Confirmar Eliminación</button>
