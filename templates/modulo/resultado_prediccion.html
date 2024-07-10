@@ -109,16 +109,16 @@
                 <tr>
                     <td>
                         {% if tema|length > 1 %}
-                            Mejorar en {{ tema }} se recomienda {{ sesionesFaltantes }} sesiones.
+                            Mejorar en {{ tema }} se recomienda {{ sesiones_faltantes }} sesiones.
                         {% else %}
-                            Mejorar en la letra {{ tema }} se recomienda {{ sesionesFaltantes }} sesiones.
+                            Mejorar en la letra {{ tema }} se recomienda {{ sesiones_faltantes }} sesiones.
                         {% endif %}
                     </td>
                 </tr>
                 {% endfor %}
                 <tr>
                     <th style="background-color: #f0f0f0; color: black; padding: 10px;">Se sugiere continuar trabajando en los temas anteriores hasta completar un máximo de 
-                        {{ promedioSesiones }} sesiones con el niño. Después de estas sesiones, se recomienda utilizar nuevamente el módulo para conocer el progreso.</th>
+                        {{ promedio_sesiones_restantes }} sesiones con el niño. Después de estas sesiones, se recomienda utilizar nuevamente el módulo para conocer el progreso.</th>
                 </tr>
             </table>
         </div>
